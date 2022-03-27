@@ -1,0 +1,405 @@
+
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <mat-icon>archive</mat-icon>
+  <span>Gestion de stock</span>
+
+
+</mat-toolbar>
+ <!--
+
+<div class="row">
+  <div class="col-md-4">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Magasin - entrepôt :</mat-label>
+      <mat-select name="famille" ngModel
+                  required  [(ngModel)]="magasinSelectionnee" >
+        <mat-option >None</mat-option>
+        <mat-option *ngFor="let magasin of gestionDeStockService.magasins" value="{{magasin.id_magasin}}">{{magasin.nom_magasin}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button class="btn btn-primary" (click)="getStockMagasin(magasinSelectionnee)">Stock</button>
+
+
+  </div>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <button class="btn btn-group-sm" routerLink="/table-de-de-prix-ajout">Nouveau table de prix	&nbsp;	&nbsp; </button>
+  </div></div>
+
+<div *ngIf="gestionDesPrixService.TablePrix">
+  <div *ngIf="true">
+    <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+    <div class="container"> <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="article">
+          <mat-header-cell  *matHeaderCellDef><h2> No. </h2></mat-header-cell>
+          <mat-cell *matCellDef="let i = index"> {{i+1}} </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="code_article">
+          <mat-header-cell *matHeaderCellDef> <h2>Code article </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.code_article }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="nom_article">
+          <mat-header-cell *matHeaderCellDef> <h2>Nom d'article </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.nom_article }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="prix">
+          <mat-header-cell *matHeaderCellDef> <h2>Prix </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.prix }}  {{configurationService.devise}} </mat-cell>
+        </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div></div>
+-->
+<div  >
+  <button mat-raised-button class="col-md-4" (click)="entrepots()" [disabled]="entrepot"> Entrepôts </button>
+  <button mat-raised-button class="col-md-4" (click)="nouveaumagasin()" [disabled]="nouveaumagasins" [disabled]="true">Nouveau Magasin - Entrepôt</button>
+  <button mat-raised-button class="col-md-4" (click)="Transfert()" [disabled]="Transferts" [disabled]="true">Transfert de stock</button>
+  <!-- <button mat-raised-button class="col-md-2" (click)="virement()" [disabled]="virements">chargement de stock des commerciaux</button>
+ <button mat-raised-button class="col-md-3" (click)="tpe()" [disabled]="tpes">TPE</button> -->
+</div>
+<br>
+<br><br>
+
+
+
+<div *ngIf="entrepot">
+
+  <div  *ngIf="gestionDeStockService.magasins && ! consultation_stock" >
+    <div *ngIf="gestionDeStockService.magasins.length != 0">
+      <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+      <div class="container">
+        <div class="mat-elevation-z8">
+          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+             <ng-container matColumnDef="N.o">
+              <mat-header-cell *matHeaderCellDef> <h3> * </h3> </mat-header-cell>
+               <mat-cell *matCellDef=" let i = index" style="background-color: {{getcolor(i)}}"> {{ i +1}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nom_magasin">
+              <mat-header-cell *matHeaderCellDef> <h3> Magasin </h3> </mat-header-cell>
+              <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}">
+                <div >{{element.nom_magasin}}</div>
+              </mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="adresse">
+              <mat-header-cell *matHeaderCellDef><h3> Adresse</h3>  </mat-header-cell>
+              <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.	adresse}} </mat-cell>
+            </ng-container>
+            <!--
+                      <ng-container matColumnDef="objectif"  >
+                        <mat-header-cell *matHeaderCellDef> <h2> Objectif : </h2> </mat-header-cell>
+                        <mat-cell *matCellDef="let element"><button class="btn "  (click)="Ongetobjectif(element.id_commercial )"><mat-icon color="primary">done_all</mat-icon></button></mat-cell>
+                      </ng-container>
+            -->
+            <ng-container matColumnDef="edit"  >
+              <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+              <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"><button class="btn "  (click)="onModifier(element.id_magasin )"><mat-icon color="primary">launch</mat-icon></button></mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="suppression"  >
+              <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+              <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"><button class="btn "  (click)="onSupprimer(element.id_magasin )" [disabled]="true"><mat-icon color="accent">delete_forever</mat-icon></button></mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+      </div>
+    </div>
+    <div *ngIf="gestionDeStockService.magasins == []">
+      <div class="container">
+        <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+        <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+          Page non trouvée</h2>
+        <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+          La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+      </div>
+    </div>
+  </div>
+  <div  *ngIf="gestionDeStockService.magasins && consultation_stock">
+    <button mat-raised-button color="primary" type="button" (click)="retour()"><mat-icon>cancel</mat-icon>   &nbsp; retour</button>
+    <div *ngIf="gestionDeStockService.magasins.length != 0">
+
+      <div class="container">
+        <div class="row"> <div class="col-md-4"><mat-form-field> <input (keyup)="appliquerfilter2(filtrage2)" matInput placeholder="Filtrer" [(ngModel)]="filtrage2" ></mat-form-field></div>
+          <div class="col-md-4"><button mat-raised-button (click)="MiseAjourStock(this.idMagasin)"><mat-icon>refresh</mat-icon> SAP-Web</button></div>
+          <!--   <div class="col-md-4"> <label for="Nom">Nom :</label>
+               <output
+                 type="text"
+                 id="Nom"
+                 ngModel
+               > </output>
+             </div>
+             <div class="col-md-4"> <label for="Nom">adresse :</label>
+               <output
+                 type="text"
+                 ngModel
+               > </output>
+             </div> -->
+             </div>
+           <div class="mat-elevation-z8">
+
+             <mat-table [dataSource]="dataSource2" matSort class="mat-elevation-z8">
+
+                <ng-container matColumnDef="N.o">
+                 <mat-header-cell *matHeaderCellDef> <h3> Code article </h3> </mat-header-cell>
+                  <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.code_article}}</mat-cell>
+               </ng-container>
+               <ng-container matColumnDef="article">
+                 <mat-header-cell *matHeaderCellDef> <h3> article </h3> </mat-header-cell>
+                 <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}">
+                   <div >{{element.nom_article}}</div>
+                 </mat-cell>
+               </ng-container>
+
+
+               <ng-container matColumnDef="quantite">
+                 <mat-header-cell *matHeaderCellDef><h3> quantite</h3>  </mat-header-cell>
+                 <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.quantite}} </mat-cell>
+               </ng-container>
+
+               <ng-container matColumnDef="quantiteMobile">
+                 <mat-header-cell *matHeaderCellDef><h3> quantite</h3>  </mat-header-cell>
+                 <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.quantiteMobile}} </mat-cell>
+               </ng-container>
+               <!--
+                         <ng-container matColumnDef="objectif"  >
+                           <mat-header-cell *matHeaderCellDef> <h2> Objectif : </h2> </mat-header-cell>
+                           <mat-cell *matCellDef="let element"><button class="btn "  (click)="Ongetobjectif(element.id_commercial )"><mat-icon color="primary">done_all</mat-icon></button></mat-cell>
+                         </ng-container>
+               -->
+            <ng-container matColumnDef="edit"  >
+              <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+              <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"><button class="btn "  (click)="onModifier2(element)"><mat-icon color="primary">edit</mat-icon></button></mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+            <mat-row *matRowDef="let row1; columns: displayedColumns2;"></mat-row>
+          </mat-table>
+          <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+      </div>
+    </div>
+    <div *ngIf="gestionDeStockService.magasins == []">
+      <div class="container">
+        <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+        <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+          Page non trouvée</h2>
+        <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+          La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div *ngIf="nouveaumagasins">
+  <form  #nouveaumagasin="ngForm">
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Nom du magasin</mat-label>
+        <input type="text" placeholder="magasin" name="nom_magasin" matInput required ngModel>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-5"> </div>
+
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Commercial :</mat-label>
+        <mat-select name="id_commercial" ngModel
+                    type="number">
+          <mat-option >None</mat-option>
+          <mat-option *ngFor="let commercial of gestionDeStockService.commerciaux let  index = index"
+                      value="{{commercial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commercial.nomUtilisateur}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+
+
+    <div class="col-md-9" >
+      <mat-form-field  appearance="outline"  >
+        <mat-label>Adresse</mat-label>
+        <textarea matInput name="adresse" ngModel required></textarea>
+      </mat-form-field>
+    </div>
+    <br>
+
+    <button mat-raised-button class="col-md-1" [disabled]="!nouveaumagasin.valid" (click)="AjouterMagasin(nouveaumagasin)" >Sauvegarder</button>
+
+    <br><br>
+
+  </form>
+
+</div>
+
+<div *ngIf="Transferts">
+  <form  #fTransferts="ngForm" class="container">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Magasin de depart :</mat-label>
+        <mat-select name="magsin_depart" ngModel required
+                    type="number">
+          <mat-option >None</mat-option>
+          <mat-option *ngFor="let magasin of gestionDeStockService.magasins let  index = index"
+                      value="{{magasin.id_magasin }}">{{index + 1}} &nbsp;&nbsp; {{magasin.nom_magasin}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-5"> </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Magasin de depart :</mat-label>
+        <mat-select name="magsin_destinataire" ngModel required
+                    type="number">
+          <mat-option >None</mat-option>
+          <mat-option *ngFor="let commercial of gestionDeStockService.magasins let  index = index"
+                      value="{{commercial.id_magasin }}">{{index + 1}} &nbsp;&nbsp; {{commercial.nom_magasin}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <br> <br> <br>
+    <br> <br> <br>
+    <div class="col-md-3" (mouseleave)="getarticle(article_selected)"  >
+
+      <mat-form-field class="example-full-width" >
+        <mat-label>code d'article </mat-label>
+        <input type="text"
+               placeholder="choisir un article"
+               aria-label="article"
+               matInput
+               ngModel
+               required
+               name="code_article"
+               [formControl]="myControl"
+               [matAutocomplete]="auto" [(ngModel)]="article_selected" >
+        <mat-autocomplete #auto="matAutocomplete" >
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            <div>
+              <span> {{option}}</span>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+ </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill" >
+      <mat-label>nom article :</mat-label>
+      <input type="text" disabled matInput name="article" [(ngModel)]="article_designation"
+             required >
+    </mat-form-field> </div>
+     <div class="col-md-3">
+      <mat-form-field appearance="fill" >
+        <mat-label>quantite :</mat-label>
+        <input type="number"  matInput name="quantite" [(ngModel)]="article_quantite"
+               required >
+      </mat-form-field>
+    </div>
+    <div class="col-md-2"><button  mat-raised-button type="button" (click)="Ajoute(fTransferts)" ><mat-icon>add</mat-icon></button></div>
+
+    <div class="col-md-5"> </div>
+
+    <div class="col-md-3">
+
+    </div>
+  </form>
+</div>
+
+<div *ngIf="virements">
+  <form  #fVirement="ngForm">
+
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width">
+        <mat-label>Numero du Virement </mat-label>
+        <input type="text" placeholder="num Virement" matInput required ngModel name="numVirement">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-5"> </div>
+
+    <div class="col-md-3">
+      <mat-form-field>
+        <input name="dateDeVirement" ngModel matInput required [matDatepicker] = "picker1" placeholder="Date de Virement"/>
+        <mat-datepicker-toggle matSuffix [for]="picker1">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <br><br><br>
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Montant paye</mat-label>
+        <input type="number"  matInput name="montantPaye" ngModel required >
+      </mat-form-field>
+    </div>
+    <div class="col-md-6"> </div>
+
+    <button mat-raised-button class="col-md-1" [disabled]="!fVirement.valid"  >Ajouter</button>
+
+    <br><br>
+
+  </form>
+
+</div>
+
+
+<div *ngIf="tpes">
+
+  <form  #fTpe="ngForm">
+
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width">
+        <mat-label>Numero de la carte </mat-label>
+        <input type="text" placeholder="num de la carte" matInput required ngModel name="numCarte">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-5"> </div>
+
+    <div class="col-md-3">
+      <mat-form-field>
+        <input name="dateExpiration" ngModel matInput required [matDatepicker] = "picker1" placeholder="Date d'expiration"/>
+        <mat-datepicker-toggle matSuffix [for]="picker1">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <br><br><br>
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Montant paye</mat-label>
+        <input type="number"  matInput name="montantPaye" ngModel required >
+      </mat-form-field>
+    </div>
+    <div class="col-md-6"> </div>
+
+    <button mat-raised-button class="col-md-1" [disabled]="!fTpe.valid">Ajouter</button>
+
+    <br><br>
+  </form>
+
+</div>
+<br><br>
+<br><br>
+
+
+

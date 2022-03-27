@@ -1,0 +1,24 @@
+
+<mat-toolbar >
+
+
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <button class="btn btn-danger"  mat-dialog-close mat-dialog-close=""><mat-icon>close</mat-icon>
+      </button>    </ul>
+  </div>
+</mat-toolbar>
+<br>
+<br><br><br>
+
+
+<div *ngIf="data.length > 0" >
+  <div *ngFor="let img of this.data let j = index" class="container" >
+    <div class="row" >
+      <div class="col-md-1"></div>
+      <div><img [src]="'data:image/jpeg;base64,'+ img.picByte" height="500">  </div>
+      <br>
+    </div>
+  </div>
+</div>
+

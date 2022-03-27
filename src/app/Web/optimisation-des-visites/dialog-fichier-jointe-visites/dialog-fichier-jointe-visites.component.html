@@ -1,0 +1,161 @@
+<mat-toolbar>
+
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <button class="btn btn-danger"  mat-dialog-close mat-dialog-close=""><mat-icon>close</mat-icon>
+      </button>
+    </ul>
+  </div>
+</mat-toolbar>
+<br>
+<br>
+<br>
+<!--
+
+<br><br>
+<div class="class-container">
+  <form style="position: center" >
+
+  <br>
+
+  <div class="row">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" >
+        <mat-label>Commercial :</mat-label>
+        <input type="text"  matInput name="commercial" ngModel
+               placeholder=""  style="color: black"
+               ngModel="{{optimisationService.getNomCommercial(visite.idCommercial)}}"
+               disabled>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" >
+        <mat-label>Client :</mat-label>
+        <input type="text"  matInput name="clientname" ngModel
+               placeholder=""  style="color: black"
+               ngModel="{{optimisationService.getNomClient(visite.idClient)}}"
+               disabled>
+      </mat-form-field>
+    </div>
+
+  </div>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-4">
+    <mat-form-field appearance="fill" >
+      <mat-label>Date de la visite:</mat-label>
+      <input type="text"  matInput name="Date" ngModel
+             placeholder=""  disabled style="color: black"
+             ngModel="{{this.visite.date}}" >
+    </mat-form-field>
+  </div>
+    <div class="col-md-4" *ngIf="visite.status">
+      <mat-form-field appearance="fill" >
+        <mat-label>Motif :</mat-label>
+        <input type="text"  matInput name="motif" ngModel
+               placeholder=""  style="color: black"
+               ngModel="{{visite.motif}}"
+               disabled>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-4">
+    <mat-form-field appearance="fill" >
+      <mat-label>Temps de lancement:</mat-label>
+      <input type="text"  matInput name="lancement" ngModel
+             placeholder="" required disabled style="color: black"
+             ngModel="{{this.visite.heureDateDebut}}">
+    </mat-form-field>
+  </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" >
+        <mat-label>Temps de fin :</mat-label>
+        <input type="text"  matInput name="fin" ngModel
+               placeholder="" style="color: black"
+               ngModel="{{visite.heureDateFin}}"
+               disabled>
+      </mat-form-field>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-2"><button mat-raised-button  (click)="piece()"><h3>Pieces Jointes </h3> </button></div>
+  </div>
+
+<br>
+<br>
+  <div *ngIf="optimisationService.selectedFileListConsulte.length > 0 && this.pieces">
+    <div *ngFor="let img of this.optimisationService.selectedFileListConsulte let j = index" >
+      <div class="col-md-6" >  <img height="600" [src]="'data:image/jpeg;base64,'+ img.picByte"> </div>
+    </div>
+  </div>
+  <br><br>
+  </form>
+</div>
+-->
+
+<mat-card class="example-card">
+  <mat-card-title-group>
+    <mat-card-title>{{optimisationService.getNomClient(visite.idClient)}}</mat-card-title>
+    <mat-card-subtitle>{{optimisationService.getNomCommercial(visite.idCommercial)}}</mat-card-subtitle>
+    <!-- <img mat-card-lg-image src="data:image/jpeg;base64,'+ img.picByte" >-->
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" *ngIf="optimisationService.selectedFileListConsulte.length> 0">
+      <img mat-card-lg-image [src]="'data:image/jpeg;base64,'+ optimisationService.selectedFileListConsulte[0].picByte" >
+    </div>
+
+  </mat-card-title-group>
+  <mat-card-content>
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>Date de la visite:</mat-label>
+          <input type="text"  matInput name="Date" ngModel
+                 placeholder=""  disabled style="color: black"
+                 ngModel="{{this.visite.date}}" >
+        </mat-form-field>
+      </div>
+      <div class="col-md-6" *ngIf="visite.status">
+        <mat-form-field appearance="fill" >
+          <mat-label>Motif :</mat-label>
+          <input type="text"  matInput name="motif" ngModel
+                 placeholder=""  style="color: black"
+                 ngModel="{{visite.motif}}"
+                 disabled>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="optimisationService.selectedFileListConsulte.length> 0" ><button mat-raised-button  (click)="piece()"><h3>Agrandir </h3> </button></div>
+    </div>
+    <div class="row">
+
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>Temps de lancement:</mat-label>
+          <input type="text"  matInput name="lancement" ngModel
+                 placeholder="" required disabled style="color: black"
+                 ngModel="{{this.visite.heureDateDebut}}">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>Temps de fin :</mat-label>
+          <input type="text"  matInput name="fin" ngModel
+                 placeholder="" style="color: black"
+                 ngModel="{{visite.heureDateFin}}"
+                 disabled>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

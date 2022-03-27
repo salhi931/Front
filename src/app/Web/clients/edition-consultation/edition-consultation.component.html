@@ -1,0 +1,461 @@
+<mat-toolbar color="accent">
+  <div *ngIf="!gestionCleintsService.validation"> <mat-icon>info</mat-icon> &nbsp;&nbsp;
+  <span> Consultation ||&nbsp;&nbsp; <mat-icon>edit</mat-icon>&nbsp;&nbsp;edition </span></div>
+  <div *ngIf="gestionCleintsService.validation"> Validation du Client : {{gestionCleintsService.client_consulte.nom_client}}  </div>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row"  >
+
+    </ul>
+  </div>
+</mat-toolbar><br><br>
+  <mat-icon>arrow_back</mat-icon> &nbsp;<button class="btn btn-primary"  (click)="Retour()">Retour</button>
+<br>
+<div *ngIf="gestionCleintsService.client_consulte " >
+
+
+  <mat-card  class="col-md-7">
+    <mat-card-header>
+      <div mat-card-avatar ></div>
+      <mat-card-title>Informations  </mat-card-title>
+    </mat-card-header>
+    <br>
+    <div  >
+      <div style="display: block">
+        <div class="row">
+          <div class="col-xs-12">
+            <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+              <div class="row">
+                <div class="col-sm-5 form-group">
+                  <label for="Nom">Nom :</label>
+                  <input
+                    type="text"
+                    id="Nom"
+                    class="form-control"
+                    name="nom_client"
+                    ngModel
+                    required
+                    [(ngModel)]="gestionCleintsService.client_consulte.nom_client"
+                  >
+                </div>
+                <!-- <div class="col-sm-3 form-group">
+                   <br>
+                   <div class="col-md-6"></div> <button mat-raised-button type="button" (click)="openDialog()" class="col-md-6"> coordonnées gps</button>
+                 </div> -->
+              </div>
+              <div class="row">
+                <div class="col-sm-5 form-group">
+                  <label for="code">Code Client :</label>
+                  <input
+                    type="text"
+                    id="code"
+                    class="form-control"
+                    name="code"
+                    ngModel
+                    required
+                    [(ngModel)]="gestionCleintsService.client_consulte.code"
+                  >
+                </div></div>
+              <div class="row">
+                <div class="col-sm-8 form-group">
+                  <label for="adresse_client">Adresse :</label>
+                  <input
+                    type="text"
+                    id="adresse_client"
+                    class="form-control"
+                    name="adresse_client"
+                    ngModel
+                    required
+                    [(ngModel)]="gestionCleintsService.client_consulte.adresse_client"
+
+                  >
+                </div></div>
+              <div class="row">
+                <div class="col-sm-4 form-group">
+                  <label for="tele1">tele N.1 du Client :</label>
+                  <input
+                    type="text"
+                    id="tele1"
+                    class="form-control"
+                    name="tele1"
+                    ngModel
+                    required
+                    [(ngModel)]="gestionCleintsService.client_consulte.tele1"
+
+                  >
+                </div>
+                <div class="col-sm-4 form-group">
+                  <label for="tele2">tele N.2 du client :</label>
+                  <input
+                    type="text"
+                    id="tele2"
+                    class="form-control"
+                    name="tele2"
+                    ngModel
+                    required
+                    [(ngModel)]="gestionCleintsService.client_consulte.tele2"
+                  >
+                </div>
+              </div><div class="row">
+              <div class="col-sm-4 form-group">
+                <label  >Solde :</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="solde"
+                  ngModel
+                  required
+
+                  [(ngModel)]="gestionCleintsService.client_consulte.solde"
+
+                >
+              </div>
+              <div class="col-sm-4 form-group">
+                <label for="ancien_solde">Ancien solde :</label>
+                <input
+                  type="number"
+                  id="ancien_solde"
+                  class="form-control"
+                  name="ancien_solde"
+                  ngModel
+                  required
+
+                  [(ngModel)]="gestionCleintsService.client_consulte.ancien_solde"
+                >
+              </div>
+            </div>
+              <div class="row">
+                <div class="col-sm-4 form-group">
+                  <label for="solde_cheque">Solde cheque :</label>
+                  <input
+                    type="number"
+                    id="solde_cheque"
+                    class="form-control"
+                    name="solde_cheque"
+                    ngModel
+                    required
+                    disabled
+                    [(ngModel)]="gestionCleintsService.client_consulte.solde_cheque"
+
+                  >
+                </div>
+                <div class="col-sm-4 form-group">
+                  <label for="solde_effet">Solde effet :</label>
+                  <input
+                    type="number"
+                    id="solde_effet"
+                    class="form-control"
+                    name="solde_effet"
+                    ngModel
+                    required
+                    disabled
+                    [(ngModel)]="gestionCleintsService.client_consulte.solde_effet"
+
+                  >
+                </div>
+              </div>
+
+
+
+
+              <div class="row">
+                <div class="col-sm-4 form-group" >
+                <label> Categorie :</label>
+                <select class="form-control form-control-lg" name="categorie_client" ngModel [(ngModel)]="gestionCleintsService.client_consulte.categorie_client">
+                  <option *ngFor="let catrgorie of gestionCleintsService.CategorieClient let  index = index"
+                          value="{{catrgorie.id }}"> &nbsp;&nbsp; {{catrgorie.categorie}}</option>
+
+                </select>
+              </div>
+                <div class="col-sm-4"  >
+                  <label> Zone :</label>
+                  <select class="form-control form-control-lg" name="zone" ngModel [(ngModel)]="gestionCleintsService.client_consulte.zone">
+                    <option *ngFor="let zones of gestionCleintsService.zones let  index = index"
+                            value="{{zones.zone }}"> &nbsp;&nbsp; {{zones.zone}}</option>
+
+                  </select>
+                </div>
+                </div>
+              <div class="row">
+                  <div class="col-sm-4 form-group">
+                      <label for="plafond_cheque">Plafond cheque :</label>
+                      <input
+                        type="number"
+                        id="plafond_cheque"
+                        class="form-control"
+                        name="plafond_cheque"
+                        ngModel
+                        required
+                        #plafond_cheque = "ngModel"
+                        [(ngModel)]="gestionCleintsService.client_consulte.plafond_cheque"
+                      >
+                    </div>
+                <div class="col-sm-4 form-group">
+                  <label for="plafond_effet">Plafond effet :</label>
+                  <input
+                    type="number"
+                    id="plafond_effet"
+                    class="form-control"
+                    name="plafond_effet"
+                    ngModel
+                    required
+                    #plafond_effet = "ngModel"
+                    [(ngModel)]="gestionCleintsService.client_consulte.plafond_effet"
+                  >
+                </div>
+              </div>
+              <div class="row">
+
+               <div class="col-sm-4 form-group">
+                <label for="plafond">Plafond :</label>
+                <input
+                  type="number"
+                  id="plafond"
+                  class="form-control"
+                  name="plafond"
+                  ngModel
+                  required
+                  #plafond = "ngModel"
+                  [(ngModel)]="gestionCleintsService.client_consulte.plafond"
+                >
+
+               </div>
+                <div class="col-sm-4 form-group">
+                  <span *ngIf="((f.value.plafond_effet+f.value.plafond_cheque)>f.value.plafond) " style="color: #A52A2A">
+                    <h2> SVP verivier les plafonds</h2></span>
+                </div>
+              </div>
+              <div class="row">
+              <div class="col-sm-2 form-group">
+                <label for="credit">Credit :</label>
+                <input
+                  type="number"
+                  id="credit"
+                  class="form-control"
+                  name="credit"
+                  ngModel
+                  required
+                  [(ngModel)]="gestionCleintsService.client_consulte.credit"
+                >
+              </div>
+              <div class="col-sm-3 form-group"  >
+                <label for="delai_paiement">delai de paiement :</label>
+                <input
+                  type="number"
+                  id="delai_paiement"
+                  class="form-control"
+                  name="delai_paiement"
+                  ngModel
+                  required
+                  [(ngModel)]="gestionCleintsService.client_consulte.delai_paiement"
+                >
+              </div>
+              <div class="col-sm-3 form-group">
+                <label for="taux_de_retours">Taux de retours :</label>
+                <input
+                  type="number"
+                  id="taux_de_retours"
+                  class="form-control"
+                  name="taux_de_retours"
+                  ngModel
+                  required
+                  [(ngModel)]="gestionCleintsService.client_consulte.taux_de_retours"
+                >
+              </div></div>
+              <div class="row">
+                <div class="col-sm-4 form-group">
+                  <label for="caracteristique1">caracterisrique 1 :</label>
+                  <input
+                    type="text"
+                    id="caracteristique1"
+                    class="form-control"
+                    name="caracteristique1"
+                    ngModel
+                    required
+                    [(ngModel)]="gestionCleintsService.client_consulte.caracteristique1"
+                  >
+                </div>
+                <div class="col-sm-4 form-group">
+                  <label for="caracteristique2">caracterisrique 2 :</label>
+                  <input
+                    type="text"
+                    id="caracteristique2"
+                    class="form-control"
+                    name="caracteristique2"
+                    ngModel
+                    required
+                    [(ngModel)]="gestionCleintsService.client_consulte.caracteristique2"
+                  >
+                </div>
+              </div><div class="row">
+              <div class="col-sm-4 form-group">
+                <label for="caracteristique3">caracterisrique 3 :</label>
+                <input
+                  type="text"
+                  id="caracteristique3"
+                  class="form-control"
+                  name="caracteristique3"
+                  ngModel
+                  required
+                  [(ngModel)]="gestionCleintsService.client_consulte.caracteristique3"
+                >
+              </div>
+              <div class="col-sm-4 form-group">
+                <label for="caracteristique4">Caracterisrique 4 :</label>
+                <input
+                  type="text"
+                  id="caracteristique4"
+                  class="form-control"
+                  name="caracteristique4"
+                  ngModel
+                  required= "{{config.caract4_required}}"
+                  [(ngModel)]="gestionCleintsService.client_consulte.caracteristique4"
+                >
+              </div>
+            </div><div class="row">
+              <div class="col-sm-4 form-group">
+                <label for="caracteristique5">Caracterisrique 5 :</label>
+                <input
+                  type="text"
+                  id="caracteristique5"
+                  class="form-control"
+                  name="caracteristique5"
+                  ngModel
+                  required = "{{config.caract5_required}}"
+                  [(ngModel)]="gestionCleintsService.client_consulte.caracteristique5"
+                >
+              </div>
+              <div class="col-sm-4 form-group">
+                <label for="caracteristique6">Caracterisrique 6 :</label>
+                <input
+                  type="text"
+                  id="caracteristique6"
+                  class="form-control"
+                  name="caracteristique6"
+                  ngModel
+                  required= "{{config.caract6_required}}"
+                  [(ngModel)]="gestionCleintsService.client_consulte.caracteristique6"
+                >
+              </div>
+            </div><div class="row">
+              <div class="col-sm-4 form-group">
+                <label for="caracteristique7">Caracterisrique 7 :</label>
+                <input
+                  type="text"
+                  id="caracteristique7"
+                  class="form-control"
+                  name="caracteristique7"
+                  ngModel
+                  required= "{{config.caract7_required}}"
+                  [(ngModel)]="gestionCleintsService.client_consulte.caracteristique7"
+                >
+              </div>
+              <div class="col-sm-4 form-group">
+                <label for="caracteristique8">Caracterisrique 8 :</label>
+                <input
+                  type="text"
+                  id="caracteristique8"
+                  class="form-control"
+                  name="caracteristique8"
+                  ngModel
+                  required = "{{config.caract8_required}}"
+                  [(ngModel)]="gestionCleintsService.client_consulte.caracteristique8"
+                >
+              </div>
+            </div>
+              <div class="row">
+
+                <div class="col-sm-4"  >
+                  <label> Table de prix :</label>
+                  <select class="form-control form-control-lg" name="list_prix" ngModel [(ngModel)]="gestionCleintsService.client_consulte.list_prix">
+                    <option *ngFor="let table of gestionCleintsService.listprix let  index = index"
+                            value="{{table.id_prix }}"> &nbsp;&nbsp; {{table.description}}</option>
+
+                  </select>
+                </div>
+
+
+                <br><br>
+                <section class="col-sm-4 form-group" >
+                  <label for="status">Client validé !</label>&nbsp;
+                  <mat-checkbox [checked]="true"
+                                class="example-margin"
+                                id="status"
+                                name="status"
+                                ngModel="true"
+                  ></mat-checkbox>
+                </section>
+              </div>
+              <div class="row" *ngIf="!gestionCleintsService.validation">
+                <div class="col-xs-12">
+                  <button
+                    class="btn btn-success"
+                    type="submit"
+                    [disabled]="!f.valid && ((f.value.plafond_effet+f.value.plafond_cheque)>f.value.plafond)" > Sauvgarder les modifications</button>&nbsp;
+                  <button class="btn btn-danger" (click)="Retour()" >Annuler</button>
+                </div>
+              </div>
+              <div class="row" *ngIf="gestionCleintsService.validation">
+                <div class="col-xs-12">
+                  <button
+                    class="btn btn-success"
+                    type="submit"
+                    [disabled]="!f.valid && ((f.value.plafond_effet+f.value.plafond_cheque)>f.value.plafond)" > valider le client</button>
+                  <button class="btn btn-danger" (click)="Retour()" >Annuler la validation</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </mat-card>
+
+  <div class="col-md-1"></div>
+
+  <mat-card   class="col-md-4" >
+    <mat-card-header>
+      <div mat-card-avatar ></div>
+      <mat-card-title>Coordonnees GPS et Image  </mat-card-title>
+    </mat-card-header>
+    <br>
+    <div  >
+      <div style="display: block">
+        <div >
+          <div class="col-md-12" >
+            <div  class="row"><label >Image</label>&nbsp; <button mat-raised-button type="button" (change)="onFileChanged($event)"> <input  type="file"  ></button></div>
+            <br><br>
+            <div class="col-md-row" >
+              <div id="classImage"  *ngIf="gestionCleintsService.src !== undefined && gestionCleintsService.src !== null" >  <img [src]="gestionCleintsService.src"></div>
+            </div>
+            <div class="col-md-12" ></div>
+
+            </div>
+
+          <div *ngIf="this.lat!== undefined && this.lng !== undefined" >
+            <label >Position sur map </label>&nbsp;&nbsp;&nbsp; <button mat-raised-button type="button" >Supprimer </button>
+            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="12" (mapClick)="map($event)" >
+              <agm-marker   [latitude]="lat" [longitude]="lng" label="{{this.gestionCleintsService.client_consulte.nom_client}} " ></agm-marker>
+            </agm-map>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+
+    <div *ngIf="!gestionCleintsService.client_consulte">Loading...
+      <div  >
+        <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+        <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+          Page non trouvée</h2>
+        <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+          La page que vous recherchez n'existe pas ou une autre erreur s'est produite. Aller à <a routerLink="/gestion-des-clients">Page Client.</a></p>
+    </div>
+    </div>
+
+
+<!-- (click)="EffacerCoordonnees()" -->

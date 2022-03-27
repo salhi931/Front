@@ -1,0 +1,364 @@
+<mat-toolbar color="accent">
+  <mat-icon>person_add</mat-icon> &nbsp;&nbsp;
+  <span> Nouveau client</span>
+</mat-toolbar>
+ <button mat-raised-button color="primary" type="button" routerLink="/gestion-des-clients" style="color: #FFFFFF"><mat-icon>cancel</mat-icon> 	&nbsp; Annuler</button>
+<br>
+<br>
+
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+          <div class="col-md-5">
+ <!--*************************************************************************************************************************** -->
+          <mat-card  >
+            <mat-card-header>
+              <div mat-card-avatar ></div>
+              <mat-card-title> Informations principales </mat-card-title>
+            </mat-card-header>
+            <br>
+
+
+            <div >
+                 <!------------------------------------------------------------------------------->
+                <div class="row">
+                  <div class="col-md-5">
+                    <mat-form-field appearance="fill" >
+                      <mat-label>Nom:</mat-label>
+                      <input type="text"  matInput name="nom_client" ngModel
+                             required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-5">
+                  <mat-form-field appearance="fill" >
+                    <mat-label>Code Client :</mat-label>
+                    <input type="text"  matInput name="code" ngModel
+                           required>
+                  </mat-form-field>
+                </div>
+                </div>
+                <!------------------------------------------------------------------------------->
+                <div class="row">
+                  <div class="col-md-5">
+                    <mat-form-field appearance="fill" >
+                      <mat-label>tele N.1 du Client :</mat-label>
+                      <input type="text"  matInput name="tele1" ngModel
+                             required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-5">
+                    <mat-form-field appearance="fill" >
+                      <mat-label>tele N.2 du Client :</mat-label>
+                      <input type="text"  matInput name="tele2" ngModel
+                             required>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 form-group" >
+                       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="adresse_client"
+                                style="background-color: rgba(0,0,0,.04)"
+                                placeholder="Adresse"
+                                ngModel
+                                required></textarea>
+                    </div>
+                  <div class="col-md-5">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Zone :</mat-label>
+                      <mat-select name="zone" ngModel
+                                  type="number"  >
+                        <mat-option *ngFor="let zones of gestionClientsService.zones let  index = index"
+                                    value="{{zones.id }}">{{index + 1}} &nbsp;&nbsp; {{zones.zone}} </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                  </div>
+                </div>
+
+
+              <div class="row">
+
+
+
+
+
+                <div class="col-md-5">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Categorie :</mat-label>
+                    <mat-select name="categorie_client" ngModel
+                                type="number"  >
+                      <mat-option *ngFor="let Categorie of gestionClientsService.CategorieClient let  index = index"
+                                  value="{{Categorie.id }}">{{index + 1}} &nbsp;&nbsp; {{Categorie.categorie}} </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                </div>
+
+
+
+
+                <div class="col-md-5">
+                  <mat-form-field appearance="fill" >
+                    <mat-label>Credit:</mat-label>
+                    <input type="number"  matInput name="credit" ngModel
+                           required>
+                  </mat-form-field>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-5">
+                  <mat-form-field appearance="fill" >
+                    <mat-label>Ancien solde :</mat-label>
+                    <input type="text"  matInput name="ancien_solde" ngModel
+                           required>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-5">
+                  <mat-form-field appearance="fill" >
+                    <mat-label>Plafond cheque :</mat-label>
+                    <input type="number"  matInput name="plafond_cheque" ngModel
+                           required  #plafond_cheque = "ngModel">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-5">
+                  <mat-form-field appearance="fill" >
+                    <mat-label>Plafond effet :</mat-label>
+                    <input type="number"  matInput name="plafond_effet" ngModel
+                           required  #plafond_effet = "ngModel">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-5">
+                  <mat-form-field appearance="fill" >
+                    <mat-label>Plafond :</mat-label>
+                    <input type="number"  matInput name="plafond" ngModel
+                           required  #plafond = "ngModel">
+                  </mat-form-field>
+                  <span *ngIf="((f.value.plafond_effet+f.value.plafond_cheque)>f.value.plafond) "
+                        style="color: #A52A2A">
+                  <h2> SVP verivier les plafond</h2></span>
+                </div>
+              </div>
+              </div>
+            <br>
+          </mat-card>
+            <br>
+   <!--*************************************************************************************************************************** --> <!--*************************************************************************************************************************** -->
+          <mat-card class="mat-card-GPS" >
+            <mat-card-header>
+              <div mat-card-avatar ></div>
+              <mat-card-title>Position GPS</mat-card-title>
+            </mat-card-header>
+            <br>
+            <br>
+
+               <div style="display: block" class="container">
+                 <div class="row">
+                   <div class="col-md-3">
+                     <button mat-raised-button class="btn-success" type="button" (click)="openDialog()" class="col-md-10">Agrandir la Map</button>
+                   </div>
+                   <div class="col-md-3" *ngIf="gestionClientsService.lat != undefined && gestionClientsService.lat != null">
+                     <button mat-raised-button class="btn-danger" type="button" (click)="EffacerCoordonnees()">Supprimer la position </button>
+                   </div>
+                 </div>
+
+                 <br>
+                 <div class="row">
+                   <div class="col-md-3">
+                     <mat-form-field appearance="fill" >
+                       <mat-label>Latitude :</mat-label>
+                       <input type="text" matInput ngModel name="lat" [(ngModel)]= "gestionClientsService.lat"
+                              required>
+                     </mat-form-field>
+                   </div>
+                   <div class="col-md-3">
+                     <mat-form-field appearance="fill" >
+                       <mat-label>Langitude :</mat-label>
+                       <input type="text"  matInput ngModel name="lng" [(ngModel)]= "gestionClientsService.lng"
+                              required>
+                     </mat-form-field>
+                   </div>
+                 </div>
+                 <br>
+
+                 <div >
+                    <agm-map  [latitude]="gestionClientsService.lat" [longitude]="gestionClientsService.lng" [zoom]="20" (mapClick)="map($event)"  >
+                      <agm-marker   *ngIf="gestionClientsService.lat != undefined && gestionClientsService.lat != null" [latitude]="gestionClientsService.lat" [longitude]="gestionClientsService.lng" label="position"></agm-marker>
+                    </agm-map>
+                  </div>
+
+
+
+              </div>
+           </mat-card>
+        </div>
+
+          <!--*************************************************************************************************************************** -->
+          <div class="col-md-6">
+            <mat-card >
+              <mat-card-header>
+                <div mat-card-avatar ></div>
+                <mat-card-title>Informations secondaires</mat-card-title>
+              </mat-card-header>
+              <br>
+              <div>
+                <div style="display: block">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>delai de paiement :</mat-label>
+                        <input type="number"  matInput name="delai_paiement" ngModel
+                               required>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>Taux de retours :</mat-label>
+                        <input type="number"  matInput name="taux_de_retours" ngModel
+                               required>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>caracterisrique 1:</mat-label>
+                        <input type="text"  matInput name="caracteristique1" ngModel
+                               required>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>caracterisrique 1 :</mat-label>
+                        <input type="text"  matInput name="caracteristique2" ngModel
+                               required>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>caracterisrique 3:</mat-label>
+                        <input type="text"  matInput name="caracteristique3" ngModel
+                               required>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>caracterisrique 4 :</mat-label>
+                        <input type="text"  matInput name="caracteristique4" ngModel
+                                required= "{{config.caract4_required}}">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>caracterisrique 5:</mat-label>
+                        <input type="text"  matInput name="caracteristique5" ngModel
+                                required= "{{config.caract5_required}}">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>caracterisrique 6 :</mat-label>
+                        <input type="text"  matInput name="caracteristique6" ngModel
+                                required= "{{config.caract6_required}}">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>caracterisrique 7:</mat-label>
+                        <input type="text"  matInput name="caracteristique7" ngModel
+                                required= "{{config.caract7_required}}">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill" >
+                        <mat-label>caracterisrique 8 :</mat-label>
+                        <input type="text"  matInput name="caracteristique8" ngModel
+                                required= "{{config.caract8_required}}">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill">
+                        <mat-label>list des prix :</mat-label>
+                        <mat-select name="list_prix" ngModel
+                                    type="number"  >
+                          <mat-option *ngFor="let table of gestionClientsService.listprix let  index = index"
+                                      value="{{table.id_prix  }}">{{index + 1}} &nbsp;&nbsp; {{table.description}} </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <br>
+                    <section class="col-md-5" >
+                      <label for="status">Client validé !</label>&nbsp;
+                      <mat-checkbox [checked]="true"
+                                    class="example-margin"
+                                    id="status"
+                                    name="status"
+                                    ngModel="true"
+                      ></mat-checkbox>
+                    </section>
+                  </div>
+
+                </div>
+              </div>
+             </mat-card>
+
+
+            <br>
+            <!--*************************************************************************************************************************** --> <!--*************************************************************************************************************************** -->
+
+            <mat-card style="height: 400px" >
+              <mat-card-header>
+                <div mat-card-avatar ></div>
+                <mat-card-title>Image  </mat-card-title>
+              </mat-card-header>
+              <br>
+              <div >
+                <div style="display: block">
+                  <div >
+                    <div><label >Image</label>&nbsp; <button mat-raised-button type="button" > <input  type="file" (change)="onFileChanged($event)"></button></div>
+                    <br><br>
+                    <div class="col-md-8" >
+                      <img [src]="imgURL" height="200" *ngIf="imgURL">
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </mat-card>
+            <br>
+            <div class="row">
+              <div class="col-md-10"></div>
+              <div class="col-md-2">
+                <button
+                  class="btn btn-success"
+                  type="submit"
+                > Sauvgarder</button>
+              </div>
+            </div>
+          </div>
+          <!--*************************************************************************************************************************** -->
+
+
+
+
+        </form>
+
+
+

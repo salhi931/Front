@@ -1,0 +1,59 @@
+<mat-toolbar color="accent">
+  <mat-icon>contacts</mat-icon>
+  <span>Clients à valider </span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <button class="btn" routerLink="/gestion-des-clients" style="background: #808080 ; color: #FFFFFF ">Retour </button>
+  </div>
+</mat-toolbar>
+
+<div *ngIf="gestionClient.clients_non_valides.length != 0">
+  <mat-form-field> <input (keyup)="appliquerfilter(choix)" matInput placeholder="Filtrer" [(ngModel)]="choix" ></mat-form-field>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+      <ng-container matColumnDef="id_client">
+        <mat-header-cell  *matHeaderCellDef><h2> No. </h2></mat-header-cell>
+        <mat-cell *matCellDef="let i = index"> {{i+1}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="nom_client">
+        <mat-header-cell *matHeaderCellDef> <h2> Nom </h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.nom_client}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="categorie_client">
+        <mat-header-cell *matHeaderCellDef> <h2>   Categorie</h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.categorie_client}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="zone">
+        <mat-header-cell *matHeaderCellDef><h2>  Zone</h2>  </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.zone_client}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="consulter et valider"  >
+        <mat-header-cell *matHeaderCellDef> <h2> consulter et valider </h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element"><button class="btn "  (click)="OnConsulter_valider(element.id_client)"><div><mat-icon color="primary">edit</mat-icon> <mat-icon color="primary">check</mat-icon></div></button></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="delete"  >
+        <mat-header-cell *matHeaderCellDef> <h2> suppression</h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element"><button class="btn "  (click)="OnSupprimer(element.id_client)"><mat-icon color="accent">delete_forever</mat-icon></button></mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+</div>
+<div *ngIf="gestionClient.clients_non_valides == []">
+  <div class="container">
+    <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+    <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+      Page non trouvée</h2>
+    <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+      La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+  </div>
+</div><br><br><br><br><br><br>
+<div *ngIf="gestionClient.clients_non_valides.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des clients non validés est encore vide  ! </h3>
+  <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/gestion-des-clients">Retourner a la liste des clients </button> </h3></div>
+

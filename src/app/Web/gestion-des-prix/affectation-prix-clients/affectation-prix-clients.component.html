@@ -1,0 +1,86 @@
+<br><br><br><br><br>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field appearance="fill">
+        <mat-label>Table de prix :</mat-label>
+        <mat-select name="famille" ngModel
+                    required  [(ngModel)]="table_prixSelectionnee" >
+          <mat-option >None</mat-option>
+          <mat-option *ngFor="let prix of gestionDesPrixService.Prix" value="{{prix.id_prix}}">{{prix.description}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+     <!-- <button class="btn btn-primary" (click)="getTable_prix()">Rechercher</button> -->
+    </div></div>
+
+
+  <div *ngIf="gestionClientsService.clients_valides.length != 0">
+
+
+
+
+    <mat-form-field> <input (keyup)="appliquerfilter(choix)" matInput placeholder="Filtrer" [(ngModel)]="choix" ></mat-form-field>
+    <div class="container"> <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="HeaderCheckBoxChanged($event);$event ? masterToggle() : null" [checked]="!(selection.hasValue() && isAllSelected())"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="CheckBoxChanged($event,row.idClient);$event ? selection.toggle(row) : null"
+                          [checked]="!selection.isSelected(row) ">
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="n.o">
+          <mat-header-cell  *matHeaderCellDef><h2> No. </h2></mat-header-cell>
+          <mat-cell *matCellDef="let i = index"> {{i+1}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="code_client">
+          <mat-header-cell *matHeaderCellDef> <h2> code_client </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.code}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nom_client">
+          <mat-header-cell *matHeaderCellDef> <h2> Nom </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.nom_client}} </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="zone">
+          <mat-header-cell *matHeaderCellDef><h2>  Zone</h2>  </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.zone_client}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="caracteristique 1">
+          <mat-header-cell *matHeaderCellDef><h2>  caract  1</h2>  </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.caracteristique1}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="caracteristique 2">
+          <mat-header-cell *matHeaderCellDef><h2>  caract  2</h2>  </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.caracteristique2}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="caracteristique 3">
+          <mat-header-cell *matHeaderCellDef><h2>  caract  3</h2>  </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.caracteristique3}} </mat-cell>
+        </ng-container>
+       <!-- <ng-container matColumnDef="select"  >
+          <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element"><button class="btn " > <mat-checkbox></mat-checkbox></button></mat-cell>
+        </ng-container>
+-->
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-success" (click)="Assign(assigned,table_prixSelectionnee)" [disabled]="(assigned.length == 0) || !table_prixSelectionnee">affecter</button>

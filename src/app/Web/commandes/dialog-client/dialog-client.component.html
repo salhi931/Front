@@ -1,0 +1,9 @@
+<h2 mat-dialog-title> Informations du client </h2>
+<mat-dialog-content>
+  <div >
+  <h3 *ngIf="data.nom_client">Nom: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{data.nom_client}} </h3>
+  <h3 *ngIf="data.solde !== null">Solde:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{data.solde}} </h3>
+  <h3 *ngIf="data.plafond!== null">Plafond: &nbsp;{{data.plafond}}</h3>
+  <h3 *ngIf="data.zone_client">zone :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{data.zone_client}}</h3>
+  <h3 *ngIf="data.adresse_client">adresse: {{data.adresse_client}}</h3></div>
+</mat-dialog-content>

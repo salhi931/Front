@@ -1,0 +1,77 @@
+
+<div class="container">
+  <form  #f="ngForm" >
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Commercial :</mat-label>
+          <mat-select name="idCommercial" ngModel
+                      type="number" >
+            <mat-option >None</mat-option>
+            <mat-option *ngFor="let commerial of gestionClientsService.commerciaux let  index = index"
+                        value="{{commerial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commerial.nom}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Date</mat-label>
+          <input matInput ngModel [matDatepicker]="picker"  name="date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <button type="submit"  mat-raised-button (click)="getFeedbacksCommercialDate(f)" [disabled]="f.value.idCommercial === undefined || f.value.idCommercial === ''  "><mat-icon>search</mat-icon></button>
+    </div>
+  </form>
+  <div>
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" autocomplete="off"></mat-form-field>
+      </div>
+    </div>
+    <div class="container" *ngIf="dataSource.data">
+      <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="N">
+          <mat-header-cell  *matHeaderCellDef ><span style="font-size: 25px;"> No. </span></mat-header-cell>
+          <mat-cell *matCellDef="let i = index" > <p>{{i+1}}</p> </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nomClient">
+          <mat-header-cell  *matHeaderCellDef ><span style="font-size: 25px;"> Client </span></mat-header-cell>
+          <mat-cell *matCellDef="let element" > {{element.nomClient}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Commercial">
+          <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Commercial </span> </mat-header-cell>
+          <mat-cell *matCellDef="let element let i = index"  > <p>{{element.Commercial}} </p></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;">   Feedback</span> </mat-header-cell>
+          <mat-cell *matCellDef="let element let i = index"  ><p> {{element.description.substr(0,20)}} ... </p></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="date_de_lancement">
+          <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;">  Date</span>  </mat-header-cell>
+          <mat-cell *matCellDef="let element let i = index"  > <p>{{element.dateDeLancement}} </p></mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="piece"  >
+          <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;">  </span> </mat-header-cell>
+          <mat-cell *matCellDef="let element let i = index"  ><button class="btn "  (click)="piece(element.id)"><mat-icon color="primary">feedback</mat-icon></button></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="delete"  >
+          <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element let i = index"  ><button class="btn " [disabled]="true" (click)="OnSupprimer(element.id)"><mat-icon color="accent">delete_forever</mat-icon></button></mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+</div>

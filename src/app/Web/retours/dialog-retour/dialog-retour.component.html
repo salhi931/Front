@@ -1,0 +1,67 @@
+
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <span>Liste des factures</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+
+  </div>
+
+</mat-toolbar>
+
+
+<div  *ngIf="factures" >
+  <div *ngIf="factures.length != 0">
+    <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+    <div class="container">
+      <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+          <ng-container matColumnDef="N.o">
+            <mat-header-cell *matHeaderCellDef> <h3> Num facture</h3> </mat-header-cell>
+            <mat-cell *matCellDef="let elememt"> {{elememt.num_facture}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="num_commande">
+            <mat-header-cell *matHeaderCellDef> <h3> Num commande </h3> </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <div *ngIf="element.num_commande !== 0">{{element.num_commande}}</div>
+              <div *ngIf="element.num_commande === 0">---</div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="nom_client">
+            <mat-header-cell *matHeaderCellDef> <h3> Nom du client</h3> </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.nom_client}} </mat-cell>
+          </ng-container>
+
+
+          <ng-container matColumnDef="total_ttc">
+            <mat-header-cell *matHeaderCellDef><h3> Total TTC</h3>  </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.	total_TTC}} {{configurationService.devise}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="edit"  >
+            <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element"><button class="btn" mat-dialog-close mat-dialog-close="{{element.idFacture}}">selectionner</button>
+            </mat-cell>
+
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+  <div *ngIf="factures == []">
+    <div class="container">
+      <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+      <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+        Page non trouvée</h2>
+      <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+        La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+    </div>
+  </div>
+  <div *ngIf="factures.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des factures est encore vide  ! </h3>
+     </div>
+</div>
+

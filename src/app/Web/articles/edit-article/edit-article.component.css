@@ -1,0 +1,54 @@
+/* input {
+  height: 3PC;
+  border-radius: 1pc;
+  border: 0;
+  box-shadow: 0 0 10PX black;
+  margin-top: 1PC;
+}
+input:hover{
+  height: 3PC;
+  border-radius: 1pc;
+  border: 0;
+  box-shadow: 0 0 40PX cyan;
+}
+select{
+  height: 3PC;
+  border-radius: 1pc;
+  border: 0;
+  box-shadow:  0 0 10PX black;
+  margin-top: 1PC;
+
+}
+select:hover{
+  height: 3PC;
+  border-radius: 1pc;
+  border: 0;
+  box-shadow: 0 0 10PX cyan;
+}
+label{
+  color:white;
+  font-size: 17PX;
+  font-family: sans-serif;
+}
+.input-cc{
+  margin-left:    40pc;
+}
+.input-h:hover{
+  box-shadow:  0 0 30PX cyan;
+  border-radius: solid cyan;
+}
+button{
+  margin-top: 1PC;
+  margin-left: 8pc;
+  border-radius: 1pc;
+  padding: 10PX;
+  width:10pc;
+  background-color: rgb(32, 32, 218);
+  color:white;
+  font-size: 18PX;
+}
+button:hover{
+  box-shadow:  0 0 30PX cyan;
+  border-radius: solid cyan;
+}
+*/

@@ -1,0 +1,103 @@
+
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <mat-icon>list_alt</mat-icon>
+  <span>Consultation - paiement</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+
+
+  </div>
+</mat-toolbar><button mat-raised-button color="primary" type="button" routerLink="/paiement"><mat-icon>cancel</mat-icon> 	&nbsp; Retour</button>
+<br><br>
+<!--
+   <div class="col-md-9">
+   </div>
+   <div class="col-md-3">
+    <label><h1> Facture N.O</h1></label>
+  </div> -->
+<div *ngIf="gestionDePaiementService.paiement_consultee != undefined" class="container">
+  <div class="col-md-3" style="background-color: #DCDCDC">
+    <div >
+      <h3 class="example-h2"><label>date de paiement </label>  	:&nbsp;	{{gestionDePaiementService.paiement_consultee.date_de_lancement}}</h3>
+    </div>
+    <div >
+      <h3 class="example-h2"><label>total paye </label>&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	:&nbsp;	 {{gestionDePaiementService.paiement_consultee.totalPaye}} {{configurationService.devise}}</h3>
+    </div>
+
+
+  </div>
+  <div class="col-md-6"></div>
+  <div class="col-md-3" style="background-color: #DCDCDC">
+    <div>
+      <h3 class="example-h2"><label>code client&nbsp;	&nbsp;	&nbsp; </label>: {{gestionDePaiementService.codeClient}}</h3>
+    </div>
+    <div >
+      <h3 class="example-h2"><label>Nom client &nbsp;	&nbsp;	 </label> : {{gestionDePaiementService.nomClient}}</h3>
+    </div>
+    <div >
+      <h3 class="example-h2"><label>Commercial 	&nbsp;</label>: {{gestionDePaiementService.commercial}}</h3>
+    </div>
+
+
+
+  </div>
+  <br>
+
+  <br><br>
+  <br><br>
+
+  <br><br><br><br><br><br><br><br>
+
+<!--
+
+  <div *ngIf="gestionDesFacturesService.facture_details.length > 0" class="container">
+    <h2>articles facturés </h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">article</th>
+        <th scope="col">designation</th>
+        <th scope="col">quantite</th>
+        <th scope="col">quantite disponible</th>
+        <th scope="col">prix unitaire</th>
+        <th scope="col">magasin</th>
+        <th scope="col">remise</th>
+        <th scope="col">TVA</th>
+        <th scope="col">Total TTC</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let articleachetes of gestionDesFacturesService.facture_details; let i = index "   >
+        <th scope="row">{{  i+1}}</th>
+        <td>  {{ articleachetes.code_article }}  </td>
+        <td>  {{ articleachetes.description }}  </td>
+        <td>{{ articleachetes.quantite | number}}</td>
+        <td>{{ articleachetes.quantite - articleachetes.openquantite | number}}</td>
+        <td>{{ articleachetes.prix | number}} {{configurationService.devise}}</td>
+        <td>{{ articleachetes.magasin }}</td>
+        <td>{{ articleachetes.remise }}</td>
+        <td>{{ articleachetes.tva }}%</td>
+        <td>{{ articleachetes.total_ligne_TTC }} {{configurationService.devise}}</td>
+
+      </tr>
+      </tbody>
+    </table></div>
+  <br><br>
+  <div>
+    <div class="col-md-9"></div>
+    <div class>
+      <h3 class="example-h2"><label>Total HT : </label>	&nbsp;	&nbsp;{{gestionDesFacturesService.facture_consultee.total_HC}} {{configurationService.devise}}</h3>
+    </div>
+  </div>
+  <div>
+    <div class="col-md-9"></div>
+    <div><h3 class="example-h2"><label>Total TTC : </label>	&nbsp;{{gestionDesFacturesService.facture_consultee.total_TTC}} {{configurationService.devise}}</h3>
+    </div>
+  </div>
+
+</div>
+-->
+</div>

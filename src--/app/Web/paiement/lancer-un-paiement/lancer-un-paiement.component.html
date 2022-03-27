@@ -1,0 +1,317 @@
+<mat-toolbar color="accent">
+  <mat-icon>payment</mat-icon>
+  <span>Lancer un paiement</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+  </div>
+</mat-toolbar>
+<br><br>
+
+<div class="container">
+<form #formprincipal = "ngForm">
+  <mat-toolbar>Informations du client </mat-toolbar>
+  <mat-toolbar-row>
+    <div class="col-md-4">
+      <mat-form-field class="example-full-width">
+        <mat-label>code du client </mat-label>
+        <input type="text" placeholder="choisir un code client" matInput required [formControl]="myControl3" [matAutocomplete]="auto3" [(ngModel)]="client_code_selected" >
+        <mat-autocomplete #auto3="matAutocomplete" >
+          <mat-option *ngFor="let option of filteredOptions3 | async" [value]="option" >
+            <div>
+              <span> {{option}}</span>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button mat-raised-button type="button" (click)="rechercheClient()"><mat-icon>search</mat-icon></button>
+      <button *ngIf="factures.length == 0 || factures.length == undefined" mat-stroked-button color="primary" (click)="getFactures2()" > factures </button>
+      <button *ngIf="factures.length != 0 && factures.length != undefined" mat-stroked-button color="primary" (click)="deleteFactures2()" > supprimer les factures </button>
+    </div>
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <ul fxLayout="row" fxLayoutGap="20px"></ul>
+      <div class="col-md-3" >
+        <mat-form-field class="example-full-width">
+          <mat-label>Nom du client </mat-label>
+          <input type="text" placeholder="choisir un client" aria-label="client" matInput required [formControl]="myControl2" [matAutocomplete]="auto2" [(ngModel)]="client_selectionnee"  >
+          <mat-autocomplete #auto2="matAutocomplete">
+            <mat-option *ngFor="let options of filteredOptions2 | async" [value]="options">
+              <div>
+                <span> {{options}}</span>
+              </div>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-toolbar-row>
+
+    <mat-toolbar-row>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill">
+        <mat-label>Commercial :</mat-label>
+        <mat-select name="id_commercial" ngModel required
+                    type="number" [(ngModel)]="commercial_id_selected">
+          <mat-option >None</mat-option>
+          <mat-option *ngFor="let commercial of gestionDePaiementService.commerciaux let  index = index"
+                      value="{{commercial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commercial.nomUtilisateur}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <ul fxLayout="row" fxLayoutGap="20px"></ul>
+      <div class="col-md-3">
+        <mat-form-field>
+          <input
+            name="date_de_lancement"
+            ngModel
+            matInput
+            required
+            [matDatepicker] = "picker1"
+            placeholder="Date de creation"/>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker1">
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-toolbar-row>
+
+  <mat-toolbar-row>
+    <div class="col-md-4">
+
+      <mat-form-field appearance="fill" *ngIf="factures.length > 0">
+        <mat-label>total a payer</mat-label>
+        <input matInput type="number" class="example-right-align"  ngModel name="totalAPaye" [disabled]="true" [(ngModel)]="this.totalAPaye">
+        <span matPrefix>&nbsp;</span>
+        <span matSuffix>{{configurationService.devise}}</span>
+      </mat-form-field>
+    </div>
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <ul fxLayout="row" fxLayoutGap="20px"></ul>
+      <div class="col-md-3" >
+
+
+
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>total payé</mat-label>
+          <input placeholder="" type="number"  ngModel matInput name="totalPaye" [disabled]="true" [(ngModel)]="this.gestionDePaiementService.totalDePaiement">
+          <span matPrefix>&nbsp;</span>
+          <span matSuffix>{{configurationService.devise}}</span>
+        </mat-form-field>
+
+      </div>
+    </div>
+  </mat-toolbar-row>
+</form>
+<br>
+<br><br>
+<br>
+<br>
+<br>
+    <div *ngIf="this.factures.length != 0" class="container">
+
+      <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+      <div class="container">
+        <div class="mat-elevation-z8">
+          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+
+            <ng-container matColumnDef="N.o">
+              <mat-header-cell *matHeaderCellDef> <h3> Num facture</h3> </mat-header-cell>
+              <mat-cell *matCellDef="let elememt"> {{elememt.num_facture}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="num_commande">
+              <mat-header-cell *matHeaderCellDef> <h3> Num commande </h3> </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div *ngIf="element.num_commande !== 0">{{element.num_commande}}</div>
+                <div *ngIf="element.num_commande === 0">---</div>
+              </mat-cell>
+            </ng-container>
+            nom_utilisateur,cin,date_activite_debut, 	date_activite_fin, edit, delete
+            <ng-container matColumnDef="nom_client">
+              <mat-header-cell *matHeaderCellDef> <h3> Nom du client</h3> </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.nom_client}} </mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="total_ttc">
+              <mat-header-cell *matHeaderCellDef><h3> Total TTC</h3>  </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.	total_TTC}} {{configurationService.devise}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="montant_paye">
+              <mat-header-cell *matHeaderCellDef><h3> montant Paye</h3>  </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.montantPaye}} {{configurationService.devise}} </mat-cell>
+            </ng-container>
+            <!--
+                      <ng-container matColumnDef="objectif"  >
+                        <mat-header-cell *matHeaderCellDef> <h2> Objectif : </h2> </mat-header-cell>
+                        <mat-cell *matCellDef="let element"><button class="btn "  (click)="Ongetobjectif(element.id_commercial )"><mat-icon color="primary">done_all</mat-icon></button></mat-cell>
+                      </ng-container>
+            -->
+
+            <ng-container matColumnDef="selectionner">
+              <mat-header-cell *matHeaderCellDef> <h3>Status</h3> </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+
+                <section class="example-section">
+                  <mat-slide-toggle
+                    class="example-margin" name="status"
+                    ngModel
+                    [(ngModel)] = "element.status"
+                    color="primary"
+                    (change)="OnchangeStatusCommande(element.idFacture, element)"
+                  >
+                  </mat-slide-toggle>
+                  Payée
+                </section>
+
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+           </div>
+      </div>
+     <!-- <button class="btn btn-success" (click)="Assign(assigned)" [disabled]="(assigned.length == 0) ">affecter</button> -->
+
+    </div>
+  <div class="container">
+    <br>
+
+    <button mat-raised-button class="col-md-2" (click)="openDialog2()" > ajouter un paiement </button>
+  </div>
+  <br>
+
+
+  <div *ngIf="gestionDePaiementService.listespeces.length > 0" class="col-md-10" >
+
+    <h2>paiement espece</h2>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">montantPaye</th>
+
+          <th scope="col"> *</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let espece of gestionDePaiementService.listespeces; let i = index "   >
+          <th scope="row">{{  i+1}}</th>
+          <td>  {{ espece.montantPaye }} {{configurationService.devise}} </td>
+          <td><button class="btn btn-sm btn-danger"  type="button" style="position : absolute  ;" (click)="supprimerespece(i)">Supprimer</button> </td>
+        </tr>
+        </tbody>
+      </table></div>
+
+    <div>
+    </div>
+
+
+  <div *ngIf="gestionDePaiementService.listcheques.length > 0" class="col-md-9" >
+    <br><br><h2>paiement cheque</h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">porteurDuCheque</th>
+        <th scope="col">banque</th>
+        <th scope="col">numCheque</th>
+        <th scope="col">montantPaye</th>
+        <th scope="col"> *</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let cheque of gestionDePaiementService.listcheques; let i = index "   >
+        <th scope="row">{{  i+1}}</th>
+        <td>  {{ cheque.porteurDuCheque }}  </td>
+        <td>  {{ cheque.banque }}  </td>
+        <td>  {{ cheque.numCheque }}  </td>
+        <td>  {{ cheque.montantPaye }} {{configurationService.devise}} </td>
+        <td><button class="btn btn-sm btn-danger"  type="button" style="position : absolute  ;" (click)="supprimercheque(i)">Supprimer</button> </td>
+      </tr>
+      </tbody>
+    </table></div>
+
+  <div *ngIf="gestionDePaiementService.listeffets.length > 0" class="col-md-9" >
+    <br><br><h2>paiement effet</h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">porteurDuCheque</th>
+        <th scope="col">banque</th>
+        <th scope="col">numEffet</th>
+        <th scope="col">montantPaye</th>
+        <th scope="col"> *</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let effet of gestionDePaiementService.listeffets; let i = index "   >
+        <th scope="row">{{  i+1}}</th>
+        <td>  {{ effet.porteurDuCheque }}  </td>
+        <td>  {{ effet.banque }}  </td>
+        <td>  {{ effet.numEffet }}  </td>
+        <td>  {{ effet.montantPaye }} {{configurationService.devise}} </td>
+        <td><button class="btn btn-sm btn-danger"  type="button" style="position : absolute  ;" (click)="supprimereffet(i)">Supprimer</button> </td>
+      </tr>
+      </tbody>
+    </table></div>
+
+  <div *ngIf="gestionDePaiementService.listvirements.length> 0" class="col-md-9" >
+    <br><br><h2>paiement virement</h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">numVirement</th>
+         <th scope="col">dateDeVirement</th>
+        <th scope="col">montantPaye</th>
+        <th scope="col"> *</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let virment of gestionDePaiementService.listvirements; let i = index "   >
+        <th scope="row">{{  i+1}}</th>
+        <td>  {{ virment.numVirement }}  </td>
+         <td>  {{ virment.dateDeVirement }}  </td>
+        <td>  {{ virment.montantPaye }} {{configurationService.devise}} </td>
+        <td><button class="btn btn-sm btn-danger"  type="button" style="position : absolute  ;" (click)="supprimervirment(i)">Supprimer</button> </td>
+      </tr>
+      </tbody>
+    </table></div>
+
+  <div *ngIf="gestionDePaiementService.listtpes.length> 0" class="col-md-9" >
+    <br><br><h2>paiement TPE</h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">numCarte</th>
+         <th scope="col">dateExpiration</th>
+        <th scope="col">montantPaye</th>
+        <th scope="col"> *</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let tpe of gestionDePaiementService.listtpes; let i = index "   >
+        <th scope="row">{{  i+1}}</th>
+        <td>  {{ tpe.numCarte }}  </td>
+         <td>  {{ tpe.dateExpiration }}  </td>
+        <td>  {{ tpe.montantPaye }} {{configurationService.devise}} </td>
+        <td><button class="btn btn-sm btn-danger"  type="button" style="position : absolute  ;" (click)="supprimertpe(i)">Supprimer</button> </td>
+      </tr>
+      </tbody>
+    </table></div>
+
+
+
+
+ </div>
+<div class="container">
+ <div class="col-md-9"></div> <button mat-raised-button type="button" class="btn-success"  [disabled]=" !this.client_selectionnee || !this.client_code_selected ||(this.gestionDePaiementService.totalDePaiement == 0)" (click)="enregistrer(formprincipal)">enregister paiement</button>
+</div>

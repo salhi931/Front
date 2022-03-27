@@ -1,0 +1,181 @@
+
+<button mat-raised-button color="warn" type="button" routerLink="/commerciaux"><mat-icon>cancel</mat-icon> 	&nbsp; Annuler</button>
+<br><br>
+<div class="container">
+  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <!--  <div class="form-group">
+      <label>File Upload  </label>
+      <input type="file" accept="image/*" (change)="onSelectFile($event)">
+      <img [src]="imgURL" height="200" *ngIf="imgURL">
+      <button type="button" (click)="clear()">clear</button>
+    </div> -->
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>nom d'utilisateur :</mat-label>
+          <input type="text"  matInput name="nomUtilisateur" ngModel
+                 placeholder="Ex. Mohammed123" required
+                 [(ngModel)]="gestionDesCommerciaux.commercial_consulte.nomUtilisateur">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Entrer un mot de pass</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" name="motDePass" ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.motDePass">
+          <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>Nom :</mat-label>
+          <input type="text"  matInput name="nom" ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.nom"
+                 placeholder="Ex. Mohammed" required>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>Email :</mat-label>
+          <input type="email"  matInput name="email" ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.email"
+                 required>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Tele :</mat-label>
+          <input type="text"  matInput name="tele" ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.tele"
+                 required>
+        </mat-form-field>
+
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>Cin :</mat-label>
+          <input type="text"  matInput name="cin" ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.cin"
+                 required>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" >
+        <mat-label>Magasin :</mat-label>
+        <input type="text"  matInput name="magasin" ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.magasin"
+               required>
+      </mat-form-field>
+    </div>
+  </div>
+    <br><br>
+    <div class="row">
+      <div class="col-md-4">
+        <h4 class="example-h2"> <label> Acces au commande</label></h4>
+        <section class="example-section">
+          Bloqué
+          <mat-slide-toggle
+            class="example-margin" name="accesCommande" ngModel [ngModel] = "gestionDesCommerciaux.commercial_consulte.accesCommande" color="primary">
+          </mat-slide-toggle>
+
+        </section>
+      </div>
+
+      <div class="col-md-4">
+        <h4 class="example-h2"><label>Acces au facture</label></h4>
+        <section class="example-section">
+          Bloqué
+          <mat-slide-toggle
+            class="example-margin" name="accesFacutre" ngModel [ngModel] = "gestionDesCommerciaux.commercial_consulte.accesFacutre" color="primary">
+          </mat-slide-toggle>
+
+        </section>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-md-4">
+        <h4 class="example-h2"><label>Acces au retour</label></h4>
+        <section class="example-section">
+          Bloqué
+          <mat-slide-toggle
+            class="example-margin" name="accesRetour" ngModel [ngModel] = "gestionDesCommerciaux.commercial_consulte.accesRetour" color="primary">
+          </mat-slide-toggle>
+
+        </section>
+      </div>
+
+      <div class="col-md-4">
+        <h4 class="example-h2"><label>Acces au Paiement</label></h4>
+        <section class="example-section">
+          Bloqué
+          <mat-slide-toggle
+            class="example-margin" name="accesPaiement" ngModel [ngModel] = "gestionDesCommerciaux.commercial_consulte.accesPaiement" color="primary">
+          </mat-slide-toggle>
+
+        </section>
+      </div>
+    </div>
+
+    <br><br>
+    <div class="row">
+      <div class="col-md-4">
+        <h4 class="example-h2">Status du commercial</h4>
+        <section class="example-section">Bloqué
+          <mat-slide-toggle
+            class="example-margin" name="status" ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.status" color="primary">
+          </mat-slide-toggle>
+          Actif
+        </section>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>Role :</mat-label>
+          <input type="text"  matInput name="role" ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.role"
+                 required>
+        </mat-form-field>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <section  class="col-md-4">
+        <mat-form-field>
+          <input
+            name="date_activite_debut"
+            ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.date_activite_debut"
+            matInput
+            [matDatepicker] = "picker"
+            placeholder="date de debut"/>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker">
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </section>
+      <section class="col-md-4">
+        <mat-form-field>
+          <input
+            name="date_activite_fin"
+            ngModel [(ngModel)]="gestionDesCommerciaux.commercial_consulte.date_activite_fin"
+            matInput
+            [matDatepicker] = "picker1"
+            placeholder="date de fin"/>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker1">
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </section>
+    </div>
+    <br><br>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!f.valid"> <mat-icon>save</mat-icon>	&nbsp;Sauvegarder les modifications</button>
+  </form>
+</div>

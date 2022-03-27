@@ -1,0 +1,111 @@
+<mat-toolbar color="null">
+  <h2>Feedback Client</h2>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <button class="btn btn-danger"  mat-dialog-close mat-dialog-close=""><mat-icon>close</mat-icon>
+      </button>
+    </ul>
+  </div>
+</mat-toolbar>
+<br><br>
+<!--
+
+
+<div class="class-container">
+  <form style="position: center" >
+
+    <br>
+
+    <div class="row">
+      <div class="col-md-1">
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>Client :</mat-label>
+          <input type="text"  matInput name="clientname" ngModel
+                 placeholder="" required
+                 ngModel="{{nomClient}}"
+                 disabled>
+        </mat-form-field>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>Date de la visite:</mat-label>
+          <input type="text"  matInput name="Date" ngModel
+                 placeholder="" required disabled
+                 ngModel="{{this.visite.date}}">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4" *ngIf="visite.status">
+        <mat-form-field appearance="fill" >
+          <mat-label>Motif :</mat-label>
+          <input type="text"  matInput name="motif" ngModel
+                 placeholder="" required
+                 ngModel="{{visite.motif}}"
+                 disabled>
+        </mat-form-field>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-2"><button mat-raised-button  (click)="piece()"><h3>Pieces Jointes </h3> </button></div>
+    </div>
+
+    <br>
+    <br>
+    <div *ngIf="optimisationService.selectedFileListConsulte.length > 0 && this.pieces">
+      <div *ngFor="let img of this.optimisationService.selectedFileListConsulte let j = index" >
+        <div class="col-md-6" >  <img height="600" [src]="'data:image/jpeg;base64,'+ img.picByte"> </div>
+      </div>
+    </div>
+    <br><br>
+  </form>
+</div>
+-->
+<div *ngIf="feedback.length != 0">
+   <div class="container"> <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+      <ng-container matColumnDef="N">
+        <mat-header-cell  *matHeaderCellDef ><span style="font-size: 25px;"> No. </span></mat-header-cell>
+        <mat-cell *matCellDef="let i = index" > <p>{{i+1}}</p> </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Commercial">
+        <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Commercial </span> </mat-header-cell>
+        <mat-cell *matCellDef="let element let i = index"  > <p>{{element.Commercial}} </p></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;">   Feedback</span> </mat-header-cell>
+        <mat-cell *matCellDef="let element let i = index"  ><p> {{element.description.substr(0,20)}} ... </p></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="date_de_lancement">
+        <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;">  Date</span>  </mat-header-cell>
+        <mat-cell *matCellDef="let element let i = index"  > <p>{{element.dateDeLancement}} </p></mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="piece"  >
+        <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;">  </span> </mat-header-cell>
+        <mat-cell *matCellDef="let element let i = index"  ><button class="btn "  (click)="piece(element.id)"><mat-icon color="primary">feedback</mat-icon></button></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="delete"  >
+        <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element let i = index"  ><button class="btn " [disabled]="true" (click)="OnSupprimer(element.id)"><mat-icon color="accent">delete_forever</mat-icon></button></mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+  </div>
+</div>

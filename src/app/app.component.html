@@ -1,0 +1,91 @@
+<!--
+  <app-test></app-test>
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Augs</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+
+<mat-toolbar color="primary">
+  <app-nav></app-nav>
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="Onopen()" [disabled]="'true' !== localStoragelogin" style="color: white">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 *ngIf="'true' === localStoragelogin" style=" font-size: 30px;color: #FFFFFF"> DISTRIKAP</h1>
+    <h1 *ngIf="'true' !== localStoragelogin" style="  font-size: 30px; color: #FFFFFF"> Authentification</h1>
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <ul fxLayout="row" fxLayoutGap="20px">
+        <li>
+          <button mat-icon-button style="color: white">
+            <mat-icon>help_outline</mat-icon>
+          </button>
+        </li>
+        <li  routerLinkActive="active" >
+
+          <button mat-icon-button>
+            <mat-icon routerLink="/configuration" style="color: white" >settings</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button mat-button [matMenuTriggerFor]="menu" style="color: white">
+            <mat-icon>person_outline</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" >
+            <button mat-menu-item (click)="logout()" [disabled]="'true' !== localStoragelogin" style="color: white">
+              <mat-icon>exit_to_app</mat-icon>
+              Sign out
+            </button>
+          </mat-menu>
+
+        </li>
+      </ul>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+
+
+<mat-drawer-container>
+  <mat-drawer mode="side" [opened]="open" id="sect1">
+    <mat-nav-list>
+
+      <mat-divider>Navigation</mat-divider>
+
+      <h2 matSubheader></h2>
+
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/gestion-des-clients" style="color: white"><h2><mat-icon>perm_contact_calendar</mat-icon>&nbsp;	Clients</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/feedback" style="color: white"><h2><mat-icon>feedback</mat-icon>&nbsp;	Feedback</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/commerciaux"style="color: white"><h2> <mat-icon>contact_phone</mat-icon> &nbsp;	Commerciaux</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/commandes"style="color: white"><h2><mat-icon>receipt</mat-icon>&nbsp;	Commandes</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/factures"style="color: white"><h2><mat-icon>list_alt</mat-icon>&nbsp;	Factures</h2></a>
+      <!-- <a mat-list-item routerLinkActive="list-item-active" routerLink="/livraisons"style="color: white"><h2><mat-icon>list_alt</mat-icon>&nbsp;	Livraison</h2></a> -->
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/retours"style="color: white"><h2><mat-icon>settings_backup_restore</mat-icon>&nbsp;	Retours</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/paiement"style="color: white"><h2><mat-icon>payment</mat-icon>&nbsp;	Paiement</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/transfert"style="color: white"><h2><mat-icon>archive</mat-icon>&nbsp;	Transferts de stock</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/articles"style="color: white"><h2><mat-icon>storage</mat-icon>&nbsp;	Articles</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/stock"style="color: white"><h2><mat-icon>archive</mat-icon>&nbsp;	Stock</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/Gestion des colis"style="color: white"><h2><mat-icon>local_shipping</mat-icon>&nbsp;	Colis</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/optimisation"style="color: white"><h2><mat-icon>person_pin_circle</mat-icon>&nbsp;	Visites</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/affectation-manuelle"style="color: white"><h2><mat-icon>person_pin_circle</mat-icon>&nbsp;Affectation des visites</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/suivie"style="color: white"><h2><mat-icon>directions_run</mat-icon>&nbsp;	Suivie des commerciaux</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/historique"style="color: white"><h2><mat-icon>change_history</mat-icon>&nbsp; Historique</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/reporting"style="color: white"><h2><mat-icon>assessment</mat-icon>&nbsp;	Reporting</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/gestion-des-prix"style="color: white"><h2><mat-icon>attach_money</mat-icon>&nbsp;	Gestion des prix</h2></a>
+      <a mat-list-item routerLinkActive="list-item-active" routerLink="/promotion"style="color: white"><h2><mat-icon>money_off</mat-icon>&nbsp;	Gestion des promotion</h2></a>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content >
+    <router-outlet ></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>
+ </body>
+</html>
+
+

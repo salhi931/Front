@@ -1,0 +1,84 @@
+<mat-toolbar color="accent">
+  <mat-icon>settings</mat-icon> &nbsp;&nbsp;
+  <span> Configuration</span>
+
+
+</mat-toolbar>
+ <br>
+<br>
+
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <div class="col-md-5">
+    <!--*************************************************************************************************************************** -->
+    <mat-card  >
+      <mat-card-header>
+        <div mat-card-avatar ></div>
+        <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+          <mat-button-toggle>Sauvgarder 	&nbsp;	&nbsp; </mat-button-toggle>
+        </div>
+        <mat-card-title> Configuration</mat-card-title>
+      </mat-card-header>
+      <br>
+
+
+      <div >
+        <!------------------------------------------------------------------------------->
+        <div class="row">
+
+
+          <div class="col-md-5">
+            <mat-form-field appearance="fill" >
+              <mat-label>Devise:</mat-label>
+              <input type="text"  matInput name="devise" ngModel [(ngModel)]="config.devise"
+                     required>
+            </mat-form-field>
+          </div>
+
+        <div class="col-md-5">
+        <mat-form-field appearance="fill" >
+          <mat-label>nbr de chiffre apres virgule:</mat-label>
+          <input type="text"  matInput name="nbr_de_chiffre_apres_virgule" ngModel [(ngModel)]="config.nbr_de_chiffre_apres_virgule"
+                 required>
+        </mat-form-field>
+      </div>
+        </div>
+
+        <!------------------------------------------------------------------------------->
+        <div class="row">
+          <div class="col-md-5">
+            <h4 class="example-h2"><label> facture non liee a une commande</label></h4>
+            <section class="example-section">
+              Bloqué
+              <mat-slide-toggle
+                class="example-margin" name="facture_sans_commande" ngModel [ngModel] = "config.facture_sans_commande" color="primary">
+              </mat-slide-toggle>
+
+            </section>
+          </div>
+          <div class="col-md-5">
+            <h4 class="example-h2"><label>Retour non lie a une facture</label></h4>
+            <section class="example-section">
+              Bloqué
+              <mat-slide-toggle
+                class="example-margin" name="retour_sans_facture" ngModel [ngModel] = "config.retour_sans_facture" color="primary">
+              </mat-slide-toggle>
+
+            </section>
+          </div>
+          <div class="col-md-5">
+            <h4 class="example-h2"><label>Paiement non lie a une facture</label></h4>
+            <section class="example-section">
+              Bloqué
+              <mat-slide-toggle
+                class="example-margin" name="paiement_sans_facture" ngModel [ngModel] = "config.paiement_sans_facture" color="primary">
+              </mat-slide-toggle>
+
+            </section>
+          </div>
+
+        </div>
+      </div>
+      <br>
+    </mat-card>
+  </div>
+</form>

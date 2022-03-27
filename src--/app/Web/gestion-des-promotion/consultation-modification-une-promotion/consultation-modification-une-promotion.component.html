@@ -1,0 +1,52 @@
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+  </div>
+</mat-toolbar>
+<form (ngSubmit)="Sauvgarder(f)"  #f="ngForm" class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <input matInput ngModel required name="description" [(ngModel)] = "gestionDesPrixService.PromotionConsultee.description">
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>valeur</mat-label>
+        <input matInput ngModel type="number" required name="valeur" [(ngModel)] = "gestionDesPrixService.PromotionConsultee.valeur">
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Type</mat-label>
+        <mat-select name="type" ngModel required type="text" [(ngModel)] = "gestionDesPrixService.PromotionConsultee.type">
+          <mat-option value="Remise" >Remise</mat-option>
+          <mat-option value="Annonce" >Annonce</mat-option>
+          <mat-option value="autre" >autre</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Date debut</mat-label>
+        <input matInput ngModel [matDatepicker]="picker" required name="date_debut" [(ngModel)] = "gestionDesPrixService.PromotionConsultee.date_debut">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill">
+        <mat-label>Date fin</mat-label>
+        <input matInput ngModel [matDatepicker]="picker" required name="date_fin" [(ngModel)] = "gestionDesPrixService.PromotionConsultee.date_fin">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <button type="submit"  mat-raised-button class="btn btn-success" [disabled]="!f.valid">enregistrer</button>
+  </div>
+</form>

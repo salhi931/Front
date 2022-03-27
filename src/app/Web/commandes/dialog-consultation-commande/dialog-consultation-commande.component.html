@@ -1,0 +1,185 @@
+<mat-toolbar color="accent">
+  <mat-icon>contacts</mat-icon>
+  <span>Edition consultation commande</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <button class="btn btn-danger"  mat-dialog-close mat-dialog-close=""><mat-icon>close</mat-icon>
+      </button>    </ul>
+  </div>
+</mat-toolbar>
+<br>
+
+
+<br><br>
+<div class="container" *ngIf="this.data.commande">
+
+ <!-- <form (ngSubmit)="onSubmit(ff)" #ff="ngForm"> -->
+  <form  #ff="ngForm">
+
+    <mat-toolbar-row>
+      <div class="col-md-3">
+
+      </div>
+
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-1">
+           <button   class="btn btn-sm btn-success" type="button" (click)="ConsulterFichierJointe()"><mat-icon> attach_file</mat-icon>Piece jointe</button>
+        </div>
+      </div>
+
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <div class="col-md-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Code du client </mat-label>
+          <input matInput type="text" class="example-right-align"  ngModel name="client_code_selected" disabled [ngModel]="data.commande.code">
+        </mat-form-field>
+      </div>
+
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px">
+          <div class="col-md-2">
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            <mat-form-field appearance="fill">
+              <mat-label>Num commande : </mat-label>
+              <input matInput type="text" class="example-right-align"  ngModel name="num_commande" disabled
+                     [ngModel]="data.commande.numCommande">
+            </mat-form-field>
+
+          </div>
+        </ul>
+
+      </div>
+
+    </mat-toolbar-row>
+
+    <mat-toolbar-row>
+      <div class="col-md-4" >
+        <mat-form-field appearance="fill">
+          <mat-label>	Nom client :</mat-label>
+          <input type="text"  matInput name="nom_client" ngModel  disabled [ngModel]="data.commande.nomClient"
+                 required >
+        </mat-form-field>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px">
+          <!-- <div class="col-md-1">
+            <h4 class="example-h2">Status du commande</h4>
+            <section class="example-section">
+              <mat-slide-toggle
+                class="example-margin" name="status"
+                ngModel disabled
+                [(ngModel)] = "data.commande.status"
+                color="primary"
+              >
+              </mat-slide-toggle>
+              Approuvée
+            </section>
+          </div> -->
+        </ul>
+
+      </div>
+      <br><br><br><br>
+    </mat-toolbar-row>
+    <br>
+
+    <mat-toolbar-row>
+      <div class="col-md-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Commercial</mat-label>
+          <input matInput type="text" class="example-right-align"  ngModel name="commercial" disabled [ngModel]="data.commande.nomCommercial">
+        </mat-form-field>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px">
+          <div class="col-md-3">
+            <mat-form-field>
+              <input
+                name="date_commande"
+                ngModel
+                matInput
+                required disabled
+                [(ngModel)]="data.commande.dateDeLancement"
+                [matDatepicker] = "picker1"
+                placeholder="Date de creation"/>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker1">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </ul>
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+
+    </mat-toolbar-row>
+    <br><br>
+
+  </form>
+
+  <div class="container">
+    <div class="container">
+      <h2>articles commandes</h2>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">articles</th>
+          <th scope="col">quantite</th>
+          <th scope="col">prix unitaire</th>
+          <th scope="col">magasin</th>
+          <th scope="col">remise</th>
+          <th scope="col">TVA</th>
+          <th scope="col">Total </th>
+          <!--<th scope="col"> *</th> -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let articleachetes of data.commande_detail; let i = index "   >
+          <th scope="row">{{  i+1}}</th>
+          <td>  {{ articleachetes.code_article }}  </td>
+          <td>{{ articleachetes.quantite | number}}</td>
+          <td>{{ articleachetes.prix | number}} {{configurationService.devise}}</td>
+          <td>{{ articleachetes.magasin }}</td>
+          <td>{{ articleachetes.remise }}</td>
+          <td>{{ articleachetes.tva }}</td>
+          <td>{{ articleachetes.total_ligne_TTC}} {{configurationService.devise}}</td>
+          <!-- <td><button class="btn btn-sm btn-danger"  type="button" style="position : absolute  ;" (click)="supprimerarticle(i)">Supprimer</button> </td> -->
+        </tr>
+        </tbody>
+      </table></div>
+    <br><br>
+    <div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Total HT</mat-label>
+            <input matInput type="number" class="example-right-align"  ngModel name="totalHC" [disabled]="true" [ngModel]="this.data.commande.total_HT">
+            <span matPrefix>&nbsp;</span>
+            <span matSuffix>{{configurationService.devise}}</span>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Total TTC</mat-label>
+            <input matInput type="number" class="example-right-align"  ngModel name="totalTTC" [disabled]="true" [ngModel]="this.data.commande.total_TTC">
+            <span matPrefix>&nbsp;</span>
+            <span matSuffix>{{configurationService.devise}}</span>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+   <!-- <mat-toolbar-row>
+      <button mat-raised-button color="primary" type="submit"  style="color: #FFFFFF"  (click)="onSubmit(ff)"> <mat-icon>save</mat-icon>	&nbsp; Sauvgarder les modifications</button>
+    </mat-toolbar-row> -->
+  </div>
+</div>

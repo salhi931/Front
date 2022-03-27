@@ -1,0 +1,50 @@
+<div class="container">
+  <button mat-raised-button class="col-md-2" (click)="pie()" [disabled]="articles">Articles</button>
+  <button mat-raised-button class="col-md-2" (click)="radar()" [disabled]="zones">Zones</button>
+  <button mat-raised-button class="col-md-2" (click)="bar()" [disabled]="bars"> Commerciaux </button>
+  <button mat-raised-button class="col-md-2" (click)="doughnut()" [disabled]="doughnuts">Clients</button>
+
+</div>
+
+<!-- ---------------------------------------------------------------------- -->
+<div *ngIf="doughnuts" class="container">
+  <div style="display: block">
+    <canvas baseChart
+            [data]="doughnutChartData"
+            [labels]="doughnutChartLabels"
+            chartType="doughnut"></canvas>
+  </div>
+</div>
+
+<!-- ---------------------------------------------------------------------- -->
+<!-- articles -->
+<br>
+<br>
+<br>
+<div *ngIf="articles" >
+  <app-articles-reporting ></app-articles-reporting>
+</div>
+
+<div *ngIf="zones" class="container">
+  <app-zones ></app-zones>
+</div>
+<div *ngIf="bars" class="container">
+  <div style="display: block">
+    <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            chartType ="bar">
+    </canvas>
+  </div>
+</div>
+<!-- ----------------------------------------------------------------------
+<div *ngIf="zones" class="container">
+  <div style="display: block">
+    <canvas baseChart
+            [datasets]="radarChartData"
+            [labels]="radarChartLabels"
+            chartType="radar"></canvas>
+  </div>
+</div>-->

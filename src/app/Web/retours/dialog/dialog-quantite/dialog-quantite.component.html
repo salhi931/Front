@@ -1,0 +1,21 @@
+<div class="col-md-3">
+  <mat-form-field class="example-full-width" >
+    <mat-label>  Quantite</mat-label>
+    <input type="number"   matInput required ngModel [(ngModel)] = "this.ges.variable.quantite">
+  </mat-form-field>
+</div>
+<br>
+<br>
+<br>
+<div class="col-md-3">
+  <mat-form-field class="example-full-width" >
+    <mat-label>  Motif</mat-label>
+    <input type="text"   matInput required ngModel [(ngModel)] = "this.ges.variable.motif">
+  </mat-form-field>
+</div>
+<br>
+<br>
+<br>
+<div class="export-container">
+<button mat-raised-button color="primary" mat-dialog-close mat-dialog-close="{{variable}}" >Ok</button>
+</div>

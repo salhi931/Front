@@ -1,0 +1,294 @@
+
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <mat-icon>contacts</mat-icon>
+  <span>Lancer une commande</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+
+
+  </div>
+</mat-toolbar><button mat-raised-button color="primary" type="button" routerLink="/commandes"><mat-icon>cancel</mat-icon> 	&nbsp; Annuler</button>
+<br><br>
+<div class="container">
+   <form (ngSubmit)="onSubmit(ff)" #ff="ngForm">
+
+    <mat-toolbar-row>
+      <div class="col-md-3">
+        <mat-form-field class="example-full-width">
+          <mat-label>code du client </mat-label>
+          <input type="text"
+                 placeholder="choisir un code client"
+                 matInput
+                 required
+                 [formControl]="myControl3"
+                 [matAutocomplete]="auto3" [(ngModel)]="client_code_selected" >
+          <mat-autocomplete #auto3="matAutocomplete" >
+            <mat-option *ngFor="let option of filteredOptions3 | async" [value]="option" >
+              <div>
+                <span> {{option}}</span>
+              </div>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field> <button mat-raised-button type="button" (click)="rechercheClient()"><mat-icon>search</mat-icon></button>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-3">
+          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<mat-form-field appearance="fill" >
+            <mat-label>	Num commande :</mat-label>
+            <input type="number"  matInput name="num_commande" ngModel
+                   required >
+          </mat-form-field>
+        </div>
+      </div>
+
+    </mat-toolbar-row>
+
+    <mat-toolbar-row>
+      <div class="col-md-4" >
+        <mat-form-field class="example-full-width">
+            <mat-label>Nom du client </mat-label>
+            <input type="text"
+                   placeholder="choisir un client"
+                   aria-label="client"
+                   matInput
+                   required
+                   [formControl]="myControl2"
+                   [matAutocomplete]="auto2" [(ngModel)]="client_selectionnee"  >
+            <mat-autocomplete #auto2="matAutocomplete">
+              <mat-option *ngFor="let options of filteredOptions2 | async" [value]="options">
+                <div>
+                  <span> {{options}}</span>
+                </div>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-3">
+          <h4 class="example-h2">Status du commande</h4>
+          <section class="example-section">
+            <mat-slide-toggle
+              class="example-margin" name="status"
+              ngModel
+              [ngModel] = "true"
+              color="primary"
+            >
+            </mat-slide-toggle>
+            Approuvée
+          </section>
+        </div>
+      </div>
+  <br><br><br><br>
+    </mat-toolbar-row>
+<br>
+
+    <mat-toolbar-row>
+      <div class="col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>Commercial :</mat-label>
+          <mat-select name="id_commercial" ngModel required
+                      type="number" [(ngModel)]="commercial_id_selected" (selectionChange)="getMagasin(commercial_id_selected)">
+            <mat-option >None</mat-option>
+            <mat-option *ngFor="let commercial of gestionDesCommandesService.commerciaux let  index = index"
+                        value="{{commercial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commercial.nomUtilisateur}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-3">
+        <mat-form-field>
+          <input
+            name="date_commande"
+            ngModel
+            matInput
+            required
+            [matDatepicker] = "picker1"
+            placeholder="Date de creation"/>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker1">
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+      </div>
+    </mat-toolbar-row>
+
+     <br><br>
+    <br><br>
+  </form>
+  <form (ngSubmit)="onSubmitt(f)" #f="ngForm">
+
+    <mat-toolbar-row (mouseleave)="calculerprix()">
+      <div class="col-md-4" (mouseleave)="rechercheprix()">
+
+        <mat-form-field class="example-full-width" >
+          <mat-label>article </mat-label>
+          <input type="text"
+                 placeholder="choisir un article"
+                 aria-label="article"
+                 matInput
+                 ngModel
+                 required
+                 name="code_article"
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto" [(ngModel)]="article_selected" >
+          <mat-autocomplete #auto="matAutocomplete" >
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [disabled]="!gestionDesCommandesService.TablePrix || !boolean">
+              <div>
+                <span> {{option}}</span>
+              </div>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>&nbsp;&nbsp;
+
+    <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      <mat-form-field appearance="fill">
+        <mat-label>designation</mat-label>
+        <input matInput type="text" class="example-right-align"  ngModel name="designation" [disabled]="true" [(ngModel)]="designation">
+      </mat-form-field>
+    </div>
+      <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field appearance="fill">
+          <mat-label>Prix unitaire</mat-label>
+          <input matInput type="number" class="example-right-align"  ngModel name="prix" required [disabled]="!gestionDesCommandesService.TablePrix || !boolean" [(ngModel)]="article_prix">
+          <span matPrefix>&nbsp;</span>
+          <span matSuffix>{{configurationService.devise}}</span>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-form-field appearance="fill" >
+            <mat-label>quantite :</mat-label>
+            <input type="number"  matInput name="quantite" [(ngModel)]="article_quantite" [disabled]="!gestionDesCommandesService.TablePrix || !boolean"
+                   required >
+          </mat-form-field>
+      </div>
+    <button type="button" (click)="calculerprix()">click me</button>
+
+    </mat-toolbar-row>
+    <mat-toolbar-row (mouseleave)="calculerprix()">
+      <div class="col-md-4">
+        <mat-form-field class="example-full-width">
+          <mat-label>Magasin </mat-label>
+          <input type="text"
+                 placeholder="choisir un magasin"
+                 aria-label="magasin"
+                 matInput
+                 ngModel
+                 required
+                 name="magasin"
+                 [formControl]="myControl4"
+                 [matAutocomplete]="auto4" [(ngModel)]="magasin_selected"  >
+          <mat-autocomplete #auto4="matAutocomplete">
+            <mat-option *ngFor="let options of filteredOptions4 | async" [value]="options">
+              <div>
+                <span> {{options}}</span>
+              </div>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        &nbsp;
+      </div>
+    <div class="col-md-4">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-form-field appearance="fill">
+        <mat-label>remise</mat-label>
+        <input matInput type="number" class="example-right-align"  ngModel name="remise" [disabled]="!gestionDesCommandesService.TablePrix || !boolean" [(ngModel)]="remise">
+      </mat-form-field>
+    </div>
+      <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field appearance="fill">
+        <mat-label>TVA</mat-label>
+        <input matInput type="number" class="example-right-align"  ngModel name="TVA" disabled [(ngModel)]="TVA">
+      </mat-form-field>
+    </div>
+      <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field appearance="fill">
+          <mat-label>total ligne TTC</mat-label>
+          <input matInput type="number" class="example-right-align"  ngModel name="PRIX" required [disabled]="true" [(ngModel)]="PRIX">
+          <span matPrefix>&nbsp;</span>
+          <span matSuffix>{{configurationService.devise}}</span>
+        </mat-form-field>
+        <button class="btn btn-sm btn-primary" type="button" (click)="ajouterarticle(f)" [disabled]="!f.valid || (!magasin_selected)"><mat-icon>add_circle</mat-icon></button>
+      </div>
+
+      </mat-toolbar-row>
+  </form>
+  <br><br>
+    <div *ngIf="gestionDesCommandesService.articlescommandees" class="container">
+    <div *ngIf="gestionDesCommandesService.articlescommandees" class="container">
+    <h2>articles commandes</h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">article</th>
+        <th scope="col">designation</th>
+        <th scope="col">quantite</th>
+        <th scope="col">prix unitaire</th>
+        <th scope="col">magasin</th>
+        <th scope="col">remise</th>
+        <th scope="col">TVA</th>
+        <th scope="col">Total TTC</th>
+        <th scope="col"> *</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let articleachetes of gestionDesCommandesService.articlescommandees; let i = index "   >
+        <th scope="row">{{  i+1}}</th>
+        <td>  {{ articleachetes.code_article }}  </td>
+        <td>  {{ articleachetes.description }}  </td>
+        <td>{{ articleachetes.quantite | number}}</td>
+        <td>{{ articleachetes.prix | number}} {{configurationService.devise}}</td>
+        <td>{{ articleachetes.magasin }}</td>
+        <td>{{ articleachetes.remise }}</td>
+        <td>{{ articleachetes.tva }}</td>
+        <td>{{ articleachetes.total_ligne_TTC }} {{configurationService.devise}}</td>
+        <td><button class="btn btn-sm btn-danger"  type="button" style="position : absolute  ;" (click)="supprimerarticle(i)">Supprimer</button> </td>
+      </tr>
+      </tbody>
+    </table></div>
+    <br><br>
+<div>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill">
+        <mat-label>Total HT</mat-label>
+        <input matInput type="number" class="example-right-align"  ngModel name="totalHC" [disabled]="true" [(ngModel)]="totalhc">
+        <span matPrefix>&nbsp;</span>
+        <span matSuffix>{{configurationService.devise}}</span>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<div>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill">
+        <mat-label>Total TTC</mat-label>
+        <input matInput type="number" class="example-right-align"  ngModel name="totalTTC" [disabled]="true" [(ngModel)]="totalTTC">
+        <span matPrefix>&nbsp;</span>
+        <span matSuffix>{{configurationService.devise}}</span>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+      <mat-toolbar-row>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!ff.valid || !(gestionDesCommandesService.articlescommandees.length > 0)" (click)="onSubmit(ff)"> <mat-icon>add_circle</mat-icon>	&nbsp; lancer la commande</button>
+      </mat-toolbar-row>
+</div>
+</div>

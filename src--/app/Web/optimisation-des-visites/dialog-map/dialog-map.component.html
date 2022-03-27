@@ -1,0 +1,6 @@
+
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="12" (mapClick)="map($event)" >
+  <agm-marker  *ngFor="let position of data " [latitude]="position.lat" [longitude]="position.lng"
+               [label]="position.nom_client"
+             ></agm-marker>
+</agm-map>

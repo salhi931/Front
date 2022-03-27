@@ -1,0 +1,191 @@
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+  </div>
+</mat-toolbar>
+<form (ngSubmit)="onSubmitt(f)" #f="ngForm" class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <input matInput ngModel required name="description">
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>valeur</mat-label>
+        <input matInput ngModel type="number" required name="valeur">
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Type</mat-label>
+        <mat-select name="type" ngModel required type="text" >
+          <mat-option value="Remise" >Remise</mat-option>
+          <mat-option value="Annonce" >Annonce</mat-option>
+          <mat-option value="autre" >autre</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Date debut</mat-label>
+        <input matInput ngModel [matDatepicker]="picker" required name="date_debut">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill">
+        <mat-label>Date fin</mat-label>
+        <input matInput ngModel [matDatepicker]="picker" required name="date_fin">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <button type="submit"  mat-raised-button class="btn btn-success" [disabled]="!f.valid">enregistrer</button>
+  </div>
+</form>
+<br><br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Famille :</mat-label>
+        <mat-select  ngModel type="number" [(ngModel)]="famille_selectionee" (selectionChange)="getArticleFamille(famille_selectionee)" >
+          <mat-option >Toutes les familles</mat-option>
+          <mat-option *ngFor="let famille of gestionDesPrixService.famille let  index = index"
+                      value="{{famille.id }}">{{index + 1}} &nbsp;&nbsp; {{famille.description}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Sous famille :</mat-label>
+        <mat-select  ngModel type="number" [(ngModel)]="sousFamilleSelectionnee" (selectionChange)="getArticleSousFamille(sousFamilleSelectionnee)">
+          <mat-option >Toutes les sous-familles</mat-option>
+          <mat-option *ngFor="let famille of SousFamille let  index = index"
+                      value="{{famille.id }}">{{index + 1}} &nbsp;&nbsp; {{famille.description}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<div  *ngIf="gestionDesPrixService.articles" >
+  <div *ngIf="gestionDesPrixService.articles.length != 0">
+
+    <!-- <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+     --><div class="container"> <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource2" matSort class="mat-elevation-z8">
+
+      <ng-container matColumnDef="id_article ">
+        <mat-header-cell  *matHeaderCellDef><h2> No. </h2></mat-header-cell>
+        <mat-cell *matCellDef="let i = index"> {{i+1}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="code_article">
+        <mat-header-cell *matHeaderCellDef> <h2> Code </h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.code_article }} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="nom_article">
+        <mat-header-cell *matHeaderCellDef> <h2> Article </h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.nom_article }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="famille">
+        <mat-header-cell *matHeaderCellDef><h2>famille</h2>  </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{getfamilleArticle(element.famille) }} </mat-cell>
+      </ng-container>
+
+
+      <ng-container matColumnDef="sousfamille"  >
+        <mat-header-cell *matHeaderCellDef> <h2> sousfamille </h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{getSousfamilleArticle(element.sous_famille) }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status"  >
+        <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+
+          <section class="example-section">
+            <mat-slide-toggle
+              class="example-margin" name="status"
+              ngModel
+              [(ngModel)] = "element.status"
+              color="primary"
+            >
+            </mat-slide-toggle>
+            Selectionné
+          </section>
+          <!-- (change)="OnchangeStatusCommande(element.idClient, element)"-->
+
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+  </div>
+  </div>
+</div>
+<br>
+<br>
+<div *ngIf="this.dataSource.filteredData.length != 0" class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Zone :</mat-label>
+        <mat-select name="zone" ngModel [(ngModel)] = "zone" type="number" (selectionChange)="getClientZone(zone)">
+          <mat-option >Toutes les zones</mat-option>
+          <mat-option *ngFor="let zone of gestionDesPrixService.zones let  index = index"
+                      value="{{zone.id }}">{{index + 1}} &nbsp;&nbsp; {{zone.zone}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div >
+    <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="N.o">
+          <mat-header-cell *matHeaderCellDef> <h3> * </h3> </mat-header-cell>
+          <mat-cell *matCellDef="let  i = index"> {{i +1}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="client">
+          <mat-header-cell *matHeaderCellDef> <h3> Nom client </h3> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.nom_client}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="zone">
+          <mat-header-cell *matHeaderCellDef> <h3> Zone</h3> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.zone_client}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef> <h3></h3> </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+
+            <section class="example-section">
+              <mat-slide-toggle
+                class="example-margin" name="status"
+                ngModel
+                [(ngModel)] = "element.statuss"
+                color="primary"
+              >
+              </mat-slide-toggle>
+              Selectionné
+            </section>
+            <!-- (change)="OnchangeStatusCommande(element.idClient, element)"-->
+
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+  <!-- <button class="btn btn-success" (click)="Assign(assigned)" [disabled]="(assigned.length == 0) ">affecter</button> -->
+</div>

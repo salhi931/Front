@@ -1,0 +1,210 @@
+<div  *ngIf="this.gestionDeStockService.transfertdetail" >
+  <div *ngIf="this.gestionDeStockService.transfertdetail.length != 0">
+    <mat-toolbar color="accent">
+      <mat-icon>settings_backup_restore</mat-icon>
+      <span style="font-size: 25px;">Chargement -  Dechargment</span>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px">
+          <div class="col-md-3">
+            <button mat-raised-button (click)="valider()" *ngIf="!gestionDeStockService.transfertentete.status" ><h3>Valider et enregistrer </h3></button>
+            <button mat-raised-button (click)="exportTable()"  *ngIf="gestionDeStockService.transfertentete.status" ><h3>imprimer </h3></button>
+          </div></ul></div>
+    </mat-toolbar>
+    <mat-toolbar-row></mat-toolbar-row>
+    <div class="container" *ngIf="this.gestionDeStockService.transfertentete">
+      <form   #ff="ngForm">
+        <mat-toolbar-row>
+          <div class="col-md-3">
+            <mat-form-field appearance="fill">
+              <mat-label>Commercial </mat-label>
+              <input matInput type="text" class="example-right-align"  ngModel name="idCommercial" disabled [ngModel]="gestionDeStockService.transfertentete.commerical">
+            </mat-form-field>
+          </div>
+          <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+            <ul fxLayout="row" fxLayoutGap="20px">
+            <div class="col-md-3">
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Num Transfert : </mat-label>
+                <input matInput type="text" class="example-right-align"  ngModel name="numTransfert" disabled
+                       [ngModel]="gestionDeStockService.transfertentete.numTransfert">
+              </mat-form-field>
+            </div>
+            </ul>
+          </div>
+        </mat-toolbar-row>
+        <mat-toolbar-row>
+          <div class="col-md-3">
+            <mat-form-field appearance="fill">
+              <mat-label>type </mat-label>
+              <input matInput type="text" class="example-right-align"  ngModel name="type" disabled [ngModel]= gestionDeStockService.transfertentete.type>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+            <ul fxLayout="row" fxLayoutGap="20px">
+            <div class="col-md-3">
+
+                <mat-form-field>
+                  <input
+                    name="date_commande"
+                    ngModel
+                    matInput
+                    required
+                    [(ngModel)]="gestionDeStockService.transfertentete.dateDeLancement"
+                    [matDatepicker] = "picker1"
+                    placeholder="Date de creation"/>
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker1">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </ul>
+          </div>
+        </mat-toolbar-row>
+        <mat-toolbar-row>
+          <div class="col-md-1">
+            <h4 class="example-h2">Status du Transfert</h4>
+            <section class="example-section">
+              <mat-slide-toggle
+                class="example-margin" name="status"
+                ngModel
+                [(ngModel)] = "gestionDeStockService.transfertentete.status"
+                color="primary" disabled>
+              </mat-slide-toggle>
+              Approuvée
+            </section>
+          </div>
+          <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+            <ul fxLayout="row" fxLayoutGap="20px">
+              <div class="col-md-3" *ngIf="gestionDeStockService.transfertentete.status">
+                <mat-form-field>
+                  <input
+                    name="date_commande_validation"
+                    ngModel
+                    matInput
+                    required
+                    [(ngModel)]="gestionDeStockService.transfertentete.date_de_validation"
+                    [matDatepicker] = "picker2"
+                    placeholder="Date de validation"/>
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker2">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-5" *ngIf="!gestionDeStockService.transfertentete.status">
+                <section class="example-section">
+                  <mat-slide-toggle
+                    class="example-margin" name="VerificationStock"
+                    ngModel
+                    [(ngModel)] = "VerificationStock"
+                    color="primary">
+                  </mat-slide-toggle>
+                    Verification de Stock
+                </section>
+              </div>
+            </ul>
+          </div>
+
+          <br><br><br><br>
+        </mat-toolbar-row>
+        <br><br><br><br>
+        <mat-toolbar-row *ngIf="!this.gestionDeStockService.transfertentete.status">
+          <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+            <ul fxLayout="row" fxLayoutGap="20px">
+              <mat-form-field appearance="fill">
+                <mat-label>Magasin :</mat-label>
+                <mat-select name="idMagasinSelected" ngModel (selectionChange)="onchangeMagasin()" [(value)]="magasinSelected"
+                            type="text" >
+                  <mat-option >None</mat-option>
+                  <mat-option *ngFor="let magasin of magasins let  index = index"
+                              value="{{magasin.id_magasin}}">{{index + 1}} &nbsp;&nbsp; {{magasin.nom_magasin}}  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ul>
+          </div>
+        </mat-toolbar-row>
+       </form>
+    </div>
+    <div class="container" *ngIf="dataSource.data.length > 0">
+      <div class="mat-elevation-z8">
+        <mat-table id="ExampleTable1" [dataSource]="dataSource" matSort  >
+          <ng-container matColumnDef="N.o">
+            <mat-header-cell *matHeaderCellDef> <th> <span>&#x2116;</span></th> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index"  > {{i+1}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="codeArticle">
+            <mat-header-cell *matHeaderCellDef> <th> Code Article</th> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index"  > {{element.Code}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="NomArticle">
+            <mat-header-cell *matHeaderCellDef><th> Nom Article</th>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index"  > {{element.nomArticle}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="quantite">
+            <mat-header-cell *matHeaderCellDef><th> Quantité demandée</th>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index"  > {{element.quantite}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="quantiteStock" *ngIf="this.gestionDeStockService.transfertentete.chargement">
+            <mat-header-cell *matHeaderCellDef><th> Quantité En stock</th>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index"  > {{element.quantiteStock}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="quantiteApprouvee">
+            <mat-header-cell *matHeaderCellDef><th> Quantité approuvée</th>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index"  >
+              <mat-form-field appearance="fill" style="  background-color: {{element.color}}"  >
+                <input matInput type="number" class="example-right-align"
+                        [(ngModel)] = element.quantiteValide>
+              </mat-form-field>
+              </mat-cell>
+          </ng-container>
+           <ng-container matColumnDef="magasin">
+            <mat-header-cell *matHeaderCellDef><th> Magasin</th>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index"  >
+               <!-- Dechargement ---------------------------------------- -->
+               <mat-form-field appearance="fill" *ngIf="!gestionDeStockService.transfertentete.chargement">
+                <mat-label>Magasin :</mat-label>
+                <mat-select   ngModel   [(ngModel)]="element.idMagasinDestinataire" disabled
+                            type="text" >
+                  <mat-option >None</mat-option>
+                  <mat-option *ngFor="let magasin of magasins let  index = index"
+                              value="{{magasin.id_magasin}}">  {{magasin.nom_magasin}}  </mat-option>
+                </mat-select>
+              </mat-form-field>
+               <!-- chargement ---------------------------------------- -->
+               <mat-form-field appearance="fill" *ngIf="gestionDeStockService.transfertentete.chargement">
+                <mat-label>Magasin source:</mat-label>
+                <mat-select   ngModel   [(ngModel)]="element.idMagasinOrigine"
+                            type="text" >
+                  <mat-option >None</mat-option>
+                  <mat-option *ngFor="let magasin of magasins let  index = index"
+                              value="{{magasin.id_magasin}}">  {{magasin.nom_magasin}}  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <!-- ----------------------------------------
+              <mat-form-field appearance="fill"  style="animation-name:   background-color: {{element.color}}">
+                <mat-select  ngModel [(value)] = "element.idMagasinOrigine" type="text" >
+                  <mat-option *ngFor="let magasin of magasins"
+                              value="{{magasin.id_magasin}}"> {{magasin.nom_magasin}}  </mat-option>
+                </mat-select>
+               </mat-form-field>-->
+              </mat-cell>
+          </ng-container>
+          <!-- <ng-container matColumnDef="edit">
+             <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;"> edit</span>  </mat-header-cell>
+             <mat-cell *matCellDef="let element let i = index"  > </mat-cell>
+           </ng-container>
+           -->
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+
+</div>

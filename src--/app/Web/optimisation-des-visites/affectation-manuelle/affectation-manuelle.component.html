@@ -1,0 +1,85 @@
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+    <button mat-raised-button routerLink="/algorithme-de-selection" ><h5>optimisation des visites </h5> </button>
+  </div>
+</mat-toolbar>
+<form (ngSubmit)="onSubmitt(f)" #f="ngForm" class="container">
+  <div class="col-md-3">
+    <mat-form-field appearance="fill">
+      <mat-label>Commercial :</mat-label>
+      <mat-select name="idCommercial" ngModel required
+                  type="number">
+        <mat-option >None</mat-option>
+        <mat-option *ngFor="let commerial of optimisationService.commerciaux let  index = index"
+                    value="{{commerial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commerial.nom}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-md-3">
+    <mat-form-field appearance="fill">
+      <mat-label>Date</mat-label>
+      <input matInput ngModel [matDatepicker]="picker" required name="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="col-md-4">
+    <mat-form-field appearance="fill">
+      <mat-label>Zones:</mat-label>
+      <mat-select [formControl]="toppings" multiple (selectionChange)="getClientZone(toppings.value)">
+        <mat-option *ngFor="let zone of optimisationService.zones let  index = index" [value]="zone.id" >{{index + 1}} &nbsp;&nbsp; {{zone.zone}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <button type="submit"  mat-raised-button class="btn btn-success">enregistrer</button>
+</form>
+<br>
+<br>
+<br>
+<div *ngIf="this.dataSource.filteredData.length != 0" class="container">
+  <div >
+    <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="N.o">
+          <mat-header-cell *matHeaderCellDef> <h3> * </h3> </mat-header-cell>
+          <mat-cell *matCellDef="let  i = index"> {{i +1}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="client">
+          <mat-header-cell *matHeaderCellDef> <h3> Nom client </h3> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.nom_client}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="zone">
+          <mat-header-cell *matHeaderCellDef> <h3> Zone</h3> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.zone_client}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef> <h3></h3> </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+
+            <section class="example-section">
+              <mat-slide-toggle
+                class="example-margin" name="status"
+                ngModel
+                [(ngModel)] = "element.statuss"
+                color="primary"
+              >
+              </mat-slide-toggle>
+              Selectionné
+            </section>
+            <!-- (change)="OnchangeStatusCommande(element.idClient, element)"-->
+
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+  <!-- <button class="btn btn-success" (click)="Assign(assigned)" [disabled]="(assigned.length == 0) ">affecter</button> -->
+
+</div>

@@ -1,0 +1,20 @@
+ul li {
+  list-style: none;
+}
+.mat-drawer {
+  width: 208px;
+}
+.mat-drawer-container{
+  height: 100%;
+}
+#sect1 {
+  /* background-image: url("../assets/Dark_background.png");*/
+  background-color: #c5cae9;
+  text-colo: white;
+}
+.class-container{
+  background-color: aliceblue;
+}
+.titre{
+  front-size: 22px;
+}

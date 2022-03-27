@@ -1,0 +1,164 @@
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <mat-icon>settings_backup_restore</mat-icon>
+  <span style="font-size: 25px;">Retours</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <div class="col-md-3">
+        <button type="button" mat-raised-button routerLink="/lancer-un-retours" disabled><h2><mat-icon>add</mat-icon> Creer un retour </h2> </button>
+      </div>
+    </ul>
+
+
+  </div>
+
+</mat-toolbar>
+<!--<div id="MyDIv" style="margin-left: 45px;" class="main-container">
+
+</div>
+<div class="icon_image " title="Share As PDF" (click)="exportAsPDF('MyDIv');"><img src="assets/img/pdf.png"></div>
+-->
+
+<div>
+  <br>
+  <div class="container">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Date</mat-label>
+        <input matInput ngModel [matDatepicker]="picker" [(ngModel)]="dateSelected" (dateChange)="DateAndCommercialFilter()" >
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Commercial :</mat-label>
+        <mat-select name="id_commercial1" ngModel
+                    type="number" [(ngModel)]="commercial_id_selected" (selectionChange)="DateAndCommercialFilter()">
+          <mat-option >None</mat-option>
+          <mat-option *ngFor="let commercial of gestionDesRetoursService.commerciaux let  index = index"
+                      value="{{commercial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commercial.nomUtilisateur}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-2">
+      <section class="example-section">
+        <mat-slide-toggle
+          class="example-margin"
+          ngModel
+          color="primary"
+          [(ngModel)] = "Touslesretours"
+          (change)="DateAndCommercialFilter()">
+        </mat-slide-toggle>
+        Tous les retours
+      </section>
+    </div>
+
+    <!-- <div class="col-md-3" *ngIf="commercial_id_selected !== undefined">
+       <button mat-raised-button (click)="ValiderLesRetoursAffiche()"><h2><mat-icon>add</mat-icon>Valider ces retours</h2></button>
+     </div> -->
+
+    <div class="col-md-3" > <!--*ngIf="commercial_id_selected !== undefined"> -->
+      <button mat-raised-button (click)="openDialog()"><h2><mat-icon>more</mat-icon> Valider par articles-motifs</h2></button>
+    </div>
+
+
+  </div>
+  <div class="container">
+    <div class="col-md-3">
+      <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Total: </mat-label>
+        <input disabled matInput type="number" class="example-right-align"  [ngModel] = "Total" style="color: black">
+        <span matSuffix>{{configurationService.devise}}</span>
+      </mat-form-field>
+    </div>
+  </div>
+  <br>
+
+
+<div  *ngIf="retours" >
+  <div *ngIf="retours.length != 0">
+    <div class="container">
+      <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+
+          <ng-container matColumnDef="N.o">
+            <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> <span>&#x2116;</span> retour</span> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.numRetour}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="num_facture">
+            <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> <span>&#x2116;</span> facture </span> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" >
+              <div *ngIf="element.num_facture !== 0">{{element.numFacture}}</div>
+              <div *ngIf="element.num_facture === 0">---</div>
+            </mat-cell>
+          </ng-container>
+           <ng-container matColumnDef="nom_client">
+            <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Client</span> </mat-header-cell>
+             <mat-cell *matCellDef="let element let i = index" > {{element.nom_client}} </mat-cell>
+          </ng-container>
+
+
+          <ng-container matColumnDef="total_ttc">
+            <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;"> Total TTC</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.	total_TTC}} {{configurationService.devise}} </mat-cell>
+          </ng-container>
+          <!--
+                    <ng-container matColumnDef="objectif"  >
+                      <mat-header-cell *matHeaderCellDef> <h2> Objectif : </h2> </mat-header-cell>
+                      <mat-cell *matCellDef="let element"><button class="btn "  (click)="Ongetobjectif(element.id_commercial )"><mat-icon color="primary">done_all</mat-icon></button></mat-cell>
+                    </ng-container>
+          -->
+          <ng-container matColumnDef="status"  >
+            <mat-header-cell *matHeaderCellDef mat-sort-header> <span style="font-size: 25px;">Status</span> </mat-header-cell>
+
+            <mat-cell *matCellDef="let element let i = index" >
+
+              <section class="example-section">
+                <mat-slide-toggle
+                  class="example-margin" name="status"
+                  ngModel
+                  [(ngModel)] = "element.status"
+                  color="primary"
+                  (change)="OnchangeStatusRetours(element.idRetour, element)"
+                >
+                </mat-slide-toggle>
+                Approuvée
+              </section>
+
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="edit"  >
+            <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element  "  ><button class="btn "  (click)="onModifier(element.idRetour )"><mat-icon color="primary">launch</mat-icon></button></mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="suppression"  >
+            <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element  " ><button class="btn "  (click)="onSupprimer(element.idRetour )"><mat-icon color="warn">delete_forever</mat-icon></button></mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+  <div *ngIf="retours == []">
+    <div class="container">
+      <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+      <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+        Page non trouvée</h2>
+      <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+        La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+    </div>
+  </div>
+  <div *ngIf="retours.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des retours est encore vide  ! </h3>
+    <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/lancer-un-retours">Ajouter une nouveau retour </button> </h3></div>
+</div>
+

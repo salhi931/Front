@@ -1,0 +1,33 @@
+.mat-icon {
+  background-repeat: no-repeat;
+  display: inline-block;
+  fill: currentColor;
+  height: 24px;
+  width: 24px;
+}
+table {
+  width: 100%;
+}
+
+h1 { color: #A52A2A; font-family: 'didot'; font-size: 34px; font-weight: 300; line-height: 40px; margin: 0 0 16px; }
+
+
+h2 { color: #A52A2A;   font-family: "didot"; font-size: 24px; font-weight: 100; line-height: 32px; margin: 0 0 14px; }
+
+
+p { color: #222; font-family: 'didot'; font-size: 20px; font-weight: 400; line-height: 24px; margin: 0 0 14px; }
+
+.example-h2 {
+  margin: 10px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 10px;
+}

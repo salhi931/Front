@@ -1,0 +1,128 @@
+<br><br><br><br><br><br>
+
+<mat-grid-list cols="3" >
+  <mat-grid-tile></mat-grid-tile>
+  <mat-grid-tile class="houssam"><mat-card class="mat-card-GPS" >
+    <mat-card-header>
+      <div mat-card-avatar ></div>
+      <mat-card-title>
+
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div>
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-6"><h1>Connexion</h1></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-6"><h4>Accéder au Backoffice</h4></div>
+        </div>
+      </div>
+      <br><br><br>
+      <div style="display: block" class="container">
+        <form (ngSubmit)="authendicated(f)" #f="ngForm">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <mat-form-field appearance="fill" class="col-md-5" >
+              <mat-label>Nom d'utilisateur | email:</mat-label>
+              <input matInput type="text" name="username" ngModel required email="{{config.email_required}}" #email="ngModel">
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div >
+              <mat-form-field appearance="fill" class="col-md-5">
+                <mat-label>Password:</mat-label>
+                <input matInput type="password"  name="password" ngModel required>
+              </mat-form-field>
+              <!--pattern="^[1-9]+[0-9]*$" -->
+
+            </div>
+          </div>
+<br>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-1">
+              <button class="achour"  class="btn" type="submit" [disabled]="!f.valid" style="background: #A52A2A; color: aliceblue; width: 168px" >Se connecter</button>
+            </div>
+          </div>
+        </form>
+
+
+
+        <div class="row">
+          <div class="col-md-3">
+
+          </div>
+        </div>
+
+
+
+      </div>
+    </mat-card-content>
+  </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile></mat-grid-tile>
+
+</mat-grid-list>
+<!--
+<br><br><br><br><br><br><br><br>
+<div class="container" >
+<div class="row" *ngIf="!login">
+  <div class="col-xs-12">
+    <form (ngSubmit)="authendicated(f)" #f="ngForm">
+      <div class="row">
+        <div class="col-sm-5 form-group">
+          <label>Nom d'utilisateur | email </label>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            name="username"
+            ngModel
+            required
+            email="{{config.email_required}}"
+            #email="ngModel">
+          <span *ngIf="!email.valid && email.touched" style="color: #A52A2A;">  SVP entrer un email ou un nom d'utilisateur valide</span>
+        </div>
+        <div class="col-sm-2 form-group">
+          <label for="password">password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            name="password"
+            ngModel
+            required>
+           pattern="^[1-9]+[0-9]*$"
+
+        </div>
+
+        <div class="col-xs-12" >
+          <button class="btn" type="submit" [disabled]="!f.valid" style="background: #A52A2A; color: aliceblue" >LOGIN</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+  <div className="App">
+    <div className="App-header">
+     <img className="App-logo"  alt="logo" src="../assets/icon-bpo.png"/>
+    </div>
+  </div>
+<div *ngIf="login">
+  </div>
+</div>
+-->
+<!-- <div id="page-loader">
+  <div class="animated bounceInDown">
+    <div class="spinner"></div>
+  </div>
+  <div class="text-div text-center animated zoomIn">
+    <p class="text-uppercase">Welcome</p>
+
+<h6 class="text-uppercase">Angular-Tuto.com</h6>
+</div>
+</div>-->

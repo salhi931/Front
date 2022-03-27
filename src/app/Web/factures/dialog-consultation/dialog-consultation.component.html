@@ -1,0 +1,161 @@
+
+
+
+<mat-toolbar color="accent">
+  <div class="row">
+    <mat-icon>local_shipping</mat-icon>
+    <span style="  font-size: 25px;"> Consultation - facture</span>
+
+  </div>
+
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <button class="btn btn-danger"  mat-dialog-close mat-dialog-close=""><mat-icon>close</mat-icon>
+      </button>    </ul>
+  </div>
+</mat-toolbar>
+<br>
+<mat-card style="height: 250px" >
+  <mat-card-header>
+    <div mat-card-avatar ></div>
+  </mat-card-header>
+  <div>
+    <div style="display: block">
+      <div class="col-md-3" style="background-color: #c5cae9">
+        <div >
+          <h3 class="example-h2"><label>Date de la facture </label>  	:&nbsp;	{{data.facture.dateDeLancement}}&nbsp;{{TransfertForm(data.facture.numFacture)}} </h3>
+        </div>
+        <div >
+          <h3 class="example-h2"><label> Facture <span>&#x2116;</span>  </label>&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	:&nbsp;	 {{data.facture.numFacture}}</h3>
+        </div>
+        <div >
+          <h3 class="example-h2"><label> Commande <span>&#x2116;</span></label> &nbsp;	&nbsp;	 :&nbsp;		{{data.facture.numCommande}}</h3>
+        </div>
+      </div>
+      <div class="col-md-6"></div>
+      <div class="col-md-3" style="background-color: #c5cae9">
+        <div>
+          <h3 class="example-h2"><label>code client&nbsp;	&nbsp;	&nbsp; </label>: {{data.facture.code}}</h3>
+        </div>
+        <div >
+          <h3 class="example-h2"><label>Nom client &nbsp;	&nbsp;	 </label> : {{data.facture.nomClient}}</h3>
+        </div>
+        <div >
+          <h3 class="example-h2"><label>Commercial 	&nbsp;</label>: {{data.facture.nomCommercial}}</h3>
+        </div>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br>
+      <div *ngIf="data.facture_details.length > 0" class="container">
+        <h2>articles facturés </h2>
+        <table class="table table table-dark">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Article</th>
+            <th scope="col">Designation</th>
+            <th scope="col">Quantite</th>
+            <!-- <th scope="col">quantite disponible</th> -->
+            <th scope="col">Prix unitaire</th>
+            <th scope="col">Magasin</th>
+            <th scope="col">Remise</th>
+            <th scope="col">TVA</th>
+            <th scope="col">Total TTC</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let articleachetes of data.facture_details; let i = index "   >
+            <th scope="row">{{  i+1}}</th>
+            <td>  {{ articleachetes.code_article }}  </td>
+            <td>  {{ articleachetes.description }}  </td>
+            <td>{{ articleachetes.quantite | number}}</td>
+            <!-- <td>{{ articleachetes.quantite - articleachetes.openquantite | number}}</td> -->
+            <td>{{ articleachetes.prix | number}} {{configurationService.devise}}</td>
+            <td>{{ articleachetes.magasin }}</td>
+            <td>{{ articleachetes.remise }}</td>
+            <td>{{ articleachetes.tva }}%</td>
+            <td>{{ articleachetes.total_ligne_TTC }} {{configurationService.devise}}</td>
+
+          </tr>
+          </tbody>
+        </table></div>
+      <br><br>
+      <div class="row">
+        <div class="col-md-9"></div>
+        <div class>
+          <h3 class="example-h2"><label>Total HT : </label>	&nbsp;	&nbsp;{{data.facture.totalHT}} {{configurationService.devise}}</h3>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-9"></div>
+        <div><h3 class="example-h2"><label>Total TTC : </label>	&nbsp;{{data.facture.totalTTC}} {{configurationService.devise}}</h3>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-9"></div>
+        <div><h3 class="example-h2"><label style="color: forestgreen">Montant Payé : </label><span>&nbsp;{{data.facture.montantPaye}} {{configurationService.devise}}</span>	</h3>
+        </div>
+      </div>
+      <div>
+        <div class="row">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-1">
+            <button  class="btn btn-sm btn-primary"  type="button" (click)="ConsulterFichierJointe()"><mat-icon> attach_file</mat-icon>Piece jointe</button>
+          </div>
+          <div class="col-md-7">
+          </div>
+          <div class="col-md-1">
+            <button    class="btn btn-sm btn-success"  type="button"  (click)="getPaiements(data.facture.numFacture)"><mat-icon> money</mat-icon>Mode de paiement</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div *ngIf="true" id="paiementList">
+    <div *ngIf="paiementList.length != 0">
+      <div class="container">
+        <div class="mat-elevation-z8">
+          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+
+            <ng-container matColumnDef="N.o">
+              <mat-header-cell *matHeaderCellDef> <span style="  font-size: 15px;"> <span>&#x2116;</span> paiement </span> </mat-header-cell>
+              <mat-cell *matCellDef=" let element " > {{element.numPaiement}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="commercial">
+              <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;"> Commercial</span>  </mat-header-cell>
+              <mat-cell *matCellDef="let element let i = index" > {{ (element.nomCommercial)}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="total_paye">
+              <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;">Total TTC</span>  </mat-header-cell>
+              <mat-cell *matCellDef="let element let i = index" > {{element.totalPaye}} {{configurationService.devise}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="date_paiement">
+              <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;">Date de paiement</span>  </mat-header-cell>
+              <mat-cell *matCellDef="let element let i = index" > {{element.dateDeLancement}}  </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="consultation"  >
+              <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+              <mat-cell *matCellDef="let element"><button class="btn "  (click)="onConsulter(element.idPaiement)"><mat-icon color="primary">launch</mat-icon></button></mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+</mat-card>
+
+
+

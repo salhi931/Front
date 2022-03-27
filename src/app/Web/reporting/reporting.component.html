@@ -1,0 +1,64 @@
+
+<!-- ----------------------------------------------------------------------
+<div *ngIf="zones-reporting" class="container">
+  <div style="display: block">
+    <canvas baseChart
+            [datasets]="radarChartData"
+            [labels]="radarChartLabels"
+            chartType="radar"></canvas>
+  </div>
+</div>-->
+<mat-drawer-container class="example-container"  >
+  <mat-drawer mode="side" opened position="end" id="sect1">
+    <br><br><br><br>
+    <button  style="color: grey" mat-button   (click)="Aricles()" [disabled]="articles"><h2 style="color: white">Articles </h2></button>
+    <br><br>
+    <button mat-button  (click)="Zones()" [disabled]="zones"><h2 style="color: white">Zones</h2></button>
+    <br><br>
+    <button mat-button   (click)="Commerciaux()" [disabled]="commerciaux"><h2 style="color: white"> Commerciaux </h2></button>
+    <br><br>
+    <button mat-button   (click)="Clients()" [disabled]="clients"><h2 style="color: white">Clients </h2></button>
+
+
+  </mat-drawer>
+  <mat-drawer-content class="class-container">
+    <div *ngIf="acceuil" class="container">
+      <br>
+       <h2 style="font-size: 30px">À propos des statistiques</h2>
+      <p>
+        Ces statistiques fournissent des informations sur les performances,
+        telles que des données significaif sur votre produits, les chiffres d'affaires de vos zone de vente , de vos commerciaux
+        et aussi des clients toujours en choisissant la periode exacte des statistiques
+      </p>
+      <p>
+        le slide a droit vous permet d'accceder aux statistiques des :
+      </p>
+      <ul>
+        <li> - Commerciaux</li>
+        <li> - Clients</li>
+        <li> - Articles</li>
+        <li> - Zones</li>
+      </ul>
+     </div>
+    <!-- ---------------------------------------------------------------------- -->
+    <div *ngIf="clients" class="container">
+      <app-clients-reporting></app-clients-reporting>
+    </div>
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- articles -->
+    <br>
+    <br>
+    <br>
+    <div *ngIf="articles" >
+      <app-articles-reporting ></app-articles-reporting>
+    </div>
+
+    <div *ngIf="zones" class="container">
+      <app-zones ></app-zones>
+    </div>
+    <div *ngIf="commerciaux" class="container">
+      <app-commerciaux-reporting></app-commerciaux-reporting>
+    </div></mat-drawer-content>
+
+</mat-drawer-container>

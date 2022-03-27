@@ -1,0 +1,106 @@
+<button mat-raised-button color="primary" type="button" routerLink="/articles"><mat-icon>cancel</mat-icon> 	&nbsp; Annuler</button>
+<br><br>
+<div class="container">
+  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>nom article:</mat-label>
+          <input type="text"  matInput name="nom_article" ngModel
+                   required>
+        </mat-form-field>
+      </div><div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>code article :</mat-label>
+          <input type="text"  matInput name="code_article" ngModel
+                   required>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>propriété:</mat-label>
+          <input type="text"  matInput name="prop_1" ngModel
+                 required>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+
+        <mat-form-field appearance="fill">
+          <mat-label>propriété 2 :</mat-label>
+          <input type="text"  matInput name="prop_2" ngModel
+                 required>
+        </mat-form-field>
+      </div>
+
+    </div>
+    <div class="row">
+
+      <div class="col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>famille :</mat-label>
+          <mat-select name="famille" ngModel
+                      required [(ngModel)]="famille_selectione" (openedChange)="getfamille(famille_selectione)" >
+            <mat-option >None</mat-option>
+            <mat-option *ngFor="let famille of gestionDesArticlesService.famille" value="{{famille.id}}">{{famille.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button type="button" color="primary" (click)="nouvelleFamille()"><mat-icon>add</mat-icon></button>
+      </div><!--
+      <div class="col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>famille :</mat-label>
+          <mat-select name="famille" ngModel
+                      required  [(ngModel)]="famille_selectione" (openedChange)="getfamille()">
+            <mat-option >None</mat-option>
+            <mat-option *ngFor="let famille of famille" value="{{famille.famille}}">{{famille.famille}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>-->
+      <div class="col-md-4">
+      <mat-form-field appearance="fill">
+        <mat-label>sous famille :</mat-label>
+        <mat-select name="sous_famille" ngModel
+                    required>
+          <mat-option >None</mat-option>
+          <mat-option *ngFor="let famille of SousFamille" value="{{famille.description}}">{{famille.description}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+        <button mat-raised-button type="button" color="primary" (click)="nouvelleSousFamille()"><mat-icon>add</mat-icon></button>
+
+      </div>
+    </div>
+    <div class="row">
+
+      <div class="col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>unite de stock :</mat-label>
+          <mat-select name="unite_de_stock" ngModel
+                      required>
+            <mat-option>None</mat-option>
+            <mat-option value="unite de stock 1">unite de stock  1</mat-option>
+            <mat-option value="unite de stock 2">unite de stock  2</mat-option>
+            <mat-option value="unite de stock 3">unite de stock  3</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div> <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>TVA :</mat-label>
+          <input type="number"  matInput name="TVA" ngModel
+                 required>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <button mat-raised-button type="button" (click)="ajouterimages()">Images</button>
+      </div>
+    </div>
+    <br><br>
+
+    <br><br>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!f.valid"> <mat-icon>add_circle</mat-icon>	&nbsp; Ajouter cet article</button>
+  </form>
+</div>

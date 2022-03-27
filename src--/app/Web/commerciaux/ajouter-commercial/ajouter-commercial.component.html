@@ -1,0 +1,205 @@
+
+<button mat-raised-button color="warn" type="button" routerLink="/commerciaux"><mat-icon>cancel</mat-icon> 	&nbsp; Annuler</button>
+<br><br>
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="fill" >
+              <mat-label>nom d'utilisateur :</mat-label>
+              <input type="text"  matInput name="nomUtilisateur" ngModel
+                     placeholder="Ex. Mohammed123" required>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+
+            <mat-form-field appearance="fill">
+              <mat-label>Entrer un mot de pass</mat-label>
+              <input matInput [type]="hide ? 'password' : 'text'" name="motDePass" ngModel>
+              <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+  <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="fill" >
+              <mat-label>Nom :</mat-label>
+              <input type="text"  matInput name="nom" ngModel
+                     placeholder="Ex. Mohammed" required>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="fill" >
+              <mat-label>Email :</mat-label>
+              <input type="email"  matInput name="email" ngModel
+                     required>
+            </mat-form-field>
+          </div>
+        </div>
+  <div class="row">
+          <div class="col-md-4">
+
+            <mat-form-field appearance="fill">
+              <mat-label>Tele :</mat-label>
+              <input type="text"  matInput name="tele" ngModel
+                     required>
+            </mat-form-field>
+
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="fill">
+              <mat-label>Cin :</mat-label>
+              <input type="text"  matInput name="cin" ngModel
+                     required>
+            </mat-form-field>
+          </div>
+        </div>
+  <div class="row">
+          <div class="col-md-4">
+            <h4 class="example-h2">Status du commercial</h4>
+            <section class="example-section">
+              Bloqué
+              <mat-slide-toggle
+                class="example-margin" name="status" ngModel [ngModel] = "status_com" color="primary">
+              </mat-slide-toggle>
+              Actif
+            </section>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="fill" >
+              <mat-label>Role :</mat-label>
+              <input type="text"  matInput name="role" ngModel required>
+            </mat-form-field>
+          </div>
+        </div>
+  <div class="row">
+    <div class="col-md-4">
+      <h4 class="example-h2">Acces au commande</h4>
+      <section class="example-section">
+        Bloqué
+        <mat-slide-toggle
+          class="example-margin" name="accesCommande" ngModel [ngModel] = "accesCommande" color="primary">
+        </mat-slide-toggle>
+        Actif
+      </section>
+    </div>
+
+    <div class="col-md-4">
+      <h4 class="example-h2">Acces au facture</h4>
+      <section class="example-section">
+        Bloqué
+        <mat-slide-toggle
+          class="example-margin" name="accesFacutre" ngModel [ngModel] = "accesFacutre" color="primary">
+        </mat-slide-toggle>
+        Actif
+      </section>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <h4 class="example-h2">Acces au retour</h4>
+      <section class="example-section">
+        Bloqué
+        <mat-slide-toggle
+          class="example-margin" name="accesRetour" ngModel [ngModel] = "accesRetour" color="primary">
+        </mat-slide-toggle>
+        Actif
+      </section>
+    </div>
+
+    <div class="col-md-4">
+      <h4 class="example-h2">Acces au Paiement</h4>
+      <section class="example-section">
+        Bloqué
+        <mat-slide-toggle
+          class="example-margin" name="accesPaiement" ngModel [ngModel] = "accesPaiement" color="primary">
+        </mat-slide-toggle>
+        Actif
+      </section>
+    </div>
+  </div>
+
+
+
+  <div class="row"><div class="col-sm-4 form-group">
+    <mat-form-field appearance="fill" >
+      <mat-label>Plafond cheque :</mat-label>
+      <input type="number"  matInput name="plafond_cheque"  ngModel required #plafond_cheque = "ngModel" required>
+    </mat-form-field>
+  </div>
+
+    <div class="col-sm-4 form-group">
+    <mat-form-field appearance="fill" >
+      <mat-label>Plafond effet :</mat-label>
+      <input type="number"  matInput name="plafond_effet"  ngModel
+             required
+             #plafond_effet = "ngModel"
+             required>
+    </mat-form-field>
+  </div>
+  </div><div class="row">
+  <div class="col-sm-4 form-group">
+
+    <mat-form-field appearance="fill" >
+      <mat-label>Plafond :</mat-label>
+      <input type="number"  matInput name="plafond"  ngModel
+             required
+             #plafond = "ngModel"
+             required>
+    </mat-form-field>
+    <span *ngIf="((f.value.plafond_effet+f.value.plafond_cheque)>f.value.plafond) "
+          style="color: #A52A2A">
+            <h2> SVP verifier les plafond</h2></span></div>
+  <div class="col-sm-4 form-group">
+   <button type="button" mat-raised-button>Coordonnees gps</button>
+
+  </div>
+</div>
+  <br><br>
+  <div class="row">
+    <section  class="col-md-4">
+      <mat-form-field>
+        <input
+          name="date_activite_debut"
+          ngModel
+          matInput
+          [matDatepicker] = "picker"
+          placeholder="date de debut"/>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </section>
+    <section class="col-md-4">
+      <mat-form-field>
+        <input
+          name="date_activite_fin"
+          ngModel
+          matInput
+          [matDatepicker] = "picker1"
+          placeholder="date de fin"/>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
+  </div>
+<br><br>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!f.valid && ((f.value.plafond_effet+f.value.plafond_cheque)>f.value.plafond)"> <mat-icon>add_circle</mat-icon>	&nbsp; Ajouter ce commercial</button>
+</form>
+</div>
+<div >
+  <div class="col-md-3" >
+    <label >Position sur map </label>&nbsp;&nbsp;&nbsp; <button mat-raised-button type="button" >Supprimer </button>
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="12" (mapClick)="map($event)" >
+      <agm-marker   [latitude]="lat" [longitude]="lng" ></agm-marker>
+    </agm-map>
+  </div>
+</div>

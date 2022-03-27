@@ -1,0 +1,21 @@
+<form (ngSubmit)="onSubmitt(f)" #f="ngForm" class="container">
+
+  <div class="col-md-3">
+    <mat-form-field appearance="fill">
+      <mat-label>Date debut </mat-label>
+      <input matInput ngModel [matDatepicker]="picker" required name="dateDebut">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="col-md-3">
+    <mat-form-field appearance="fill">
+      <mat-label>Date fin</mat-label>
+      <input matInput ngModel [matDatepicker]="picker2" required name="dateFin">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <button type="submit">submit</button>
+</form>
+

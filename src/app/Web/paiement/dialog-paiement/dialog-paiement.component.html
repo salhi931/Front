@@ -1,0 +1,224 @@
+<div >
+  <button mat-raised-button class="col-md-2" (click)="espece()" [disabled]="especes"> Espèces </button>
+  <button mat-raised-button class="col-md-2" (click)="cheque()" [disabled]="cheques">chèque</button>
+  <button mat-raised-button class="col-md-2" (click)="effet()" [disabled]="effets">Effet</button>
+  <button mat-raised-button class="col-md-2" (click)="virement()" [disabled]="virements">Virement bancaire</button>
+  <button mat-raised-button class="col-md-2" (click)="tpe()" [disabled]="tpes">TPE</button>
+</div>
+<br>
+<br><br>
+
+
+
+<div *ngIf="cheques">
+  <form  #fCheque="ngForm">
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Porteur du cheque</mat-label>
+        <input type="text" placeholder="porteur_du_cheque" name="porteurDuCheque" matInput required ngModel [(ngModel)] = "porteur_du_cheque">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-5"> </div>
+
+    <div class="col-md-3">
+      <mat-form-field>
+        <input name="dateCheque" ngModel matInput required [matDatepicker] = "picker1" placeholder="Date de cheque" [(ngModel)] = "dateCheque"/>
+        <mat-datepicker-toggle matSuffix [for]="picker1">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+
+
+    <div class="col-md-3" >
+      <mat-form-field class="example-full-width">
+        <mat-label>Banque </mat-label>
+        <input type="text" placeholder="banque" aria-label="banque" matInput required ngModel name="banque" [(ngModel)] = "banquenumCheque">
+
+      </mat-form-field>
+    </div>
+    <div class="col-md-5"> </div>
+    <div class="col-md-3"  >
+      <mat-form-field class="example-full-width">
+        <mat-label>Numero du cheque </mat-label>
+        <input type="number" placeholder="numCheque" matInput required ngModel name="numCheque" [(ngModel)] = "numCheque">
+      </mat-form-field>
+    </div>
+
+    <br>
+
+
+    <br><br>
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Montant paye</mat-label>
+        <input type="number"  matInput name="montantPaye" ngModel required [(ngModel)] = "montantPayecheque">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6"> </div>
+
+    <button mat-raised-button class="col-md-1" [disabled]="!fCheque.valid" (click)="Ajoutercheque(fCheque)">Ajouter</button>
+
+    <br><br>
+
+  </form>
+</div>
+
+
+<div *ngIf="especes">
+  <form  #fEspeces="ngForm">
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Montant paye</mat-label>
+        <input type="number"  matInput name="montantPaye" ngModel required [(ngModel)] = "montantPayeespece">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6"> </div>
+
+    <button mat-raised-button class="col-md-1" [disabled]="!fEspeces.valid" (click)="AjouterEspece(fEspeces)">Ajouter</button>
+    <br><br><br>
+    <div class="col-md-8"></div>
+    <br><br>
+  </form>
+</div>
+
+
+<div *ngIf="effets">
+  <form  #fEffet="ngForm">
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Porteur du cheque</mat-label>
+        <input type="text" placeholder="porteur_du_cheque" name="porteurDuCheque" matInput required ngModel>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-5"> </div>
+
+    <div class="col-md-3">
+      <mat-form-field>
+        <input name="dateCheque" ngModel matInput required [matDatepicker] = "picker1" placeholder="Date de paiement"/>
+        <mat-datepicker-toggle matSuffix [for]="picker1">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+
+
+    <div class="col-md-3" >
+      <mat-form-field class="example-full-width">
+        <mat-label>Banque </mat-label>
+        <input type="text" placeholder="banque" aria-label="banque" matInput required ngModel name="banque">
+
+      </mat-form-field>
+    </div>
+    <div class="col-md-5"> </div>
+    <div class="col-md-3"  >
+      <mat-form-field class="example-full-width">
+        <mat-label>Numero d'effet </mat-label>
+        <input type="number" placeholder="num Effet" matInput required ngModel name="numEffet">
+      </mat-form-field>
+    </div>
+
+    <br>
+
+
+    <br><br>
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Montant paye</mat-label>
+        <input type="number"  matInput name="montantPaye" ngModel required >
+      </mat-form-field>
+    </div>
+    <div class="col-md-6"> </div>
+
+    <button mat-raised-button class="col-md-1" [disabled]="!fEffet.valid" (click)="AjouterEffet(fEffet)">Ajouter</button>
+
+    <br><br>
+
+  </form>
+
+</div>
+
+
+<div *ngIf="virements">
+  <form  #fVirement="ngForm">
+
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width">
+        <mat-label>Numero du Virement </mat-label>
+        <input type="text" placeholder="num Virement" matInput required ngModel name="numVirement">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-5"> </div>
+
+    <div class="col-md-3">
+      <mat-form-field>
+        <input name="dateDeVirement" ngModel matInput required [matDatepicker] = "picker1" placeholder="Date de Virement"/>
+        <mat-datepicker-toggle matSuffix [for]="picker1">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <br><br><br>
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Montant paye</mat-label>
+        <input type="number"  matInput name="montantPaye" ngModel required >
+      </mat-form-field>
+    </div>
+    <div class="col-md-6"> </div>
+
+    <button mat-raised-button class="col-md-1" [disabled]="!fVirement.valid" (click)="AjouterVirement(fVirement)">Ajouter</button>
+
+    <br><br>
+
+  </form>
+
+</div>
+
+
+<div *ngIf="tpes">
+
+  <form  #fTpe="ngForm">
+
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width">
+        <mat-label>Numero de la carte </mat-label>
+        <input type="text" placeholder="num de la carte" matInput required ngModel name="numCarte">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-5"> </div>
+
+    <div class="col-md-3">
+      <mat-form-field>
+        <input name="dateExpiration" ngModel matInput required [matDatepicker] = "picker1" placeholder="Date d'expiration"/>
+        <mat-datepicker-toggle matSuffix [for]="picker1">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <br><br><br>
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width" >
+        <mat-label>  	Montant paye</mat-label>
+        <input type="number"  matInput name="montantPaye" ngModel required >
+      </mat-form-field>
+    </div>
+    <div class="col-md-6"> </div>
+
+    <button mat-raised-button class="col-md-1" [disabled]="!fTpe.valid" (click)="AjouterTpe(fTpe)">Ajouter</button>
+
+    <br><br>
+  </form>
+
+</div>
+<br><br>
+<br><br>
+
+ <div class="col-md-9"></div><button class="btn btn-danger" mat-dialog-close >fermer</button>
+

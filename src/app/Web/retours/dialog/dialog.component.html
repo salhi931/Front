@@ -1,0 +1,116 @@
+-
+<div  *ngIf="Data1 && !TableClient" >
+  <mat-toolbar color="accent">
+    <mat-icon>keyboard_backspace</mat-icon>
+    <button mat-raised-button mat-dialog-close ><h3>Cancel</h3></button>
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <ul fxLayout="row" fxLayoutGap="20px">
+        <div class="col-md-5">
+          <button mat-raised-button (click)="ValiderRetours()"><h3>Valider</h3></button>
+          <button mat-raised-button color="primary" (click)="exportTable()"><h3> Imprimer</h3></button>
+        </div></ul></div>
+  </mat-toolbar>
+    <div *ngIf="Data1.length != 0">
+      <div class="container">
+        <div class="mat-elevation-z8">
+          <table mat-table  id="ExampleTable2" [dataSource]="dataSource2" class="mat-elevation-z8">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="N.o">
+              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <td mat-cell *matCellDef="let element let i = index"> {{i + 1}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="codeArticle">
+              <th mat-header-cell *matHeaderCellDef> Code Article </th>
+              <td mat-cell *matCellDef="let element"> {{element.codeArticle}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="NomArticle">
+              <th mat-header-cell *matHeaderCellDef> Nom Article </th>
+              <td mat-cell *matCellDef="let element"> {{element.nomArticle}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="motif">
+              <th mat-header-cell *matHeaderCellDef> Motif </th>
+              <td mat-cell *matCellDef="let element"> {{element.	motif}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="quantite">
+              <th mat-header-cell *matHeaderCellDef> Quantite Approuvee </th>
+              <td mat-cell *matCellDef="let element"> {{element.	quantiteApprouvee}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+<div  *ngIf="data && TableClient" >
+  <div *ngIf="data.length != 0">
+    <mat-toolbar color="accent">
+      <mat-icon>settings_backup_restore</mat-icon>
+      <span style="font-size: 25px;">Articles/Clients</span>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px">
+          <div class="col-md-3">
+            <button mat-raised-button (click)="Acrticle_motifs()" ><h3>Suivant </h3></button>
+          </div></ul></div>
+    </mat-toolbar>
+    <div class="container">
+      <div class="mat-elevation-z8">
+        <mat-table id="ExampleTable1" [dataSource]="dataSource" matSort class="mat-elevation-z8">
+          <ng-container matColumnDef="N.o">
+            <mat-header-cell *matHeaderCellDef> <th> <span>&#x2116;</span></th> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{i+1}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="client">
+            <mat-header-cell *matHeaderCellDef> <th> Client </th> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}">
+              <div >{{element.client}}</div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="codeArticle">
+            <mat-header-cell *matHeaderCellDef> <th> Code Article</th> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.codeArticle}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="NomArticle">
+            <mat-header-cell *matHeaderCellDef><th> Nom Article</th>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.nomArticle}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="motif">
+            <mat-header-cell *matHeaderCellDef><th> Motif</th>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.motif}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="quantite">
+            <mat-header-cell *matHeaderCellDef><th> Quantite</th>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.	quantite}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="quantiteApprouvee">
+            <mat-header-cell *matHeaderCellDef><th> Quantite approuvee</th>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.	quantiteApprouvee}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="edit"  >
+            <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"><button class="btn "  (click)="onModifier(element)"><mat-icon color="primary">edit</mat-icon></button></mat-cell>
+          </ng-container>
+         <!-- <ng-container matColumnDef="edit">
+            <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;"> edit</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> </mat-cell>
+          </ng-container>
+          -->
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+</div>
+
+

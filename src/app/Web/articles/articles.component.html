@@ -1,0 +1,119 @@
+
+<mat-toolbar color="accent">
+
+  <mat-icon>view_list</mat-icon>
+  <span style="  font-size: 25px;">Articles</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+
+
+  </div>
+</mat-toolbar>
+<div class="container">
+  <div class="col-md-2">
+    <button type="button" mat-raised-button routerLink="/articles-ajout" [disabled]="true"><h2><mat-icon color="primary" >note_add</mat-icon> Ajouter </h2> </button>
+  </div>
+  <div class="col-md-2">
+    <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+  </div>
+</div>
+
+
+<div  *ngIf="articles" >
+  <div *ngIf="articles.length != 0">
+    <div class="container"> <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="id_article ">
+          <mat-header-cell  *matHeaderCellDef><span style="font-size: 25px;"> No. </span></mat-header-cell>
+          <mat-cell *matCellDef=" let i = index" > {{i+1}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="code_article">
+          <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Code </span> </mat-header-cell>
+          <mat-cell *matCellDef="let element let i = index" > {{element.code_article }} </mat-cell>
+        </ng-container>
+        nom_utilisateur,cin,date_activite_debut, 	date_activite_fin, edit, delete
+        <ng-container matColumnDef="nom_article">
+          <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Article </span> </mat-header-cell>
+          <mat-cell *matCellDef="let element let i = index" > {{element.nom_article }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="groupe_article">
+          <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;">Groupe</span>  </mat-header-cell>
+          <mat-cell *matCellDef="let element let i = index" > {{element.Famille }} </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="edit"  >
+          <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element  "  ><button class="btn "  (click)="OnModifier(element.id_article  )"><mat-icon color="primary">edit</mat-icon></button></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="delete"  >
+          <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element  "  ><button class="btn "  (click)="OnSupprimer(element.id_article )" [disabled]="true"><mat-icon color="warn">delete_forever</mat-icon></button></mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+  </div>
+  </div>
+  <div *ngIf="gestionDesArticlesService.articles == []">
+    <div class="container">
+      <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+      <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+        Page non trouvée</h2>
+      <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+        La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+    </div>
+  </div>
+  <div *ngIf="articles.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des articles est encore vide  ! </h3>
+    <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/articles-ajout" [disabled]="true">Ajouter un nouveau article </button> </h3></div>
+</div>
+<!--
+<br>
+<br>
+<div  >
+  <div class = "row">
+    <div class="col-md-12 mt-5"  >
+      <table class="table  table-hover bg-white   "  style=" box-shadow:0 0 30PX black;  border-radius: 1PC; " >
+        <thead class="table text-white " style="font-size:18PX;
+                background-color: rgb(16, 16, 75); color: #FFFFFF">
+        <tr>
+          <td style="text-align: center">NO.</td>
+          <td>Code</td>
+          <td>Article</td>
+          <td>Famille</td>
+          <td>Image</td>
+          <td> Update</td>
+          <td> Delete</td>
+        </tr>
+        </thead>
+
+
+        <tbody class="table" style="font-size:14px;  ">
+        <tr *ngFor="let article of this.articles; let i = index "   >
+
+            <td style="text-align: center">{{i}} </td>
+            <td>{{article.code_article}} </td>
+
+            <td>{{article.nom_article}} </td>
+            <td>{{article.Famille}} </td>
+            <td class="imgok"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQyotXaBF8Nf5YH5jB4ilXNcn2yN0-6iGfOw&usqp=CAU"width="50pX" height="50pX"> </td>
+
+            <td><button class="btn btn-u btn-warning" (click)="OnModifier(article.id_article)" >  update <mat-icon >edit</mat-icon> </button></td>
+            <td><button class="btn btn-d text-white" style="background-color: rgb(179, 12, 12); color: white" disabled>Delete <mat-icon>delete_forever</mat-icon>  </button></td>
+        </tr>
+        </tbody>
+
+      </table>
+
+
+    </div>
+
+  </div>
+</div>
+-->

@@ -1,0 +1,135 @@
+
+<button mat-raised-button color="warn" type="button" routerLink="/commerciaux"><mat-icon>cancel</mat-icon> 	&nbsp; Annuler</button>
+<br><br>
+<div class="container" *ngIf="gestionDesCommerciaux.objectif!=undefined">
+  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <br><br>
+    <!--<div class="row">
+
+        <output matOutput name="id_commercial" ngModel [(ngModel)]="gestionDesCommerciaux.id_commercial" > {{gestionDesCommerciaux.id_commercial}}
+          </output>
+
+    </div>-->
+    <div class="row">
+      <section  class="col-md-4">
+        <mat-form-field>
+          <input
+            name="date_debut"
+            ngModel
+            [(ngModel)]="gestionDesCommerciaux.objectif.date_debut"
+            matInput
+            [matDatepicker] = "picker"
+            placeholder="date de debut"/>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker">
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </section>
+      <section class="col-md-4">
+        <mat-form-field>
+          <input
+            name="date_fin"
+            ngModel
+            [(ngModel)]="gestionDesCommerciaux.objectif.date_fin"
+            matInput
+            [matDatepicker] = "picker1"
+            placeholder="date de fin"/>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker1">
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </section>
+    </div>
+    <div class="row">
+      <mat-form-field class="class" appearance="outline"  >
+        <mat-label>Objectif</mat-label>
+        <textarea matInput name="objectif" ngModel  [(ngModel)]="gestionDesCommerciaux.objectif.objectif"    ></textarea>
+      </mat-form-field>
+    </div>
+    <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Montant</mat-label>
+          <input matInput type="number" class="example-right-align" name="montant" ngModel [(ngModel)]="gestionDesCommerciaux.objectif.montant" >
+          <span matPrefix>$&nbsp;</span>
+          <span matSuffix>.00</span>
+        </mat-form-field>
+       </div>
+      <br><br>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!f.valid"> <mat-icon>save</mat-icon>	&nbsp;Sauvegarder</button>
+  </form>
+</div>
+<div *ngIf="gestionDesCommerciaux.objectif==undefined && gestionDesCommerciaux.id_commercial != undefined">
+  Creer un nouveau objectif
+  <div class="container">
+    <form (ngSubmit)="OnAjoutObjectif(f1)"  #f1="ngForm">
+      <br><br>
+      <div class="row">
+
+        <output matOutput name="id_commercial" ngModel [(ngModel)]="gestionDesCommerciaux.id_commercial" > </output>
+
+      </div>
+      <div class="row">
+        <section  class="col-md-4">
+          <mat-form-field>
+            <input
+              name="date_debut"
+              ngModel
+              matInput
+              [matDatepicker] = "picker"
+              placeholder="date de debut"/>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </section>
+        <section class="col-md-4">
+          <mat-form-field>
+            <input
+              name="date_fin"
+              ngModel
+              matInput
+              [matDatepicker] = "picker1"
+              placeholder="date de fin"/>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker1">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </section>
+      </div>
+      <div class="row">
+        <mat-form-field class="class" appearance="outline"  >
+          <mat-label>Objectif</mat-label>
+          <textarea matInput name="objectif" ngModel></textarea>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Montant</mat-label>
+          <input matInput type="number" class="example-right-align" name="montant" ngModel>
+          <span matPrefix>$&nbsp;</span>
+          <span matSuffix>.00</span>
+        </mat-form-field>
+      </div>
+      <br><br>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!f1.valid"> <mat-icon>save</mat-icon>	&nbsp;Sauvegarder</button>
+    </form>
+  </div>
+
+</div>
+<div *ngIf=" gestionDesCommerciaux.id_commercial == undefined">Loading...
+  <div class="container">
+    <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+    <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+      Page non trouvée</h2>
+    <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+      La page que vous recherchez n'existe pas ou une autre erreur s'est produite. Aller à <a routerLink="/commerciaux">Page Commerciaux.</a></p>
+  </div>
+</div>

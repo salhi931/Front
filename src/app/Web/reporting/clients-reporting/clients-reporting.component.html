@@ -1,0 +1,91 @@
+<br>
+<form (ngSubmit)="onSubmit(f)" #f="ngForm" class="container">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Zone :</mat-label>
+        <mat-select name="zone" ngModel
+                    type="text" (selectionChange)="getReportingZone(f.value)" [ngModel] = zone>
+          <mat-option  value="toutes les zones">Toutes les zones</mat-option>
+          <mat-option *ngFor="let zones of reportingService.zones let  index = index"
+                      value="{{zones.zone }}">{{index + 1}} &nbsp;&nbsp; {{zones.zone}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Date debut </mat-label>
+        <input matInput ngModel [matDatepicker]="picker" required name="dateDebut">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Date fin</mat-label>
+        <input matInput ngModel [matDatepicker]="picker2" required name="dateFin">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-success mat-button" type="submit" [disabled]="!f.valid">submit</button>
+    </div>
+    <br> <br> <br> <br>
+    <!--
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Famille :</mat-label>
+        <mat-select name="famille" ngModel
+                    type="text" (selectionChange)="getReportingZone(f.value)" [ngModel] = zone>
+          <mat-option value="null" >Toutes les Famille</mat-option>
+          <mat-option *ngFor="let famille of reportingService.familles let  index = index"
+                      value="{{famille.description }}">{{index + 1}} &nbsp;&nbsp; {{famille.description}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    -->
+
+</form>
+<br>
+<div class="row">
+  <div class="col-md-1"></div>
+  <mat-card class="col-md-5" *ngIf="pieChartData.length > 0">
+    <mat-card-header>
+      <div mat-card-avatar ></div>
+      <mat-card-title>Chiffres d'affaires / categories des clients</mat-card-title>
+    </mat-card-header>
+
+    <div   >
+      <div style="display: block">
+        <canvas baseChart
+                [data]="doughnutChartData"
+                [labels]="doughnutChartLabels"
+                chartType="doughnut"></canvas>
+      </div>
+    </div>
+    <div *ngIf="pieChartData.length == 0" >
+      <div >
+      </div>
+    </div>
+    <mat-card-content>
+      <br>
+      <br>
+      <div *ngIf="detail1">
+        <button mat-raised-button class="btn-info" (click)="details1()" >Details</button>
+      </div>
+      <div *ngIf="!detail1">
+        <button mat-raised-button class="btn-danger" (click)="details1()" > Masquer </button>
+        <h2></h2>
+        <ul *ngFor="let article of pieChartData let i = index">
+          {{pieChartLabels[i] }}: {{article}} {{configurationService.devise}}
+
+        </ul>
+      </div>
+
+
+
+
+    </mat-card-content>
+  </mat-card>
+<br>
+</div>

@@ -1,0 +1,118 @@
+<mat-toolbar color="accent">
+  <mat-icon>payment</mat-icon>
+  <span style="  font-size: 25px;">Paiement</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <div class="col-md-3">
+        <button type="button" mat-raised-button routerLink="/lancer-un-paiement"><h2><mat-icon>add</mat-icon> nouveau paiement  </h2> </button>
+      </div>
+    </ul>
+  </div>
+</mat-toolbar>
+<br>
+<div class="container">
+  <form  #f="ngForm">
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Commercial :</mat-label>
+        <mat-select name="idCommercial" ngModel
+                    type="number" >
+          <mat-option >None</mat-option>
+          <mat-option *ngFor="let commerial of gestionDePaiementService.commerciaux let  index = index"
+                      value="{{commerial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commerial.nom}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Date</mat-label>
+        <input matInput ngModel [matDatepicker]="picker"  name="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <button type="submit"  mat-raised-button (click)="getFacturesCommercialDate(f)" [disabled]="f.value.idCommercial === undefined || f.value.idCommercial === ''  "><mat-icon>search</mat-icon></button>
+  </form>
+
+</div>
+<div class="container">
+
+  <div class="col-md-3">
+    <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+  </div>
+  <div class="col-md-3">
+    <mat-form-field appearance="fill">
+      <mat-label>Total: </mat-label>
+      <input disabled matInput type="number" class="example-right-align"  [ngModel] = "Total" style="color: black">
+      <span matSuffix>{{configurationService.devise}}</span>
+    </mat-form-field>
+  </div>
+</div>
+<br>
+
+<div  *ngIf="paiementList" >
+  <div *ngIf="paiementList.length != 0">
+    <div class="container">
+      <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+
+          <ng-container matColumnDef="N.o">
+            <mat-header-cell *matHeaderCellDef> <span style="  font-size: 15px;"> <span>&#x2116;</span> paiement </span> </mat-header-cell>
+            <mat-cell *matCellDef=" let element " > {{element.numPaiement}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="code">
+            <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;"> Code client</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{ (element.codeClient)}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="client">
+            <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;"> Client</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{ (element.nomClient)}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="commercial">
+            <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;"> Commercial</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{ (element.nomCommercial)}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="total_paye">
+            <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;">Total TTC</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.totalPaye}} {{configurationService.devise}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="date_paiement">
+            <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;">Date de paiement</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.dateDeLancement}}  </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="consultation"  >
+            <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element"><button class="btn "  (click)="onConsulter(element.idPaiement )"><mat-icon color="primary">launch</mat-icon></button></mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="suppression"  >
+            <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element"><button class="btn "  (click)="onSupprimer(element.idPaiement )" disabled><mat-icon color="warn">delete_forever</mat-icon></button></mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+ <!-- <div *ngIf="paiementList == []">
+    <div class="container">
+      <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+      <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+        Page non trouvée</h2>
+      <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+        La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+    </div>
+  </div>
+  <div *ngIf="paiementList.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des paiement est encore vide  ! </h3>
+    <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/lancer-un-paiement">lancer un nouveau paiement</button> </h3></div>
+</div>
+-->
+</div>

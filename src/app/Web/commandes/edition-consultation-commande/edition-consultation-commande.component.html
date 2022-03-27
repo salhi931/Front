@@ -1,0 +1,309 @@
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <mat-icon>contacts</mat-icon>
+  <span>Edition consultation commande</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+
+
+  </div>
+</mat-toolbar>
+
+<button mat-raised-button color="primary" style="color: #FFFFFF" type="button" routerLink="/commandes"><mat-icon>cancel</mat-icon> 	&nbsp; Annuler</button>
+<br><br>
+<div class="container" *ngIf="this.gestionDesCommandesService.commande">
+
+  <form (ngSubmit)="onSubmit(ff)" #ff="ngForm">
+
+    <mat-toolbar-row>
+      <div class="col-md-3">
+
+      </div>
+
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+         <div class="col-md-1">
+          <button   class="btn btn-sm btn-success" type="button" (click)="ajouterimages()"><mat-icon> attach_file</mat-icon>Piece jointe</button>
+         </div>
+      </div>
+
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <div class="col-md-3">
+        <mat-form-field appearance="fill" *ngIf="client">
+          <mat-label>Code du client </mat-label>
+          <input matInput type="text" class="example-right-align"  ngModel name="client_code_selected" disabled [ngModel]="client.nom_client">
+        </mat-form-field>
+      </div>
+
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-2">
+          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-form-field appearance="fill">
+            <mat-label>Num commande : </mat-label>
+            <input matInput type="text" class="example-right-align"  ngModel name="num_commande" disabled
+                   [ngModel]="gestionDesCommandesService.commande.num_commande">
+          </mat-form-field>
+
+        </div>
+      </div>
+
+    </mat-toolbar-row>
+
+    <mat-toolbar-row>
+      <div class="col-md-4" >
+          <mat-form-field appearance="fill" *ngIf="client">
+            <mat-label>	Nom client :</mat-label>
+            <input type="text"  matInput name="nom_client" ngModel  disabled [ngModel]="client.code"
+                   required >
+        </mat-form-field>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-1">
+          <h4 class="example-h2">Status du commande</h4>
+          <section class="example-section">
+            <mat-slide-toggle
+              class="example-margin" name="status"
+              ngModel
+              [(ngModel)] = "gestionDesCommandesService.commande.status"
+              color="primary"
+            >
+            </mat-slide-toggle>
+            Approuvée
+          </section>
+        </div>
+      </div>
+      <br><br><br><br>
+    </mat-toolbar-row>
+    <br>
+
+    <mat-toolbar-row>
+      <div class="col-md-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Commercial</mat-label>
+          <input matInput type="text" class="example-right-align"  ngModel name="commercial" disabled [ngModel]=getCommercial_nom(ff.value.id_commercial)>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field appearance="fill">
+          <mat-label>changer le commercial :</mat-label>
+          <mat-select name="id_commercial" ngModel
+                      type="number" [(ngModel)]=gestionDesCommandesService.commande.id_commercial (selectionChange)="getMagasin(gestionDesCommandesService.commande.id_commercial)">
+            <mat-option >None</mat-option>
+            <mat-option  *ngFor="let commercial of gestionDesCommandesService.commerciaux let  index = index"
+                         value="{{commercial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commercial.nomUtilisateur}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-3">
+          <div class="col-md-3">
+            <mat-form-field>
+              <input
+                name="date_commande"
+                ngModel
+                matInput
+                required
+                [(ngModel)]="gestionDesCommandesService.commande.date_de_lancement"
+                [matDatepicker] = "picker1"
+                placeholder="Date de creation"/>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker1">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+
+    </mat-toolbar-row>
+    <br><br>
+
+  </form>
+  <!-- <form (ngSubmit)="onSubmitt(f)" #f="ngForm">
+
+    <mat-toolbar-row (mouseleave)="calculerprix()">
+      <div class="col-md-4" >
+
+        <mat-form-field class="example-full-width" (mouseleave)="rechercheprix()" >
+          <mat-label>article </mat-label>
+          <input type="text"
+                 placeholder="choisir un article"
+                 aria-label="article"
+                 matInput
+                 ngModel
+                 required
+                 name="code_article"
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto" [(ngModel)]="article_selected" >
+          <mat-autocomplete #auto="matAutocomplete" >
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [disabled]="!gestionDesCommandesService.TablePrix">
+              <div>
+                <span> {{option}}</span>
+              </div>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>&nbsp;&nbsp;
+
+      <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <mat-form-field appearance="fill">
+          <mat-label>designation</mat-label>
+          <input matInput type="text" class="example-right-align"  ngModel name="designation" disabled [(ngModel)]="designation">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field appearance="fill">
+          <mat-label>Prix unitaire</mat-label>
+          <input matInput type="number" class="example-right-align"  ngModel name="prix" required [disabled]="!gestionDesCommandesService.TablePrix || !boolean" [(ngModel)]="article_prix">
+          <span matPrefix>&nbsp;</span>
+          <span matSuffix>{{configurationService.devise}}</span>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field appearance="fill" >
+          <mat-label>quantite :</mat-label>
+          <input type="number"  matInput name="quantite" [(ngModel)]="article_quantite" [disabled]="!gestionDesCommandesService.TablePrix "
+                 required >
+        </mat-form-field>
+      </div>
+
+
+    </mat-toolbar-row>
+    <mat-toolbar-row (mouseleave)="calculerprix()">
+
+      <div class="col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>Magasin:</mat-label>
+          <mat-select name="magsin_depart" ngModel [(ngModel)] = "magasin_selected"
+                      type="number">
+            <mat-option >None</mat-option>
+            <mat-option *ngFor="let magasin of this.gestionDesCommandesService.magasinsList let  index = index"
+                        value="{{magasin.id_magasin }}">{{index + 1}} &nbsp;&nbsp; {{magasin.nom_magasin}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-<div class="col-md-4">
+        <mat-form-field class="example-full-width">
+          <mat-label>Magasin </mat-label>
+          <input type="text"
+                 placeholder="choisir un magasin"
+                 aria-label="magasin"
+                 matInput
+                 ngModel
+                 required
+                 name="magasin"
+                 [formControl]="myControl4"
+                 [matAutocomplete]="auto4" [(ngModel)]="magasin_selected"  >
+          <mat-autocomplete #auto4="matAutocomplete">
+            <mat-option *ngFor="let options of filteredOptions4 | async" [value]="options">
+              <div>
+                <span> {{options}}</span>
+              </div>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        &nbsp;
+      </div>->
+      <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field appearance="fill">
+          <mat-label>remise</mat-label>
+          <input matInput type="number" class="example-right-align"  ngModel name="remise" [disabled]="!gestionDesCommandesService.TablePrix" [(ngModel)]="remise">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field appearance="fill">
+          <mat-label>TVA</mat-label>
+          <input matInput type="number" class="example-right-align"  ngModel name="TVA" disabled [(ngModel)]="TVA">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field appearance="fill">
+          <mat-label>Prix TTC</mat-label>
+          <input matInput type="number" class="example-right-align"  ngModel name="PRIX" required [disabled]="true" [(ngModel)]="PRIX">
+          <span matPrefix>&nbsp;</span>
+          <span matSuffix>{{configurationService.devise}}</span>
+        </mat-form-field>
+        <button class="btn btn-sm btn-primary" type="button" (click)="ajouterarticle()" [disabled]="!f.valid"><mat-icon>add_circle</mat-icon></button>
+      </div>
+
+    </mat-toolbar-row>
+  </form> -->
+
+  <div *ngIf="gestionDesCommandesService.articlescommandees" class="container">
+    <div *ngIf="gestionDesCommandesService.articlescommandees" class="container">
+      <h2>articles commandes</h2>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">articles</th>
+          <th scope="col">quantite</th>
+          <th scope="col">prix unitaire</th>
+          <th scope="col">magasin</th>
+          <th scope="col">remise</th>
+          <th scope="col">TVA</th>
+          <th scope="col">Total </th>
+          <th scope="col"> *</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let articleachetes of gestionDesCommandesService.articlescommandees; let i = index "   >
+          <th scope="row">{{  i+1}}</th>
+          <td>  {{ articleachetes.code_article }}  </td>
+          <td>{{ articleachetes.quantite | number}}</td>
+          <td>{{ articleachetes.prix | number}} {{configurationService.devise}}</td>
+          <td>{{ articleachetes.id_magasin }}</td>
+          <td>{{ articleachetes.remise }}</td>
+          <td>{{ articleachetes.tva }}</td>
+          <td>{{ articleachetes.total_ligne_TTC}} {{configurationService.devise}}</td>
+          <td><button class="btn btn-sm btn-danger"  type="button" style="position : absolute  ;" (click)="supprimerarticle(i)">Supprimer</button> </td>
+        </tr>
+        </tbody>
+      </table></div>
+    <br><br>
+    <div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Total HT</mat-label>
+            <input matInput type="number" class="example-right-align"  ngModel name="totalHC" [disabled]="true" [ngModel]="this.gestionDesCommandesService.commande.total_HT">
+            <span matPrefix>&nbsp;</span>
+            <span matSuffix>{{configurationService.devise}}</span>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <ul fxLayout="row" fxLayoutGap="20px"></ul>
+        <div class="col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Total TTC</mat-label>
+            <input matInput type="number" class="example-right-align"  ngModel name="totalTTC" [disabled]="true" [ngModel]="this.gestionDesCommandesService.commande.total_TTC">
+            <span matPrefix>&nbsp;</span>
+            <span matSuffix>{{configurationService.devise}}</span>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <mat-toolbar-row>
+      <button mat-raised-button color="primary" type="submit"  style="color: #FFFFFF"  (click)="onSubmit(ff)"> <mat-icon>save</mat-icon>	&nbsp; Sauvgarder les modifications</button>
+    </mat-toolbar-row>
+  </div>
+</div>

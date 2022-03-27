@@ -1,0 +1,88 @@
+  <mat-toolbar color="accent">
+   <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+    <mat-icon>contacts</mat-icon>
+    <span style="  font-size: 25px;">Clients</span>
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <ul fxLayout="row" fxLayoutGap="20px"></ul>
+      <span matBadge="{{nombre_de_client_a_ajoutee}}" matBadgeSize="small" matBadgeColor="primary"  *ngIf="nombre_de_client_a_ajoutee>0" >
+    <button mat-button [matMenuTriggerFor]="menu">
+             <mat-icon color="primary">notifications_active</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" >
+            <button mat-menu-item routerLink="/clients-non-valides" >
+
+              {{nombre_de_client_a_ajoutee}} comptes clients à valider
+            </button>
+          </mat-menu></span>
+      <div  *ngIf="nombre_de_client_a_ajoutee==0 || !nombre_de_client_a_ajoutee">
+      <button mat-button [matMenuTriggerFor]="menu">
+             <mat-icon color="accent">notifications_active</mat-icon></button>
+      <mat-menu #menu="matMenu" >
+        <button mat-menu-item routerLink="/clients-non-valides" >
+          consulter les comptes clients à valider
+        </button>
+      </mat-menu></div>
+         </div>
+  </mat-toolbar>
+  <br>
+  <div class="container">
+    <div class="col-md-2">
+      <button type="button" mat-raised-button (click)="nouveauClient()"><h2><mat-icon>add</mat-icon> Ajouter </h2> </button>
+    </div>
+    <div class="col-md-2">
+      <mat-form-field> <input (keyup)="appliquerfilter(choix)" matInput placeholder="Filtrer" [(ngModel)]="choix" ></mat-form-field>
+    </div>
+  </div>
+  <br>
+<div *ngIf="gestionClient.clients_valides.length != 0">
+
+          <div class="container"> <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+               <ng-container matColumnDef="id_client">
+                <mat-header-cell  *matHeaderCellDef ><h2> No. </h2></mat-header-cell>
+                 <mat-cell *matCellDef="let i = index" style="background-color: {{getcolor(i)}}"> <p>{{i+1}}</p> </mat-cell>
+              </ng-container>
+
+               <ng-container matColumnDef="nom_client">
+                <mat-header-cell *matHeaderCellDef> <h2> Client </h2> </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> <p>{{element.nom_client}} </p></mat-cell>
+              </ng-container>
+
+               <ng-container matColumnDef="categorie_client">
+                <mat-header-cell *matHeaderCellDef> <h2>   Categorie</h2> </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"><p> {{element.categorie_client}} </p></mat-cell>
+              </ng-container>
+
+               <ng-container matColumnDef="zone">
+                <mat-header-cell *matHeaderCellDef><h2>  Zone</h2>  </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> <p>{{element.zone_client}} </p></mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="edit"  >
+                <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index"  ><button class="btn "  (click)="OnModifier(element.idClient)"><mat-icon color="primary">edit</mat-icon></button></mat-cell>
+              </ng-container>
+
+                <ng-container matColumnDef="delete"  >
+                  <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+                  <mat-cell *matCellDef="let element let i = index"  ><button class="btn "  (click)="OnSupprimer(element.idClient)"><mat-icon color="accent">delete_forever</mat-icon></button></mat-cell>
+                </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+          </div>
+</div>
+   <div *ngIf="gestionClient.clients_valides == []">
+    <div class="container">
+      <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+      <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+        Page non trouvée</h2>
+      <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+        La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+    </div>
+  </div>
+  <div *ngIf="gestionClient.clients_valides.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des clients est encore vide  ! </h3>
+                                      <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/Ajouter-clients">Ajouter </button> </h3></div>

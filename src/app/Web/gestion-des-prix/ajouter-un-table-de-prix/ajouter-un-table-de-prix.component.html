@@ -1,0 +1,56 @@
+<br><br><br><br><br><br>
+<div class="container"  >
+  <form  (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>	nom de la table de prix:</mat-label>
+          <input type="text"  matInput name="description" ngModel
+                 required>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+
+  <div class="container"  ><div>
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <button class="btn btn-primary" type="button" [disabled]="!f.value.description || gestionDesPrixService.TablePrix_.length == 0" (click)="onSauvgarder(f.value.description)"> Sauvgarder</button>
+    </div> </div><br>
+
+ <div  *ngIf="gestionDesArticlesService.articles" >
+  <div *ngIf="gestionDesArticlesService.articles.length != 0">
+    <div class="container"> <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="code_article">
+          <mat-header-cell *matHeaderCellDef> <h2> code </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.code_article }} </mat-cell>
+        </ng-container>
+        nom_utilisateur,cin,date_activite_debut, 	date_activite_fin, edit, delete
+        <ng-container matColumnDef="nom_article">
+          <mat-header-cell *matHeaderCellDef> <h2>   Nom </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.nom_article }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="edit"  >
+          <mat-header-cell *matHeaderCellDef> <h2>   prix </h2> </mat-header-cell>
+          <mat-cell *matCellDef="let element"><form #f="ngForm" >
+
+            <mat-form-field appearance="fill">
+              <mat-label>Montant</mat-label>
+              <input matInput type="number" class="example-right-align"  ngModel name="prix"    (change)="onAffecterPrix(f.value.prix, element.id_article, element.code_article, element.nom_article)">
+              <span matSuffix>{{configurationService.devise}}</span>
+            </mat-form-field>
+
+             </form> </mat-cell> </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+</div>
+</div>
+

@@ -1,0 +1,64 @@
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <mat-icon>local_shipping</mat-icon>
+  <span style="  font-size: 25px;"> Colis</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <button class="btn" (click)="save()">Enregistrer</button>
+      <button class="btn btn-danger"  mat-dialog-close mat-dialog-close=""><mat-icon>close</mat-icon>
+      </button>    </ul>
+
+
+  </div>
+</mat-toolbar>
+<br>
+<br>
+<div class="container">
+  <div class="col-md-2">
+    <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+  </div>
+</div>
+<div *ngIf="this.dataSource" class="container">
+
+  <div >
+    <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="N.o">
+          <mat-header-cell *matHeaderCellDef> <h3> * </h3> </mat-header-cell>
+          <mat-cell *matCellDef="let  i = index"> {{i +1}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Description">
+          <mat-header-cell *matHeaderCellDef> <h3> Description </h3> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.description}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <mat-header-cell *matHeaderCellDef> <h3> Date</h3> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.date_de_lancement}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Selectionner">
+          <mat-header-cell *matHeaderCellDef>   </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <section class="example-section">
+              <mat-slide-toggle class="example-margin" name="status" ngModel [(ngModel)] = "element.statuss" (change)="onSelect(element)" color="primary" [disabled]="!element.possible">
+              </mat-slide-toggle>
+              Selectionné
+            </section>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator>
+
+    </div>
+  </div>
+  <!-- <button class="btn btn-success" (click)="Assign(assigned)" [disabled]="(assigned.length == 0) ">affecter</button> -->
+
+</div>
+
+
+
+

@@ -1,0 +1,90 @@
+<div  >
+  <div class="col-md-2"></div>
+  <button mat-raised-button class="col-md-4" (click)="Suivie()" [disabled]="Suivie1"> Suiver un commercial </button>
+  <button mat-raised-button class="col-md-4" (click)="histprique()" [disabled]="histprique1">Historique</button>
+  <!-- <button mat-raised-button class="col-md-2" (click)="virement()" [disabled]="virements">chargement de stock des commerciaux</button>
+ <button mat-raised-button class="col-md-3" (click)="tpe()" [disabled]="tpes">TPE</button> -->
+</div>
+<br>
+<br><br>
+<div *ngIf="Suivie1" >
+  <br><br><br>
+
+<form (ngSubmit)="onSubmitt(f)" #f="ngForm" class="container">
+      <div class="row">
+          <div class="col-md-3" *ngIf="this.commerciaux.length > 0">
+          <mat-form-field appearance="fill" >
+            <mat-label>Commercial :</mat-label>
+            <mat-select name="idCommercial" ngModel required
+                        type="number" >
+              <mat-option >None</mat-option>
+              <mat-option *ngFor="let commerial of commerciaux let  index = index"
+                          value="{{commerial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commerial.nom}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput ngModel [matDatepicker]="picker" required name="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description" style="background-color: rgba(0,0,0,.04)"
+                    placeholder="description" ngModel required></textarea>
+          </div>
+        <div class="col-md-3">
+          <button mat-raised-button type="submit">Enregistrer</button>
+        </div>
+      </div>
+</form>
+
+</div>
+<div *ngIf="histprique1" >
+
+
+
+<div *ngIf="true">
+  <div class="container"> <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+
+      <ng-container matColumnDef="id ">
+        <mat-header-cell  *matHeaderCellDef><span style="font-size: 25px;"> No. </span></mat-header-cell>
+        <mat-cell *matCellDef=" let i = index" style="background-color: {{getcolor(i)}}"> {{i+1}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Commercial">
+        <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Commercial </span> </mat-header-cell>
+        <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.idCommercial }} </mat-cell>
+      </ng-container>
+       <ng-container matColumnDef="Description">
+        <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Description </span> </mat-header-cell>
+        <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.description }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Date">
+        <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;">Date</span>  </mat-header-cell>
+        <mat-cell *matCellDef="let element let i = index" style="background-color: {{getcolor(i)}}"> {{element.date }} </mat-cell>
+      </ng-container>
+
+
+      <ng-container matColumnDef="consulter"  >
+        <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element  "  ><button class="btn "  (click)="OnConsulter(element.id)"><mat-icon color="primary">map</mat-icon></button></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="delete"  >
+        <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+        <mat-cell *matCellDef="let element  "  ><button class="btn "  (click)="OnSupprimer(element.id )"><mat-icon color="accent">delete_forever</mat-icon></button></mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+  </div>
+</div>
+</div>

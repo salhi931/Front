@@ -1,0 +1,49 @@
+/*
+h1 { color: #A52A2A; font-family: 'didot'; font-size: 34px; font-weight: 300; line-height: 40px; margin: 0 0 16px; }
+
+
+h2 { color: #A52A2A;   font-family: "didot"; font-size: 24px; font-weight: 100; line-height: 32px; margin: 0 0 14px; }
+
+
+p { color: #222; font-family: 'didot'; font-size: 20px; font-weight: 400; line-height: 24px; margin: 0 0 14px; }
+.mat-header-cell{
+  background-color: #FFFAFA;
+}
+
+
+ ----------------------------------------------- mehdi--------------------------------------------
+
+ */
+body{
+  margin: 0;
+  width: 100%;
+  padding: 0;
+  background-color: rgb(165, 160, 182);
+
+}
+.imgok img:hover{
+  width: 120pX;
+  height:160pX;
+  transition: all 1s;
+  transform: rotate(360deg);
+  border-radius: 1PC;
+
+}
+.imgok img {
+  border-radius: 50%;
+}
+.btn-u:hover{
+  background-color: rgb(32, 32, 218);
+  border: 0;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 18PX;
+  transition: all 0.5s;
+}
+.btn-d:hover{
+  border: 0;
+  color: white;
+  /* font-family: 'Courier New', Courier, monospace; */
+  font-size: 14PX;
+  transition: all 0.5s;
+}

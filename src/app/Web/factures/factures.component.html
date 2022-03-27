@@ -1,0 +1,144 @@
+
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <mat-icon>list_alt</mat-icon>
+  <span style="  font-size: 25px;">Factures</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <div class="col-md-3">
+        <button type="button" mat-raised-button routerLink="/creer-une-facture" disabled><h2><mat-icon color="primary">add</mat-icon> Creer une facture </h2> </button>
+      </div>
+    </ul>
+
+
+  </div>
+</mat-toolbar>
+<div class="container">
+  <form  #f="ngForm"  >
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Commercial :</mat-label>
+        <mat-select name="idCommercial" ngModel
+                    type="number" >
+          <mat-option >None</mat-option>
+          <mat-option *ngFor="let commerial of gestionDesFacturesService.commerciaux let  index = index"
+                      value="{{commerial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commerial.nom}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Date</mat-label>
+        <input matInput ngModel [matDatepicker]="picker"  name="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <button type="submit"  mat-raised-button (click)="getFacturesCommercialDate(f)" [disabled]="f.value.idCommercial === undefined || f.value.idCommercial === ''  "><mat-icon>search</mat-icon></button>
+  </form>
+
+</div>
+<div class="container">
+  <div class="col-md-3">
+    <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+  </div>
+  <div class="col-md-3">
+    <mat-form-field appearance="fill">
+      <mat-label>Total: </mat-label>
+      <input disabled matInput type="number" class="example-right-align"  [ngModel] = "Total" style="color: black">
+      <span matSuffix>{{configurationService.devise}}</span>
+    </mat-form-field>
+  </div>
+  <div class="col-md-2">
+    <mat-form-field appearance="fill">
+      <mat-label>Nbr de facture: </mat-label>
+      <input disabled matInput type="number" class="example-right-align"  [ngModel] = "TotalFacture" style="color: black">
+      <span matSuffix>facture</span>
+    </mat-form-field>
+  </div>
+</div>
+
+<div  *ngIf="factures" >
+  <div *ngIf="factures.length != 0">
+     <div class="container">
+
+      <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <!--
+          <ng-container matColumnDef="N.o" >
+            <mat-header-cell *matHeaderCellDef> <span style="  font-size: 15px;"> <span>&#x2116;</span> facture </span> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.numFacture}} </mat-cell>
+          </ng-container> -->
+          <ng-container matColumnDef="code">
+            <mat-header-cell *matHeaderCellDef> <span style="  font-size: 15px;"> Code Client </span> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" >
+              <div *ngIf="element.num_commande !== 0">{{element.code}}</div>
+              <div *ngIf="element.num_commande === 0">---</div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="nom_client">
+            <mat-header-cell *matHeaderCellDef> <span style="  font-size: 15px;"> Client</span> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.nom_client}} </mat-cell>
+          </ng-container>
+
+
+          <ng-container matColumnDef="total_ttc">
+            <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;"> Total TTC</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.	totalTTC}} {{configurationService.devise}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Montant">
+            <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;"> Montant Payé</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.montantPaye}} {{configurationService.devise}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Date">
+            <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;"> Date</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.dateDeLancement}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="DateEcheance">
+            <mat-header-cell *matHeaderCellDef><span style="  font-size: 15px;"> Date d'echeance</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.dateEcheance}} </mat-cell>
+          </ng-container>
+
+          <!--
+                    <ng-container matColumnDef="objectif"  >
+                      <mat-header-cell *matHeaderCellDef> <h2> Objectif : </h2> </mat-header-cell>
+                      <mat-cell *matCellDef="let element"><button class="btn "  (click)="Ongetobjectif(element.id_commercial )"><mat-icon color="primary">done_all</mat-icon></button></mat-cell>
+                    </ng-container>
+          -->
+          <ng-container matColumnDef="edit"  >
+            <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element"><button class="btn "  (click)="onModifier(element.idFacture)"><mat-icon color="primary">launch</mat-icon></button></mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="suppression">
+            <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <!-- <button class="btn "  (click)="onSupprimer(element.idFacture)" disabled><mat-icon color="warn">delete_forever</mat-icon></button> -->
+              <button class="btn btn-success col-md-9"  disabled *ngIf="element.paye === 1">Payée</button>
+              <button class="btn btn-danger col-md-9"  disabled *ngIf="element.paye === 0">Non-Payée</button>
+              <button class="btn btn-warning col-md-9"  disabled *ngIf="element.paye === undefined">Encours</button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+ <!-- <div *ngIf="factures == []">
+    <div class="container">
+      <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+      <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+        Page non trouvée</h2>
+      <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+        La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+    </div>
+  </div>
+  <div *ngIf="factures.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des factures est encore vide  ! </h3>
+    <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/creer-une-facture">Ajouter une nouvelle facture </button> </h3></div>
+    -->
+</div>
+

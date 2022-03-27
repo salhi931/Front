@@ -1,0 +1,91 @@
+
+<mat-toolbar color="accent">
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <mat-icon>contacts</mat-icon>
+  <span>Commandes</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+
+  </div>
+
+</mat-toolbar>
+
+<div><mat-icon color="primary">add</mat-icon>  <a routerLink="/lancer-une-commande">Lancer une commande </a></div>
+
+<div  *ngIf="commandes" >
+  <div *ngIf="commandes.length != 0">
+    <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+    <div class="container">
+      <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+
+          <ng-container matColumnDef="num_commande">
+            <mat-header-cell *matHeaderCellDef> <h3> <span>&#x2116;</span> commande </h3> </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.num_commande}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="client">
+            <mat-header-cell *matHeaderCellDef><h3> Client</h3>  </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.nom}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="TTC">
+            <mat-header-cell *matHeaderCellDef><h3>Total TTC</h3>  </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.total_TTC}} {{configurationService.devise}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="date_de_lancement">
+            <mat-header-cell *matHeaderCellDef><h3>Date de creation</h3>  </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.date_de_lancement}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="status"  >
+            <mat-header-cell *matHeaderCellDef mat-sort-header> <h3>Status</h3> </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+
+              <section class="example-section">
+                <mat-slide-toggle
+                  class="example-margin" name="status"
+                  ngModel
+                  [(ngModel)] = "element.status"
+                  color="primary"
+                  (change)="OnchangeStatusCommande(element.id_commande, element)"
+                >
+                </mat-slide-toggle>
+                Approuvée
+              </section>
+
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="edit"  >
+            <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element"><button class="btn "  (click)="onModifier(element.id_commande )"><mat-icon color="primary">launch</mat-icon></button></mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="suppression"  >
+            <mat-header-cell *matHeaderCellDef > <h2> </h2> </mat-header-cell>
+            <mat-cell *matCellDef="let element"><button class="btn "  (click)="onSupprimer(element.id_commande )"><mat-icon color="accent">delete_forever</mat-icon></button></mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
+    </div>
+  </div>
+  <div *ngIf="commandes == []">
+    <div class="container">
+      <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+      <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+        Page non trouvée</h2>
+      <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+        La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+    </div>
+  </div>
+  <div *ngIf="commandes.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des commandes est encore vide  ! </h3>
+    <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/lancer-une-commande">lancer une nouvelle commande </button> </h3></div>
+</div>
+

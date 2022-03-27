@@ -1,0 +1,90 @@
+<mat-drawer-container class="example-container"  >
+  <mat-drawer mode="side" opened position="end" id="sect1">
+    <br><br>
+    <br><br>
+    <button mat-button (click)="table_des_prix1()" ><h3 style="color: white">table des prix </h3> </button>
+    <br><br>
+    <button mat-button (click)="affectation1()" [disabled]="true"><h3 style="color: white">Affectation des table des prix </h3> </button>
+    <br><br>
+     <button mat-button (click)="nouvelle_table1()" [disabled]="true"><h3 style="color: white" >Nouvelle table de prix</h3> </button>
+
+
+    <br><br>
+    <!--
+    <button mat-button   (click)="Clients()" [disabled]="clients"><h2 style="color: white">Clients </h2></button>
+-->
+
+  </mat-drawer>
+  <mat-drawer-content class="class-container">
+  <app-affectation-prix-clients *ngIf="affectation"></app-affectation-prix-clients>
+  <app-ajouter-un-table-de-prix *ngIf="nouvelle_table"></app-ajouter-un-table-de-prix>
+<!--
+  <mat-toolbar color="accent">
+   <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+
+  <mat-icon>attach_money</mat-icon>
+  <span>Gestion des prix</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px"></ul>
+    <button mat-raised-button routerLink="/promotion" ><h5>Promotion </h5> </button>
+    <button mat-raised-button routerLink="/affectation-prix-client" ><h5>Affectation </h5> </button>
+
+
+  </div>
+</mat-toolbar>
+    -->
+    <div *ngIf="table_des_prix">
+    <div class="row" >
+      <div class="col-md-4">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Table de prix :</mat-label>
+          <mat-select name="famille" ngModel
+                      required  [(ngModel)]="table_prixSelectionnee" >
+            <mat-option >None</mat-option>
+            <mat-option *ngFor="let prix of gestionDesPrixService.Prix" value="{{prix.id_prix}}">{{prix.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button class="btn btn-primary" (click)="getTable_prix()">Rechercher</button>
+
+
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+        <button class="btn btn-group-sm" routerLink="/table-de-de-prix-ajout" [disabled]="true">Nouvelle table de prix	&nbsp;	&nbsp; </button>
+      </div></div>
+    <div *ngIf="gestionDesPrixService.TablePrix">
+      <div *ngIf="true">
+        <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+        <div class="container"> <div class="mat-elevation-z8">
+          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+            <ng-container matColumnDef="article">
+              <mat-header-cell  *matHeaderCellDef><h2> No. </h2></mat-header-cell>
+              <mat-cell *matCellDef="let i = index"> {{i+1}} </mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="code_article">
+              <mat-header-cell *matHeaderCellDef> <h2>Code article </h2> </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.code_article }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nom_article">
+              <mat-header-cell *matHeaderCellDef> <h2>Nom d'article </h2> </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.nom_article }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="prix">
+              <mat-header-cell *matHeaderCellDef> <h2>Prix </h2> </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.prix }}  {{configurationService.devise}} </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+        </div>
+      </div></div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

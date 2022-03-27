@@ -1,0 +1,20 @@
+<div *ngIf="optimisationService.liste.length ">
+  <h2>solution </h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">position </th>
+      <th scope="col">Heure</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let visite of optimisationService.liste; let i = index "   >
+      <th scope="row">{{  i+1}}</th>
+      <td>  {{ visite.client}}  </td>
+      <td>  {{ visite.temps }}  </td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br>
+</div>

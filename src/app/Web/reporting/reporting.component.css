@@ -1,0 +1,28 @@
+.example-card {
+  max-width: 700px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+ul li {
+  list-style: none;
+}
+.mat-drawer {
+  width: 160px;
+ }
+.mat-drawer-container{
+  height: 100%;
+}
+#sect1 {
+  /* background-image: url("../assets/Dark_background.png");*/
+  background-color: #c5cae9;
+  text-colo: white;
+}
+.class-container{
+  background-color: aliceblue;
+}
+.titre{
+  front-size: 22px;
+}

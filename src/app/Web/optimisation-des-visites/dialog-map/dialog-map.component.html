@@ -1,0 +1,21 @@
+<mat-toolbar>
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+  <mat-icon></mat-icon>
+  <div class="col-md-2"><span style="  font-size: 25px;"> Visites: {{data.length}}</span></div>
+  <div class="col-md-2"></div>
+  <div class="col-md-2"><span style="  font-size: 25px;"> GPS: {{GPS.length}}</span></div>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+
+      <button class="btn btn-danger"  mat-dialog-close mat-dialog-close=""><mat-icon>close</mat-icon>
+      </button>    </ul>
+
+
+  </div>
+</mat-toolbar>
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="12" (mapClick)="map($event)" >
+  <agm-marker  *ngFor="let position of GPS " [latitude]="position.lat" [longitude]="position.lng"
+               [label]= "position.nom_client  + ' / ' +   position.code"
+  ></agm-marker>
+</agm-map>

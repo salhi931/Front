@@ -1,0 +1,175 @@
+  <button mat-raised-button color="primary" type="button" routerLink="/articles"><mat-icon>cancel</mat-icon> 	&nbsp; Annuler</button>
+<br><br>
+<div class="container">
+  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>nom article:</mat-label>
+          <input type="text"  matInput name="nom_article" ngModel [ngModel] = "this.gestionDesArticlesService.article_consulter.nom_article"
+                 required>
+        </mat-form-field>
+      </div><div class="col-md-4">
+      <mat-form-field appearance="fill" >
+        <mat-label>code article :</mat-label>
+        <input type="text"  matInput name="code_article" ngModel [ngModel] = "this.gestionDesArticlesService.article_consulter.code_article"
+               required>
+      </mat-form-field>
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" >
+          <mat-label>propriété:</mat-label>
+          <input type="text"  matInput name="prop_1" ngModel [ngModel] = "this.gestionDesArticlesService.article_consulter.prop_1"
+                 required>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+
+        <mat-form-field appearance="fill">
+          <mat-label>propriété 2 :</mat-label>
+          <input type="text"  matInput name="prop_2" ngModel [ngModel] = "this.gestionDesArticlesService.article_consulter.prop_2"
+                 required>
+        </mat-form-field>
+      </div>
+
+    </div>
+    <div class="row">
+
+      <div class="col-md-3">
+
+
+        <select class="form-control form-control-lg" name="famille" ngModel [(ngModel)]="gestionDesArticlesService.article_consulter.famille">
+          <option *ngFor="let famille of gestionDesArticlesService.famille let  index = index"
+                  value="{{famille.id }}"> &nbsp;&nbsp; {{famille.description}}</option>
+        </select>
+
+
+
+      </div> <div class="col-md-1"></div>
+      <div class="col-md-4">
+      <mat-form-field appearance="fill">
+        <mat-label>sous famille :</mat-label>
+        <mat-select name="sous_famille" ngModel [ngModel] = "this.gestionDesArticlesService.article_consulter.sous_famille">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let sousfamille of SousFamille" value="{{sousfamille.id}}">{{sousfamille.description}}</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+    </div>
+    <div class="row">
+
+      <div class="col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>unite de stock :</mat-label>
+          <mat-select name="unite_de_stock" ngModel [ngModel] = "this.gestionDesArticlesService.article_consulter.unite_de_stock"
+                      required>
+            <mat-option>None</mat-option>
+            <mat-option value="unite de stock 1">unite de stock  1</mat-option>
+            <mat-option value="unite de stock 2">unite de stock  2</mat-option>
+            <mat-option value="unite de stock 3">unite de stock  3</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div> <div class="col-md-4">
+      <mat-form-field appearance="fill" >
+        <mat-label>TVA :</mat-label>
+        <input type="number"  matInput name="tva" ngModel [ngModel] = "this.gestionDesArticlesService.article_consulter.tva"
+               required>
+      </mat-form-field>
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <button mat-raised-button type="button" (click)="ajouterimages()">Images</button>
+      </div>
+    </div>
+    <br><br>
+
+    <br><br>
+    <button mat-raised-button color="primary" type="submit" > <mat-icon>save</mat-icon>	&nbsp; Enregistrer</button>
+  </form>
+</div>
+
+<!--
+<div class ="container">
+  <div class = "row">
+    <div class="col-md-12 mt-5 text-danger"  >
+      <div class="cadr bg-secondary p-4"  style="border-radius: 2pc; box-shadow:  0 0 10PX black; ">
+
+        <h3 style="color:white; text-align: center;"> Modifier</h3>
+        <br>
+        <form class="col-md-12">
+
+          <div class="row" style="margin-left: 2pc; ">
+            <label for="nom_article">Nom Article</label>
+            <input type="nom_article"  id="nom_article" name="nom_article" required  style="width:18pc">
+
+            <label for="code_article" style="margin-left:7pc;">Code Article </label>
+            <input type="text" name="code_article" id="code_article" required   style="margin-left: 5pc;width:18pc">
+          </div>
+
+
+
+          <div class="row" style="margin-left: 2.3pc;">
+            <label for="prop_1">Propriété 1</label>
+
+            <input type="text" id="prop_1" name="prop_1" required  style="width:18pc ;">
+
+            <label for="prop_2" style="margin-left: 7.4pc;">Propriété 2</label>
+            <input type="text" id="prop_2" name="prop_1" required  style="width:18pc">
+          </div>
+
+
+
+
+          <div class="row" style="margin-left: 1.3pc;">
+            <label for="famille">Famille</label>
+            <select  id="famille" name="famille" placeholder=""  style=" width: 18pc;">
+              <option >
+              </option>
+
+            </select>
+
+            <label for="sous_famille" style="margin-left: 6.7pc;">Sous Famile</label>
+            <select  id="sous_famille" name="sous_famille" style=" width: 18pc ">
+              <option >
+              </option>
+
+            </select>
+          </div>
+
+
+
+
+          <div class="row" style="margin-left: 0.7pc;">
+            <label for="unite_de_stock">Unite de Stock</label>
+            <select  id="unite_de_stock" name="unite_de_stock" placeholder=" Unite de Stock"  style=" width: 18pc;">
+              <option >
+              </option>
+
+            </select>
+            <label for="tasnif4" style="margin-left: 9.2pc;">TVA %</label>
+            <input type="text" id="tasnif4" name="tasnif" required  style=" width: 18pc;">
+          </div>
+
+
+
+          <button class="bnt ">Image</button>
+
+          <div class="input-cc">
+            <button type="submit" name="oki"  class="bg-warning input-h mr-2" style="width: 10pc; :hover:;"> Enregitrer</button>
+
+            <a >
+              <button type="button"  class=" bg-success mt-1 input-h" data-dismiss="modal" style="width: 10pc;"> Annuler </button>
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+-->

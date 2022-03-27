@@ -1,0 +1,168 @@
+<!-- <div class="panel-body">
+  <table *ngIf="ClientsBigdata" class="table table-condensed">
+    <tr>
+    <th>ID</th><th>Nom</th><th>Code</th><th>categorie_client</th><th>Consulter</th><th>FeedBack</th>
+  </tr>
+    <tr *ngFor="let client of ClientsBigdata._embedded.clientses">
+      <td>{{client.code}}</td>
+      <td>{{client.nom_client}}</td>
+      <td>{{client.categorie_client}}</td>
+      <td><button mat-raised-button> consulter</button></td>
+      <td><button mat-raised-button> Feedback</button></td>
+
+    </tr>
+  </table>
+</div> -->
+
+
+
+
+<mat-toolbar color="accent">
+   <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+    <mat-icon>contacts</mat-icon>
+    <span style="  font-size: 25px;">Clients</span>
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <ul fxLayout="row" fxLayoutGap="20px"></ul>
+      <button type="button" mat-raised-button (click)="nouveauClient()" [disabled]="true"><h2><mat-icon>add</mat-icon> Ajouter </h2> </button>
+
+      <span matBadge="{{nombre_de_client_a_ajoutee}}" matBadgeSize="small" matBadgeColor="primary"  *ngIf="nombre_de_client_a_ajoutee>0" >
+    <button mat-button [matMenuTriggerFor]="menu">
+             <mat-icon color="primary">notifications_active</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" >
+            <button mat-menu-item routerLink="/clients-non-valides" >
+
+              {{nombre_de_client_a_ajoutee}} comptes clients à valider
+            </button>
+          </mat-menu></span>
+      <div  *ngIf="nombre_de_client_a_ajoutee==0 || !nombre_de_client_a_ajoutee">
+      <button mat-button [matMenuTriggerFor]="menu">
+             <mat-icon color="accent">notifications_active</mat-icon></button>
+      <mat-menu #menu="matMenu" >
+        <button mat-menu-item routerLink="/clients-non-valides" >
+          consulter les comptes clients à valider
+        </button>
+      </mat-menu></div>
+         </div>
+  </mat-toolbar>
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field> <input (keyup)="appliquerfilter(filtrage)" matInput placeholder="Filtrer" [(ngModel)]="filtrage" ></mat-form-field>
+      </div>
+      <div class="col-md-5" >
+        <section class="example-section">
+          <label class="example-margin"></label>
+          <mat-radio-group  (change)="filtreVisiteTermine(statuss)"  [(ngModel)] = "statuss" color="primary">
+            <mat-radio-button class="example-margin" value="1">
+              GPS
+            </mat-radio-button>
+            <mat-radio-button class="example-margin" value="2">
+              Non-GPS
+            </mat-radio-button>
+            <mat-radio-button class="example-margin" value="-1">
+              tous les clients
+            </mat-radio-button>
+          </mat-radio-group>
+        </section>
+      </div>
+     <!-- <div class="col-md-2" >
+        <section class="example-section">
+          <mat-slide-toggle class="example-margin" name="status" ngModel  color="primary">
+          </mat-slide-toggle>
+          Terminée(filtre)
+        </section>
+      </div> -->
+    </div>
+    <!--<div class="col-md-2">
+    </div>
+    <div class="col-md-2">
+      <mat-form-field> <input  matInput placeholder="Code" [(ngModel)]="choixCode" ></mat-form-field>
+    </div>
+    <div class="col-md-2">
+      <mat-form-field> <input  matInput placeholder="Nom" [(ngModel)]="choixNom" ></mat-form-field>
+    </div>
+    <div class="col-md-2">
+      <mat-form-field> <input  matInput placeholder="Categorie" [(ngModel)]="choixCategorie" ></mat-form-field>
+    </div>
+    <div class="col-md-2"> <button mat-raised-button type="button" (click)="rechercheClient()"><mat-icon>search</mat-icon></button>
+    </div> -->
+  </div>
+  <br>
+<div>
+<!-- <div *ngIf="gestionClient.clients_valides.length != 0"> -->
+
+          <div class="container"> <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+               <ng-container matColumnDef="id_client">
+                <mat-header-cell  *matHeaderCellDef ><span style="font-size: 25px;"> Code </span></mat-header-cell>
+                 <mat-cell *matCellDef="let element" > <p>{{element.code}}</p> </mat-cell>
+              </ng-container>
+
+               <ng-container matColumnDef="nom_client">
+                <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Client </span> </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index" > <p>{{element.nom_client}} </p></mat-cell>
+              </ng-container>
+
+               <ng-container matColumnDef="categorie_client">
+                <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;">   Categorie</span> </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index" ><p> {{element.categorie_clientName}} </p></mat-cell>
+              </ng-container>
+
+               <ng-container matColumnDef="zone">
+                <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;">  Zone</span>  </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index" > <p>{{element.zone}} </p></mat-cell>
+              </ng-container>
+               <ng-container matColumnDef="GPS">
+                <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;">  Zone</span>  </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index" >
+                  <section class="example-section">
+                    <mat-checkbox
+                      class="example-margin" name="status"
+                      ngModel
+                      [(ngModel)] = "element.Gps"
+                      color="primary"
+                      disabled
+
+                    >
+                    </mat-checkbox>
+                    GPS
+                  </section>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="edit"  >
+                <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;">  </span> </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index"  ><button class="btn "  (click)="OnModifier(element.idClient)"><mat-icon color="primary">edit</mat-icon></button></mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="feedback"  >
+                <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;">  </span> </mat-header-cell>
+                <mat-cell *matCellDef="let element let i = index"  ><button class="btn "  (click)="feedBack(element.idClient)"><mat-icon color="primary">feedback</mat-icon></button></mat-cell>
+              </ng-container>
+
+                <ng-container matColumnDef="delete"  >
+                  <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
+                  <mat-cell *matCellDef="let element let i = index"  ><button class="btn " [disabled]="true" (click)="OnSupprimer(element.idClient)"><mat-icon color="warn">delete_forever</mat-icon></button></mat-cell>
+                </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator></div>
+          </div>
+</div>
+<!--
+   <div *ngIf="gestionClient.clients_valides == []">
+    <div class="container">
+      <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
+      <h2 style="font-size:25px;text-align:center;font-family: 'Roboto', sans-serif;margin-top:-40px;">
+        Page non trouvée</h2>
+      <p style="text-align:center;font-family: 'Roboto', sans-serif;font-size:12px;">
+        La page que vous recherchez n'existe pas ou une autre erreur s'est produite.</p>
+    </div>
+  </div>
+  <div *ngIf="gestionClient.clients_valides.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des clients est encore vide  ! </h3>
+                                      <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/Ajouter-clients" [disabled]="true">Ajouter </button> </h3></div>
+-->

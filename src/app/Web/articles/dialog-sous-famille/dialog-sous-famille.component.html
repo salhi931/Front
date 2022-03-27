@@ -1,0 +1,37 @@
+<div class="col-md-4">
+  <mat-form-field appearance="fill">
+    <mat-label>famille :</mat-label>
+    <mat-select name="famille" ngModel
+                required  [(ngModel)]="famille_selectione" (openedChange)="getsousfamilles( famille_selectione)">
+      <mat-option >None</mat-option>
+      <mat-option *ngFor="let famille of famille" value="{{famille.id}}">{{famille.description}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="form-group">
+  <mat-form-field appearance="fill">
+    <mat-label>nouvelle famille:</mat-label>
+    <input type="text"  matInput name="famille" ngModel [(ngModel)] = "nouvellesousfamille"
+           required>
+  </mat-form-field>
+  <button mat-raised-button (click)="AjouterSousFamille(nouvellesousfamille, famille_selectione)"  [disabled]="nouvellesousfamille === undefined || nouvellesousfamille === '' || famille_selectione === undefined">ajouter</button>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let sousFamille of sousfamilles; let i = index "   >
+    <th scope="row">{{ i+1 }}</th>
+    <td>  {{ sousFamille.description }}  </td>
+    <td>  <button mat-raised-button (click)="ModifierFamille({id: sousFamille.id, description: sousFamille.description, idFamille: sousfamille.idFamille})"><mat-icon>edit</mat-icon></button></td>
+    <td><button class="btn btn-sm btn-danger"  type="button"   (click)="supprimerarticle(sousFamille.id)"><mat-icon>delete</mat-icon></button> </td>
+  </tr>
+  </tbody>
+</table>

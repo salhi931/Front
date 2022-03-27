@@ -1,0 +1,19 @@
+<mat-toolbar >
+  <!-- <div *ngIf="loaderservice.isLoading | async" class="loader-container"><mat-spinner  class="mat-spinner" style="top: 50%;left: 50% "></mat-spinner></div>
+-->
+
+  <span style="  font-size: 25px;"> Historique</span>
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+
+      <button class="btn btn-danger"  mat-dialog-close mat-dialog-close=""><mat-icon>close</mat-icon>
+      </button>    </ul>
+
+
+  </div>
+</mat-toolbar>
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="13" (mapClick)="map($event)">
+  <span *ngFor="let position of data let i= index">
+    <agm-marker   [latitude]="position.lat" [longitude]="position.lng" [label]= "string(i)"></agm-marker>
+  </span>
+</agm-map>
