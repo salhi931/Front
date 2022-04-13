@@ -122,8 +122,7 @@ export class GestionDesFacturesService implements OnInit{
   }
   getCodeArticle(id: any): any{
     for (const article of this.articles){
-      console.log(id);
-      if (article.id_article === Number(id)){
+       if (article.id_article === Number(id)){
         return article.code_article;
       }
     }
@@ -131,8 +130,7 @@ export class GestionDesFacturesService implements OnInit{
   }
   getDescriptionArticle(id: any): any{
     for (const article of this.articles){
-      console.log(id);
-      if (article.id_article === Number(id)){
+       if (article.id_article === Number(id)){
         return article.nom_article;
       }
     }

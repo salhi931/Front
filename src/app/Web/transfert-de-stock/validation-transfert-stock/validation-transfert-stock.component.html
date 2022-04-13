@@ -110,10 +110,11 @@
             </ul>
           </div>
 
-          <br><br><br><br>
+          <br><br>
         </mat-toolbar-row>
-        <br><br><br><br>
-        <mat-toolbar-row *ngIf="!this.gestionDeStockService.transfertentete.status">
+        <br><br>
+        <mat-toolbar-row *ngIf="!this.gestionDeStockService.transfertentete.status" class="container">
+          <div><button mat-button class="btn-primary" (click)="getPieceJointes(gestionDeStockService.transfertentete.numTransfert)">Fichier Jointe</button></div>
           <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
             <ul fxLayout="row" fxLayoutGap="20px">
               <mat-form-field appearance="fill">
@@ -128,7 +129,66 @@
             </ul>
           </div>
         </mat-toolbar-row>
+        <br><br>
+
        </form>
+     <!-- <form (ngSubmit)="onSubmitt(f)" #f="ngForm">
+      <form   #f2="ngForm" *ngIf="!gestionDeStockService.transfertentete.status" >-->
+      <form   #f2="ngForm" *ngIf="false" >
+
+        <mat-toolbar-row (mouseleave)="getDesignation(f2)" (mouseenter)="getDesignation(f2)">
+          <div class="col-md-3" >
+            <mat-form-field class="example-full-width">
+              <mat-label>article </mat-label>
+              <input type="text"
+                     aria-label="article"
+                     matInput
+                     ngModel
+                     required
+                     name="code"
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto" [(ngModel)]="article_selected" >
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
+                  <div>
+                    <span> {{option}}</span>
+                  </div>
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="fill">
+              <mat-label>designation</mat-label>
+              <input matInput type="text" class="example-right-align" required ngModel name="designation" [disabled]="true" [(ngModel)]="designation">
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="fill"  required="">
+              <mat-label>quantite :</mat-label>
+              <input type="number" rre matInput name="quantite" [(ngModel)]="article_quantite"
+                     required >
+            </mat-form-field>
+          </div>
+          <!--<button type="button" (click)="calculerprix()">click me</button> -->
+          <div class="col-md-3">
+            <mat-form-field appearance="fill">
+              <mat-label>Magasin:</mat-label>
+              <mat-select name="magasin" ngModel required [(ngModel)] = "magasin_selectedpartiale"
+                          type="number">
+                <mat-option >None</mat-option>
+                <mat-option *ngFor="let magasin of this.magasins let  index = index"
+                            value="{{magasin.id_magasin }}">{{index + 1}} &nbsp;&nbsp; {{magasin.nom_magasin}} </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <button class="btn btn-sm btn-primary" type="button" (click)="ajouterarticle(f2)"  [disabled]="!f2.valid || this.article_quantite <= 0 || this.designation === ''"><mat-icon>add_circle</mat-icon></button>
+          </div>
+        </mat-toolbar-row>
+
+
+      </form>
     </div>
     <div class="container" *ngIf="dataSource.data.length > 0">
       <div class="mat-elevation-z8">
@@ -159,6 +219,7 @@
             <mat-cell *matCellDef="let element let i = index"  >
               <mat-form-field appearance="fill" style="  background-color: {{element.color}}"  >
                 <input matInput type="number" class="example-right-align"
+                       [disabled]="gestionDeStockService.transfertentete.status"
                         [(ngModel)] = element.quantiteValide>
               </mat-form-field>
               </mat-cell>
@@ -169,8 +230,9 @@
                <!-- Dechargement ---------------------------------------- -->
                <mat-form-field appearance="fill" *ngIf="!gestionDeStockService.transfertentete.chargement">
                 <mat-label>Magasin :</mat-label>
-                <mat-select   ngModel   [(ngModel)]="element.idMagasinDestinataire" disabled
-                            type="text" >
+                <mat-select   ngModel   [(ngModel)]="element.idMagasinDestinataire"
+                              [disabled]="gestionDeStockService.transfertentete.status"
+                              type="text" >
                   <mat-option >None</mat-option>
                   <mat-option *ngFor="let magasin of magasins let  index = index"
                               value="{{magasin.id_magasin}}">  {{magasin.nom_magasin}}  </mat-option>
@@ -180,7 +242,8 @@
                <mat-form-field appearance="fill" *ngIf="gestionDeStockService.transfertentete.chargement">
                 <mat-label>Magasin source:</mat-label>
                 <mat-select   ngModel   [(ngModel)]="element.idMagasinOrigine"
-                            type="text" >
+                              [disabled]="gestionDeStockService.transfertentete.status"
+                              type="text" >
                   <mat-option >None</mat-option>
                   <mat-option *ngFor="let magasin of magasins let  index = index"
                               value="{{magasin.id_magasin}}">  {{magasin.nom_magasin}}  </mat-option>
@@ -192,7 +255,8 @@
                   <mat-option *ngFor="let magasin of magasins"
                               value="{{magasin.id_magasin}}"> {{magasin.nom_magasin}}  </mat-option>
                 </mat-select>
-               </mat-form-field>-->
+               </mat-form-field>
+               -->
               </mat-cell>
           </ng-container>
           <!-- <ng-container matColumnDef="edit">
@@ -206,5 +270,4 @@
         <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
     </div>
   </div>
-
 </div>

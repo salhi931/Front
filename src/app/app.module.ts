@@ -118,6 +118,7 @@ import { DialogConsultationComponent } from './Web/factures/dialog-consultation/
 import { DialogConsultationPaiementComponent } from './Web/paiement/dialog-consultation-paiement/dialog-consultation-paiement.component';
 import { DialogConsultationCommandeComponent } from './Web/commandes/dialog-consultation-commande/dialog-consultation-commande.component';
 import { FeedbackClientComponent } from './Web/feedback-client/feedback-client.component';
+import { DialogConsultationRetourComponent } from './Web/retours/dialog-consultation-retour/dialog-consultation-retour.component';
 
 @NgModule({
   schemas:  [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -197,10 +198,11 @@ import { FeedbackClientComponent } from './Web/feedback-client/feedback-client.c
     DialogConsultationPaiementComponent,
     DialogConsultationCommandeComponent,
     FeedbackClientComponent,
+    DialogConsultationRetourComponent,
 
   ],
   // tslint:disable-next-line:max-line-length
-  entryComponents: [DialogImagesComponent, DialogHistoriqueComponent, DialogSousFamilleAjouterComponent, DialogFamilleAjouterComponent, DialogFamilleComponent, DialogConsultationCommandeComponent,
+  entryComponents: [DialogConsultationRetourComponent, DialogImagesComponent, DialogHistoriqueComponent, DialogSousFamilleAjouterComponent, DialogFamilleAjouterComponent, DialogFamilleComponent, DialogConsultationCommandeComponent,
     DialogSousFamilleComponent, DialogPositionComponent, DialogClientComponent, DialogRetourComponent, DialogPaiementComponent, DialogConsultationComponent, DialogConsultationPaiementComponent,
     DialogStockComponent, DialogMapComponent, DialogArticleConsulteComponent, DialogComponent, DialogQuantiteComponent, DialogColisComponent, DialogFichierJointeVisitesComponent, DialogFeedbackComponent, PieceJOintfactureComponent],
   imports: [

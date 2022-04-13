@@ -11,6 +11,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogRetourComponent} from "./dialog-retour/dialog-retour.component";
 import {DialogComponent} from "./dialog/dialog.component";
 import {DialogPaiementComponent} from "../paiement/dialog-paiement/dialog-paiement.component";
+import {DialogConsultationComponent} from "../factures/dialog-consultation/dialog-consultation.component";
+import {GestionDesArticlesService} from "../../services/gestion-des-articles.service";
+import {Form} from "@angular/forms";
+import {DialogConsultationRetourComponent} from "./dialog-consultation-retour/dialog-consultation-retour.component";
 
 @Component({
   selector: 'app-retours',
@@ -19,8 +23,8 @@ import {DialogPaiementComponent} from "../paiement/dialog-paiement/dialog-paieme
 })
 export class RetoursComponent implements OnInit, AfterViewInit {
   constructor(public dialog: MatDialog, public gestionDesRetoursService: GestionDesRetoursService, private router: Router,
-              private route: ActivatedRoute, public configurationService: ConfigurationService) { }
-  displayedColumns: string[] = ['N.o', 'num_facture', 'nom_client', 'total_ttc', 'status', 'edit', 'suppression'];
+              private route: ActivatedRoute, public configurationService: ConfigurationService, public gestionDesArticlesService: GestionDesArticlesService) { }
+  displayedColumns: string[] = [ 'code', 'nom_client', 'commercial', 'total_ttc', 'date', 'edit', 'suppression'];
   // @ts-ignore
   @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ts-ignore
@@ -32,20 +36,46 @@ export class RetoursComponent implements OnInit, AfterViewInit {
   clients: any[] = [];
   retours: any[] = [];
   retoursFilter2: any;
-
+  TotalRetours: any = 0;
   // tslint:disable-next-line:variable-name
   commercial_id_selected: any;
   dateSelected: any;
 
-  ngAfterViewInit(): any {
-    this.dataSource.sort = this.sort;
-  }
+
   ngOnInit(): void {
-    this.gestionDesRetoursService.getCommericaux();
-    this.gestionDesRetoursService.getClients();
+    this.dataSource.data = [];
+    setTimeout(
+      () => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 10);
+
+    //this.gestionDesRetoursService.getCommericaux();
+    //this.gestionDesRetoursService.getClients();
     // this.configurationService.getConfiguration();
-    this.getretours2();
+    //this.getretours2();
   }
+  ngAfterViewInit(): any {
+    this.gestionDesRetoursService.getMagasinsList()
+      .subscribe(data => {
+        this.gestionDesRetoursService.magasinsList = data;
+        // tslint:disable-next-line:no-shadowed-variable
+      }, error => {alert(error.message); });
+    this.gestionDesArticlesService.getarticles()
+      .subscribe(data => {
+        this.gestionDesRetoursService.articles = data;
+        // tslint:disable-next-line:no-shadowed-variable
+      }, error => {alert(error); } );
+    this.configurationService.getConfiguration2()
+      .subscribe(data => {
+        this.configurationService.affecter(data);
+        if (this.configurationService.validationDeRetours === true){
+          this.displayedColumns = [ 'code', 'nom_client', 'commercial', 'total_ttc', 'date', 'status', 'edit', 'suppression'];
+        }
+        this.getRetours();
+
+      });
+   }
 
   openDialog(): void{
     const list = [];
@@ -59,11 +89,9 @@ export class RetoursComponent implements OnInit, AfterViewInit {
         }
         const dialogref = this.dialog.open(DialogComponent, {data: list, height: '800px', width: '1300px'} );
         dialogref.afterClosed().subscribe(data => {
-          console.log(data);
-          this.getretours2();
+           this.getretours2();
           setTimeout(() => {this.DateAndCommercialFilter(); }, 50 );
-          //console.log();
-        }, error => {
+         }, error => {
           console.log(error.message);
       });
     }
@@ -82,8 +110,7 @@ export class RetoursComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource([]);
     this.getretours2();
     setTimeout(() => {this.DateAndCommercialFilter(); }, 50 );
-    console.log(listRetour);
-  }
+   }
   appliquerfilter(filtervalue: string): any{
     this.dataSource.filter = filtervalue.trim().toLocaleLowerCase();
     this.Total = 0;
@@ -112,30 +139,26 @@ export class RetoursComponent implements OnInit, AfterViewInit {
       }
       // @ts-ignore
       this.dataSource = new MatTableDataSource(retoursfiltered);
-      console.log(this.dataSource);
-      setTimeout(
+       setTimeout(
         () => {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }, 100);
   }
   apploquerfilterCommercial(id: any): any{
-    console.log(id);
-    if (id !== undefined) {
+     if (id !== undefined) {
       this.retoursFilter2 = [];
       // tslint:disable-next-line:forin
       for (const retour of this.retours) {
         // @ts-ignore
-        console.log(retour, id);
-        // @ts-ignore
+         // @ts-ignore
         if (Number(retour.idCommercial) === Number(id) && !retour.status) {
           // @ts-ignore
           this.retoursFilter2.push(retour);
         }
       }
       this.dataSource = new MatTableDataSource(this.retoursFilter2);
-      console.log(this.dataSource);
-      setTimeout(
+       setTimeout(
         () => {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -144,8 +167,7 @@ export class RetoursComponent implements OnInit, AfterViewInit {
     else {
       // @ts-ignore
       this.dataSource = new MatTableDataSource(this.retours);
-      console.log(this.dataSource);
-      setTimeout(
+       setTimeout(
         () => {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -174,9 +196,7 @@ export class RetoursComponent implements OnInit, AfterViewInit {
     }
   }
   OnchangeStatusRetours(id: any, element: any): void{
-    console.log(id);
-    console.log(element);
-    this.gestionDesRetoursService.changestatusretours(id, element)
+     this.gestionDesRetoursService.changestatusretours(id, element)
       .subscribe(data => {
       }, error => {
         element.status = !element.status;
@@ -219,13 +239,128 @@ export class RetoursComponent implements OnInit, AfterViewInit {
 
             setTimeout(
               () => {
-              console.log(this.dataSource);
-              console.log(this.paginator);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
               }, 100);
           }, error => {alert('une error s\'est produite'); });
       });
+  }
+
+  getRetours(): any{
+    this.gestionDesRetoursService.getCommericaux2()
+      .subscribe(dataC => {
+        this.gestionDesRetoursService.commerciaux = dataC;
+        this.gestionDesRetoursService.getClients2()
+          .subscribe(data => {
+            this.gestionDesRetoursService.clients = data;
+            this.gestionDesRetoursService.getRetours2()
+              .subscribe(data2 => {
+                this.retours = data2;
+                 // tslint:disable-next-line:no-unused-expression
+                this.Total = 0;
+                this.retours.forEach(current  => this.Total += current.total_TTC ) ;
+                let filteredArray: any[];
+                filteredArray = [];
+                this.retours.forEach(current  =>  filteredArray.push(current.idClient)) ;
+                // @ts-ignore
+                const filteredArray2 = filteredArray.filter( (ele, pos) => filteredArray.indexOf(ele) === pos);
+                this.TotalRetours = filteredArray2.length;
+                for (const retour of this.retours){
+                  retour.nom_client = this.getclient(retour.idClient);
+                  retour.code = this.getCode(retour.idClient);
+                  retour.commercial = this.getCommercial(retour.idCommercial);
+                }
+                // @ts-ignore
+                this.dataSource.data = this.retours;
+                setTimeout(
+                  () => {
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
+                    }, 10);
+              }, error => {alert('une error s\'est produite'); });
+          });
+
+      });
+
+  }
+  getclient(id: number): any{
+    for ( const client of this.gestionDesRetoursService.clients){
+      if ( client.idClient === id){
+        return client.nom_client;
+      }
+    }
+  }
+  getCode(id: number): any{
+    for ( const client of this.gestionDesRetoursService.clients){
+      if ( client.idClient === id){
+        return client.code;
+      }
+    }
+  }
+  getCommercial(id: number): any{
+    for ( const commercial of this.gestionDesRetoursService.commerciaux){
+      if ( commercial.id_commercial === id){
+        return commercial.nom;
+      }
+    }
+  }
+  getRetoursCommercialDate(f: Form): any{
+    // @ts-ignore
+     // @ts-ignore
+    this.gestionDesRetoursService.getRetoursCommercialDate(f)
+      .subscribe(data2 => {
+        this.retours = data2;
+        // tslint:disable-next-line:no-unused-expression
+        this.Total = 0;
+        this.retours.forEach(current  => this.Total += current.total_TTC ) ;
+        let filteredArray: any[];
+        filteredArray = [];
+        this.retours.forEach(current  =>  filteredArray.push(current.idClient)) ;
+        // @ts-ignore
+        const filteredArray2 = filteredArray.filter( (ele, pos) => filteredArray.indexOf(ele) === pos);
+        this.TotalRetours = filteredArray2.length;
+        for (const retour of this.retours){
+          retour.nom_client = this.getclient(retour.idClient);
+          retour.code = this.getCode(retour.idClient);
+          retour.commercial = this.getCommercial(retour.idCommercial);
+        }
+        // @ts-ignore
+        this.dataSource.data = this.retours;
+         setTimeout(
+          () => {
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+            }, 10);
+      }, error => {alert('une error s\'est produite');
+      });
+  }
+
+  onConsulterRetour(id: any): any{
+    let retourV: any;
+    // tslint:disable-next-line:variable-name
+    let retourV_details = [];
+    this.gestionDesRetoursService.getRetourWeb(id)
+      .subscribe(data => {
+        // @ts-ignore
+        retourV = data.retourentete;
+        // @ts-ignore
+        retourV_details = data.retourdetail;
+        // tslint:disable-next-line:variable-name
+        for (const retour_detail of retourV_details){
+          retour_detail.code_article = this.gestionDesRetoursService.getCodeArticle(retour_detail.id_article);
+          retour_detail.description = this.gestionDesRetoursService.getDescriptionArticle(retour_detail.id_article);
+         }
+        // @ts-ignore
+        // tslint:disable-next-line:no-shadowed-variable
+        const clientCherche = this.gestionDesRetoursService.clients.filter(client => client.idClient === retourV.idClient)[0];
+        retourV.code = clientCherche.code;
+        retourV.nomClient = clientCherche.nom_client;
+        retourV.nomCommercial = this.gestionDesRetoursService.commerciaux
+          // @ts-ignore
+          .filter(commercial => commercial.id_commercial === retourV.idCommercial)[0].nom;
+         this.dialog.open(DialogConsultationRetourComponent, {data: {retour: retourV, retour_details: retourV_details}, height: '1000px',
+          width: '1500px'});
+      }, error => {alert('une error s\'est produite'); });
   }
 
 }

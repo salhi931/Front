@@ -163,7 +163,7 @@ export class FacturesComponent implements OnInit, AfterViewInit {
     let facture_detail = [];
     this.gestionDesFacturesService.getFactureWeb(id)
               .subscribe(data => {
-                // @ts-ignore
+                 // @ts-ignore
                 facture = data.factureentete;
                 // @ts-ignore
                 facture_detail = data.facturedetail;
@@ -179,30 +179,9 @@ export class FacturesComponent implements OnInit, AfterViewInit {
                 facture.nomClient = clientCherche.nom_client;
                 // @ts-ignore
                 facture.nomCommercial = this.gestionDesFacturesService.commerciaux.filter(commercial => commercial.id_commercial === facture.idCommercial)[0].nom;
-                console.log(facture);
-                this.dialog.open(DialogConsultationComponent, {data: {facture: facture, facture_details: facture_detail}, height: '1000px',
+                 this.dialog.open(DialogConsultationComponent, {data: {facture: facture, facture_details: facture_detail}, height: '1000px',
                   width: '1500px'});
-
-
-                //this.router.navigate(['/consultation-facture', {relativeTo: this.route}]);
-                /*for (const client of this.clients){
-                  if (client.idClient === this.facture_consultee.id_client){
-                    this.code_client_facture =  client.code;
-                    this.nom_client_facture =  client.nom_client; }
-                }
-                for (const commercial of this.commerciaux){
-                  if (commercial.id_commercial === this.facture_consultee.idCommercial){
-                    console.log(commercial.nomUtilisateur);
-                    this.nom_commercial_facture = commercial.nom;
-                    this.router.navigate(['/consultation-facture', {relativeTo: this.route}]);
-                    break;
-                  }
-                }*/
-
               }, error => {alert('une error s\'est produite'); });
-    // this.gestionDesFacturesService.getCommericaux();
-    // this.gestionDesFacturesService.getClients();
-    // this.gestionDesFacturesService.getFactureConsultee(id);
   }
 
   // tslint:disable-next-line:variable-name

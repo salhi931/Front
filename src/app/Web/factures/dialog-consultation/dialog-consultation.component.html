@@ -23,13 +23,13 @@
     <div style="display: block">
       <div class="col-md-3" style="background-color: #c5cae9">
         <div >
-          <h3 class="example-h2"><label>Date de la facture </label>  	:&nbsp;	{{data.facture.dateDeLancement}}&nbsp;{{TransfertForm(data.facture.numFacture)}} </h3>
+          <h3 class="example-h2"><label>Date</label>	&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;  	:&nbsp;	{{data.facture.dateDeLancement}}&nbsp;{{TransfertForm(data.facture.numFacture)}} </h3>
         </div>
         <div >
-          <h3 class="example-h2"><label> Facture <span>&#x2116;</span>  </label>&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	:&nbsp;	 {{data.facture.numFacture}}</h3>
+          <h3 class="example-h2"><label> Facture <span>&#x2116;</span>  </label>&nbsp;	&nbsp;	 	&nbsp;	&nbsp;	:&nbsp;	 {{data.facture.numFacture}}</h3>
         </div>
         <div >
-          <h3 class="example-h2"><label> Commande <span>&#x2116;</span></label> &nbsp;	&nbsp;	 :&nbsp;		{{data.facture.numCommande}}</h3>
+          <h3 class="example-h2"><label> Commande <span>&#x2116;</span></label>  	 :&nbsp;		{{data.facture.numCommande}}</h3>
         </div>
       </div>
       <div class="col-md-6"></div>
@@ -46,7 +46,7 @@
       </div>
       <br><br><br><br><br><br><br><br><br><br>
       <div *ngIf="data.facture_details.length > 0" class="container">
-        <h2>articles facturés </h2>
+        <h2>Articles facturés </h2>
         <table class="table table table-dark">
           <thead>
           <tr>

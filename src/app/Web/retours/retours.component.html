@@ -20,29 +20,37 @@
 <div class="icon_image " title="Share As PDF" (click)="exportAsPDF('MyDIv');"><img src="assets/img/pdf.png"></div>
 -->
 
-<div>
+<div class="container">
   <br>
-  <div class="container">
-    <div class="col-md-3">
-      <mat-form-field appearance="fill">
-        <mat-label>Date</mat-label>
-        <input matInput ngModel [matDatepicker]="picker" [(ngModel)]="dateSelected" (dateChange)="DateAndCommercialFilter()" >
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+  <div class="row container">
+
+    <div class="container">
+      <form  #f="ngForm"  >
+        <div class="col-md-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Commercial :</mat-label>
+            <mat-select name="idCommercial" ngModel
+                        type="number" >
+              <mat-option >None</mat-option>
+              <mat-option *ngFor="let commerial of gestionDesRetoursService.commerciaux let  index = index"
+                          value="{{commerial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commerial.nom}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput ngModel [matDatepicker]="picker"  name="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <button type="submit"  mat-raised-button (click)="getRetoursCommercialDate(f)" [disabled]="f.value.idCommercial === undefined || f.value.idCommercial === ''  "><mat-icon>search</mat-icon></button>
+      </form>
+
     </div>
-    <div class="col-md-3">
-      <mat-form-field appearance="fill">
-        <mat-label>Commercial :</mat-label>
-        <mat-select name="id_commercial1" ngModel
-                    type="number" [(ngModel)]="commercial_id_selected" (selectionChange)="DateAndCommercialFilter()">
-          <mat-option >None</mat-option>
-          <mat-option *ngFor="let commercial of gestionDesRetoursService.commerciaux let  index = index"
-                      value="{{commercial.id_commercial }}">{{index + 1}} &nbsp;&nbsp; {{commercial.nomUtilisateur}} </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="col-md-2">
+  <div class="row container">
+    <div class="col-md-2" *ngIf="this.configurationService.validationDeRetours">
       <section class="example-section">
         <mat-slide-toggle
           class="example-margin"
@@ -59,7 +67,7 @@
        <button mat-raised-button (click)="ValiderLesRetoursAffiche()"><h2><mat-icon>add</mat-icon>Valider ces retours</h2></button>
      </div> -->
 
-    <div class="col-md-3" > <!--*ngIf="commercial_id_selected !== undefined"> -->
+    <div class="col-md-3" *ngIf="this.configurationService.validationDeRetours"> <!--*ngIf="commercial_id_selected !== undefined"> -->
       <button mat-raised-button (click)="openDialog()"><h2><mat-icon>more</mat-icon> Valider par articles-motifs</h2></button>
     </div>
 
@@ -76,28 +84,32 @@
         <span matSuffix>{{configurationService.devise}}</span>
       </mat-form-field>
     </div>
+    <div class="col-md-2">
+      <mat-form-field appearance="fill">
+        <mat-label>Nbr de retours: </mat-label>
+        <input disabled matInput type="number" class="example-right-align"  [ngModel] = "TotalRetours" style="color: black">
+        <span matSuffix>retour</span>
+      </mat-form-field>
+    </div>
   </div>
   <br>
 
 
-<div  *ngIf="retours" >
-  <div *ngIf="retours.length != 0">
+<div  *ngIf="dataSource" >
+  <div *ngIf="retours.length > 0">
     <div class="container">
       <div class="mat-elevation-z8">
         <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
+          <ng-container matColumnDef="commercial">
+            <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;"> Commercial</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.commercial}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="code">
+            <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Code</span> </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.code}} </mat-cell>
+          </ng-container>
 
-          <ng-container matColumnDef="N.o">
-            <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> <span>&#x2116;</span> retour</span> </mat-header-cell>
-            <mat-cell *matCellDef="let element let i = index" > {{element.numRetour}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="num_facture">
-            <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> <span>&#x2116;</span> facture </span> </mat-header-cell>
-            <mat-cell *matCellDef="let element let i = index" >
-              <div *ngIf="element.num_facture !== 0">{{element.numFacture}}</div>
-              <div *ngIf="element.num_facture === 0">---</div>
-            </mat-cell>
-          </ng-container>
            <ng-container matColumnDef="nom_client">
             <mat-header-cell *matHeaderCellDef> <span style="font-size: 25px;"> Client</span> </mat-header-cell>
              <mat-cell *matCellDef="let element let i = index" > {{element.nom_client}} </mat-cell>
@@ -108,13 +120,17 @@
             <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;"> Total TTC</span>  </mat-header-cell>
             <mat-cell *matCellDef="let element let i = index" > {{element.	total_TTC}} {{configurationService.devise}} </mat-cell>
           </ng-container>
+          <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef><span style="font-size: 25px;"> Date</span>  </mat-header-cell>
+            <mat-cell *matCellDef="let element let i = index" > {{element.dateDeLancement}} </mat-cell>
+          </ng-container>
           <!--
                     <ng-container matColumnDef="objectif"  >
                       <mat-header-cell *matHeaderCellDef> <h2> Objectif : </h2> </mat-header-cell>
                       <mat-cell *matCellDef="let element"><button class="btn "  (click)="Ongetobjectif(element.id_commercial )"><mat-icon color="primary">done_all</mat-icon></button></mat-cell>
                     </ng-container>
           -->
-          <ng-container matColumnDef="status"  >
+          <ng-container matColumnDef="status"  *ngIf="this.configurationService.validationDeRetours">
             <mat-header-cell *matHeaderCellDef mat-sort-header> <span style="font-size: 25px;">Status</span> </mat-header-cell>
 
             <mat-cell *matCellDef="let element let i = index" >
@@ -135,12 +151,12 @@
           </ng-container>
           <ng-container matColumnDef="edit"  >
             <mat-header-cell *matHeaderCellDef> <h2>  </h2> </mat-header-cell>
-            <mat-cell *matCellDef="let element  "  ><button class="btn "  (click)="onModifier(element.idRetour )"><mat-icon color="primary">launch</mat-icon></button></mat-cell>
+            <mat-cell *matCellDef="let element  "  ><button class="btn "  (click)="onConsulterRetour(element.idRetour )"><mat-icon color="primary">launch</mat-icon></button></mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="suppression"  >
             <mat-header-cell *matHeaderCellDef> <h2> </h2> </mat-header-cell>
-            <mat-cell *matCellDef="let element  " ><button class="btn "  (click)="onSupprimer(element.idRetour )"><mat-icon color="warn">delete_forever</mat-icon></button></mat-cell>
+            <mat-cell *matCellDef="let element  " ><button class="btn " disabled (click)="onSupprimer(element.idRetour )"><mat-icon color="warn">delete_forever</mat-icon></button></mat-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -149,6 +165,7 @@
         <mat-paginator [pageSizeOptions]="[50, 20, 10, 5]" showFirstLastButtons></mat-paginator></div>
     </div>
   </div>
+  <!--
   <div *ngIf="retours == []">
     <div class="container">
       <h1 style="font-size:80px;font-weight:800;text-align:center;font-family: 'Roboto', sans-serif;">404</h1><br><br><br><br><br>
@@ -159,6 +176,8 @@
     </div>
   </div>
   <div *ngIf="retours.length == 0"><h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;">la liste des retours est encore vide  ! </h3>
-    <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/lancer-un-retours">Ajouter une nouveau retour </button> </h3></div>
+    <h3 style="font-size:30px;font-weight:300;text-align:center;font-family: 'Roboto', sans-serif;"><button mat-raised-button  routerLink="/lancer-un-retours">Ajouter une nouveau retour </button> </h3></div> -->
 </div>
 
+  </div>
+</div>

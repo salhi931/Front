@@ -8,6 +8,7 @@ import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {ConfigurationService} from "./configuration.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {formatDate} from "@angular/common";
 
 
 
@@ -40,7 +41,10 @@ export class GestionDesRetoursService implements OnInit{
   // tslint:disable-next-line:contextual-lifecycle
   ngOnInit(): void {
     this.configurationService.getConfiguration();
-    this.gestionDesArticlesService.getarticles();
+    this.gestionDesArticlesService.getarticles()
+      .subscribe(data => {
+        this.articles = data;
+      });
     this.articles = this.gestionDesArticlesService.articles;
   }
   openSnackBar(message: string, action: string): any{
@@ -78,7 +82,7 @@ export class GestionDesRetoursService implements OnInit{
   }
   getCommericaux2(): Observable<any>{
     return this.http.
-    get(environment.HTTP + 'Commerciaux')
+    get(environment.HTTP + 'Commerciaux');
   }
   // tslint:disable-next-line:variable-name
   nom_commercial_facture: any = '';
@@ -138,7 +142,7 @@ export class GestionDesRetoursService implements OnInit{
     for (const article of this.articles){
       console.log(id);
       if (article.id_article === Number(id)){
-        return article.description;
+        return article.nom_article;
       }
     }
     return '';
@@ -519,6 +523,25 @@ export class GestionDesRetoursService implements OnInit{
     );
     // @ts-ignore
     popupWin.document.close();
+  }
+  getRetoursCommercialDate(f: any): Observable<any>{
+    if (f.value.date !== ''){
+      return this.http
+        .get(environment.HTTP + 'getRetoursCommercialDate/' + f.value.idCommercial + '/' + formatDate(f.value.date, 'yyyy-MM-dd', 'en-US') );
+      //.get(environment.HTTP + 'getFacturesCommercialDate/' + f.value.idCommercial + '/' + f.value.date );
+    }
+    else{
+      return this.http
+        .get(environment.HTTP + 'getRetoursCommercial/' + f.value.idCommercial);
+    }
+  }
+  getRetourWeb(id: any): Observable<any>{
+    return this.http
+      .get(environment.HTTP + 'getRetourWeb/' + id);
+  }
+  getImage(id: any): Observable<any>{
+    // Make a call to Sprinf Boot to get the Image Bytes.
+    return this.http.get(environment.HTTP + 'downloadFile/retour/' + id);
   }
 }
 

@@ -1,0 +1,117 @@
+
+
+
+<mat-toolbar color="accent">
+  <div class="row">
+    <mat-icon>local_shipping</mat-icon>
+    <span style="  font-size: 25px;"> Consultation - Retour</span>
+
+  </div>
+
+  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="20px">
+      <button class="btn btn-danger"  mat-dialog-close mat-dialog-close=""><mat-icon>close</mat-icon>
+      </button>    </ul>
+  </div>
+</mat-toolbar>
+<br>
+<mat-card style="height: 250px" >
+  <mat-card-header>
+    <div mat-card-avatar ></div>
+  </mat-card-header>
+  <div>
+    <div style="display: block">
+      <div class="col-md-3" style="background-color: #c5cae9">
+        <div >
+          <h3 class="example-h2"><label>Date </label>  	:&nbsp;	{{data.retour.dateDeLancement}}&nbsp;{{TransfertForm(data.retour.numRetour)}} </h3>
+        </div>
+        <div >
+          <h3 class="example-h2"><label> Retour <span>&#x2116;</span>  </label>&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;	:&nbsp;	 {{data.retour.numRetour}}</h3>
+        </div>
+        <div >
+          <h3 class="example-h2"><label> Facture <span>&#x2116;</span></label> &nbsp;	&nbsp;	 :&nbsp;		{{data.retour.numFacture}}</h3>
+        </div>
+      </div>
+      <div class="col-md-6"></div>
+      <div class="col-md-3" style="background-color: #c5cae9">
+        <div>
+          <h3 class="example-h2"><label>code client&nbsp;	&nbsp;	&nbsp; </label>: {{data.retour.code}}</h3>
+        </div>
+        <div >
+          <h3 class="example-h2"><label>Nom client &nbsp;	&nbsp;	 </label> : {{data.retour.nomClient}}</h3>
+        </div>
+        <div >
+          <h3 class="example-h2"><label>Commercial 	&nbsp;</label>: {{data.retour.nomCommercial}}</h3>
+        </div>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br>
+      <div *ngIf="data.retour_details.length > 0" class="container">
+        <h2>Articles retournés </h2>
+        <table class="table table table-dark">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Article</th>
+            <th scope="col">Designation</th>
+            <th scope="col">Quantite</th>
+            <!-- <th scope="col">quantite disponible</th> -->
+            <th scope="col">Prix unitaire</th>
+            <th scope="col">Magasin</th>
+            <th scope="col">Remise</th>
+            <th scope="col">TVA</th>
+            <th scope="col">Total TTC</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let articleachetes of data.retour_details; let i = index "   >
+            <th scope="row">{{  i+1}}</th>
+            <td>  {{ articleachetes.code_article }}  </td>
+            <td>  {{ articleachetes.description }}  </td>
+            <td>{{ articleachetes.quantite | number}}</td>
+            <!-- <td>{{ articleachetes.quantite - articleachetes.openquantite | number}}</td> -->
+            <td>{{ articleachetes.prix | number}} {{configurationService.devise}}</td>
+            <td>{{ articleachetes.id_magasin }}</td>
+            <td>{{ articleachetes.remise }}</td>
+            <td>{{ articleachetes.tva }}%</td>
+            <td>{{ articleachetes.total_ligne_TTC }} {{configurationService.devise}}</td>
+
+          </tr>
+          </tbody>
+        </table></div>
+      <br><br>
+      <div class="row">
+        <div class="col-md-9"></div>
+        <div class>
+          <h3 class="example-h2"><label>Total HT : </label>	&nbsp;	&nbsp;{{data.retour.total_HT}} {{configurationService.devise}}</h3>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-9"></div>
+        <div><h3 class="example-h2"><label>Total TTC : </label>	&nbsp;{{data.retour.total_TTC}} {{configurationService.devise}}</h3>
+        </div>
+      </div>
+      <div>
+        <div class="row">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-1">
+            <button  class="btn btn-sm btn-primary"  type="button" (click)="ConsulterFichierJointe()"><mat-icon> attach_file</mat-icon>Piece jointe</button>
+          </div>
+         <!-- <div class="col-md-7">
+          </div>
+          <div class="col-md-1">
+            <button    class="btn btn-sm btn-success"  type="button"  (click)="getPaiements(data.facture.numFacture)"><mat-icon> money</mat-icon>Mode de paiement</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <br>
+  <br>
+</mat-card>
+
+
+

@@ -76,8 +76,9 @@ export class DialogConsultationComponent implements OnInit {
           data1.paiemententetee.nomClient = client.nom_client;
           data1.paiemententetee.codeClient = client.code;
         }
-        // @ts-ignore
-        data1.paiemententetee.nomCommercial = this.gestionDesFacturesService.commerciaux.filter(commercial => commercial.id_commercial === data1.paiemententetee.idCommercial)[0].nom;
+        data1.paiemententetee.nomCommercial = this.gestionDesFacturesService.commerciaux
+          // @ts-ignore
+          .filter(commercial => commercial.id_commercial === data1.paiemententetee.idCommercial)[0].nom;
         this.dialog.open(DialogConsultationPaiementComponent, {data: data1, height: '800px',
           width: '1500px'});
       });

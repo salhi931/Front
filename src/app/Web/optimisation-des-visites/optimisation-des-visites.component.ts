@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {OptimisationService} from "../../services/optimisation.service";
 import {NgForm} from "@angular/forms";
 import {MatPaginator} from "@angular/material/paginator";
@@ -26,7 +26,7 @@ export class OptimisationDesVisitesComponent implements OnInit, AfterViewInit {
   affectation_manuelle = false;
   // tslint:disable-next-line:variable-name
   algorithme_de_selection = false;
-  constructor( public dialog: MatDialog, public optimisationService: OptimisationService) { }
+  constructor( public dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef, public optimisationService: OptimisationService) { }
   displayedColumns: string[] = ['N.o', 'commercial', 'client', 'zone', 'date', 'status', 'colis', 'Consulter' ];
   // @ts-ignore
   @ViewChild(MatPaginator) paginator: MatPaginator;

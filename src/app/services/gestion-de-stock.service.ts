@@ -50,8 +50,7 @@ export class GestionDeStockService implements OnInit{
   getMagasin(): Observable<any>{
     this.http.get(environment.HTTP + 'Commerciaux')
       .subscribe(data => {
-        console.log(data);
-        // @ts-ignore
+         // @ts-ignore
         this.commerciaux = data;
       }, error => {alert(error.message); });
     return this.http
@@ -95,8 +94,7 @@ export class GestionDeStockService implements OnInit{
      return false;
    }
    modifierStock(quantitee: any , stock: any): Observable<any>{
-     //console.log(stock);
-       return this.http.patch(environment.HTTP + 'stocks/' + stock.id, {quantite: quantitee});
+        return this.http.patch(environment.HTTP + 'stocks/' + stock.id, {quantite: quantitee});
    }
   openSnackBar(message: string, action: string): any{
     this._snackBar.open(message, action);
@@ -116,8 +114,7 @@ export class GestionDeStockService implements OnInit{
                .subscribe(data2 => {
                  if (data){
                    alert('le transfert est bien fait');
-                   console.log(data2);
-                 }
+                  }
                  else {
                    this.openSnackBar('le stock n\'existe pas', 'OK');
                  }
@@ -165,17 +162,14 @@ export class GestionDeStockService implements OnInit{
             // @ts-ignore
             this.transfertdetail = data.transfertdetail;
             this.transfertentete.commerical = this.getCommercialNom(this.transfertentete.idCommercial);
-            console.log(this.transfertentete);
-            if (this.transfertentete.chargement === true){
+             if (this.transfertentete.chargement === true){
               this.transfertentete.type = 'Chargement';
               this.getStockCommercial(this.transfertentete.idCommercial)
                 .subscribe(dataComm => {
                    stock = dataComm;
-                   console.log(stock);
-                  if (this.transfertentete.status) {
+                    if (this.transfertentete.status) {
                     for (const detail of this.transfertdetail){
                       detail.stock = true;
-                      //detail.color = '#FF3366';
                       detail.nomArticle = this.getArticleCorresp(detail.idArticle);
                       detail.Code = this.getcodearticle(detail.idArticle);
                     }
@@ -183,7 +177,6 @@ export class GestionDeStockService implements OnInit{
                   else{
                     for (const detail of this.transfertdetail){
                       detail.stock = true;
-                      //detail.color = '#FF3366';
                       detail.quantiteValide = detail.quantite;
                       // @ts-ignore
                       detail.quantiteStock = stock.filter( stock1 => stock1.idArticle === detail.idArticle)[0].quantiteMobile;
@@ -199,7 +192,6 @@ export class GestionDeStockService implements OnInit{
                 for (const detail of this.transfertdetail){
                   detail.stock = true;
                   // @ts-ignore
-                   //detail.color = '#FF3366';
                   detail.nomArticle = this.getArticleCorresp(detail.idArticle);
                   detail.Code = this.getcodearticle(detail.idArticle);
                 }
@@ -207,7 +199,6 @@ export class GestionDeStockService implements OnInit{
               else{
                 for (const detail of this.transfertdetail){
                   detail.stock = true;
-                  //detail.color = '#FF3366';
                   detail.quantiteValide = detail.quantite;
                   detail.nomArticle = this.getArticleCorresp(detail.idArticle);
                   detail.Code = this.getcodearticle(detail.idArticle);
@@ -215,8 +206,6 @@ export class GestionDeStockService implements OnInit{
               }
             }
             // @ts-ignore
-
-            console.log(data);
             this.router.navigate(['/transfert-validation'], {relativeTo: this.route});
 
           });
@@ -237,18 +226,15 @@ export class GestionDeStockService implements OnInit{
   verifier_validerStock(dataSource: any): any{
     const packk = [];
     for (const detail of this.transfertdetail) {
-      //detail.quantite = detail.quantiteApprouvee;
-      packk.push({idLigne: detail.id, idMagasin: detail.idMagasinOrigine, idArticle: detail.idArticle, qurantite: detail.quantiteValide});
+       packk.push({idLigne: detail.id, idMagasin: detail.idMagasinOrigine, idArticle: detail.idArticle, qurantite: detail.quantiteValide});
     }
 
     // @ts-ignore
     this.verifierStock(packk)
       .subscribe(data => {
-        console.log(data);
-        for (const elmt of dataSource.filteredData){
+         for (const elmt of dataSource.filteredData){
           // @ts-ignore
           const verification = data.filter( t => t.idLigne === elmt.id);
-          console.log(verification);
           if (verification[0].status === false) {
             // @ts-ignore
             elmt.color = '#FF3366';
@@ -258,8 +244,8 @@ export class GestionDeStockService implements OnInit{
             elmt.color = '#ffffff';
           }
         }
-        let i = 0;
-        for (const list of data){
+         let i = 0;
+         for (const list of data){
           if (!list.status){
             this.openSnackBar('nous vous signalons de l\'indisponibilité des articles en rouge', 'OK');
             i = 2;
@@ -267,7 +253,7 @@ export class GestionDeStockService implements OnInit{
           }
         }
         // @ts-ignore
-        if (i === 0) {
+         if (i === 0) {
           this.openSnackBar('Verification de stock ', 'OK');
           const packTransfert = {transfertentete: this.transfertentete, transfertdetail: dataSource.filteredData};
           this.save(packTransfert);
@@ -275,8 +261,7 @@ export class GestionDeStockService implements OnInit{
         else {
 
         }
-        //return this.veriferLignesTransfertStock(data);
-      }, error => { alert(error.message); });
+       }, error => { alert(error.message); });
   }
   veriferLignesTransfertStock(List: any): boolean{
      for (const list of List){
@@ -285,11 +270,9 @@ export class GestionDeStockService implements OnInit{
      return  true;
   }
   save(pack: any): any{
-    console.log(pack);
-    this.valider(pack)
+     this.valider(pack)
       .subscribe(data => {
-        console.log(pack);
-        if (data === 0 ) {
+         if (data === 0 ) {
           alert('une error a été détectée');
         }
         else{
@@ -302,4 +285,9 @@ export class GestionDeStockService implements OnInit{
      return this.http
        .get(environment.HTTP + 'updateStockMagasin/' + id);
    }
+
+  getImage(id: number): Observable<any>{
+    // Make a call to Spring Boot to get the Image Bytes.
+    return this.http.get(environment.HTTP + 'downloadFile/demande/' + id);
+  }
 }

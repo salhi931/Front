@@ -166,6 +166,14 @@ export class GestionDePaiementService implements OnInit{
         return client.code; }
     }
   }
+  rechercheClientPaiement(id: string): any{
+    for (const client of this.clients){
+
+      if (client.idClient === id){
+        return client; }
+    }
+    return null;
+  }
   supprimerpaiement(id: number): any{
     this.http
       .get(environment.HTTP + 'paiamentDelete/' + id)
@@ -316,5 +324,9 @@ export class GestionDePaiementService implements OnInit{
   getImage(id: number): Observable<any>{
     // Make a call to Sprinf Boot to get the Image Bytes.
     return this.http.get(environment.HTTP + 'imagePaiement/get/' + id);
+  }
+  getFacturesLies(numfacture: any): Observable<any> {
+    return this.http
+      .get(environment.HTTP + 'getFacturesLies/' + numfacture);
   }
 }

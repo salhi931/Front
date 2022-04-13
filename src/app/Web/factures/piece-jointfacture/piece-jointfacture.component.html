@@ -14,9 +14,8 @@
 
 <div *ngIf="data.length > 0" >
   <div *ngFor="let img of this.data let j = index" class="container" >
-    <div class="row" >
-      <div class="col-md-1"></div>
-      <div><img [src]="'data:image/jpeg;base64,'+ img.picByte" height="500">  </div>
+    <div class="row container" >
+       <div class="col-md-4"><img [src]="'data:image/jpeg;base64,'+ img.picByte" height="400">  </div>
       <br>
     </div>
   </div>
